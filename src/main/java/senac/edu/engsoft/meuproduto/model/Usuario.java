@@ -33,7 +33,7 @@ public class Usuario {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="TYPE")
+	@Column(name="TYPE", insertable = false, updatable = false)
 	private UsuarioType usuarioType;
 	
 	@Column(name="rua_endereco_pessoal")
