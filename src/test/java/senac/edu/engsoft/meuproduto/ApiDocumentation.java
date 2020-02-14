@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Calendar;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,6 +27,9 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -53,6 +57,8 @@ public class ApiDocumentation {
 	private WebApplicationContext context;
 
 	private MockMvc mockMvc;
+	
+	private Long lojaID;
 
 	@Before
 	public void setUp() {
@@ -64,6 +70,8 @@ public class ApiDocumentation {
 			.apply(documentationConfiguration(this.restDocumentation))
 			.alwaysDo(this.documentationHandler)
 			.build();
+		
+		lojaID = null;
 	}
 
 	@Test
@@ -76,27 +84,6 @@ public class ApiDocumentation {
 					headerWithName("Content-Type").description("The Content-Type of the payload, e.g. `application/hal+json`"))));
 	}
 
-//	@Test
-//	public void errorExample() throws Exception {
-//		this.mockMvc
-//			.perform(get("/error")
-//				.requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 400)
-//				.requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/notes")
-//				.requestAttr(RequestDispatcher.ERROR_MESSAGE, "The tag 'http://localhost:8080/tags/123' does not exist"))
-//			.andExpect(status().isBadRequest())
-//			.andExpect(jsonPath("error", is("Bad Request")))
-//			.andExpect(jsonPath("timestamp", is(notNullValue())))
-//			.andExpect(jsonPath("status", is(400)))
-//			.andExpect(jsonPath("path", is(notNullValue())))
-//			.andDo(this.documentationHandler.document(
-//				responseFields(
-//					fieldWithPath("error").description("The HTTP error that occurred, e.g. `Bad Request`"),
-//					fieldWithPath("message").description("A description of the cause of the error"),
-//					fieldWithPath("path").description("The path to which the request was made"),
-//					fieldWithPath("status").description("The HTTP status code, e.g. `400`"),
-//					fieldWithPath("timestamp").description("The time, in milliseconds, at which the error occurred"))));
-//	}
-
 	@Test
 	public void indexExample() throws Exception {
 		this.mockMvc.perform(get("/"))
@@ -107,22 +94,78 @@ public class ApiDocumentation {
 				responseFields(
 					subsectionWithPath("_links").description("<<resources-index-links,Links>> to other resources"))));
 	}
-
+	
+	@Test
+	public void adicionarLoja() throws Exception {
+		lojaID = createLoja("Loja do Romulo", "00.000.000/0000-00");
+	
+        ResultActions resultActions = this.mockMvc
+		.perform(get("/lojas/"+lojaID))
+		.andExpect(status().isOk())
+//		.andDo(this.documentationHandler.document(
+//			responseFields(
+//				subsectionWithPath("_embedded.lojaResources").description("An array of <<resources-note, Note resources>>"))))
+		;
+        
+        /*
+         * HATEOAS
+         * 
+         */
+        
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("Loja do Romulo"));
+        
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        
+        System.out.println(contentAsString);
+	}
+	
 //	@Test
-//	public void notesListExample() throws Exception {
-//		this.lojaService.deleteAll();
-//
-//		createLoja("Loja do Romulo", "00.000.000/0000-00");
-//		createLoja("Loja do Rubens", "11.111.111/1111-11");
-//		createLoja("Loja do Andre", "22.222.222/2222-22");
-//
-//		this.mockMvc
-//			.perform(get("/lojas"))
+//	public void buscarLoja() throws Exception {
+//			ResultActions resultActions = this.mockMvc
+//				.perform(get("/lojas"))
+//				.andExpect(status().isOk());
+//		
+//            ResultActions resultActions = this.mockMvc
+//			.perform(MockMvcRequestBuilders.delete("")
 //			.andExpect(status().isOk())
 //			.andDo(this.documentationHandler.document(
 //				responseFields(
-//					subsectionWithPath("_embedded.lojas").description("An array of <<resources-note, Note resources>>"))));
+//					subsectionWithPath("_embedded.lojaResources").description("An array of <<resources-note, Note resources>>"))));
+//            
+//            resultActions.andExpect(jsonPath("").value("Loja do Romulo"));
+//            
+//            MvcResult result = resultActions.andReturn();
+//            String contentAsString = result.getResponse().getContentAsString();
+//            
+//            System.out.println(contentAsString);
 //	}
+//	
+//	@Test
+//	public void removerLoja() throws Exception {
+//			ResultActions resultActions = this.mockMvc
+//				.perform(get("/lojas"))
+//				.andExpect(status().isOk());
+//		
+//            ResultActions resultActions = this.mockMvc
+//			.perform(MockMvcRequestBuilders.delete("")
+//			.andExpect(status().isOk())
+//			.andDo(this.documentationHandler.document(
+//				responseFields(
+//					subsectionWithPath("_embedded.lojaResources").description("An array of <<resources-note, Note resources>>"))));
+//            
+//            resultActions.andExpect(jsonPath("").value("Loja do Romulo"));
+//            
+//            MvcResult result = resultActions.andReturn();
+//            String contentAsString = result.getResponse().getContentAsString();
+//            
+//            System.out.println(contentAsString);
+//	}
+	
+	@After
+	public void after() throws Exception {
+		
+	}
 
 //	@Test
 //	public void notesCreateExample() throws Exception {
@@ -339,13 +382,16 @@ public class ApiDocumentation {
 //					fields.withPath("name").description("The name of the tag"))));
 //	}
 
-	private void createLoja(String nome, String cnpj) {
+	private Long createLoja(String nome, String cnpj) {
 		Loja loja = new Loja();
 		loja.setNome(nome);
 		loja.setDataCriacao(Calendar.getInstance().getTime());
 		loja.setCnpj(cnpj);
 
-		this.lojaService.saveOrUpdate(loja);
+		Loja lojaPersisted = this.lojaService.saveOrUpdate(loja);
+		if(lojaPersisted != null)
+			return lojaPersisted.getId();
+		return null;
 	}
 
 //	private static class ConstrainedFields {

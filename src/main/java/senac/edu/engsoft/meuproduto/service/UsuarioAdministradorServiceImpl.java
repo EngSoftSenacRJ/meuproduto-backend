@@ -4,8 +4,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserCpfAlreadyExistsException;
+import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserEmptyCpfException;
+import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserInvalidCpfException;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
+import senac.edu.engsoft.meuproduto.service.util.CpfValidatorUtil;
 
 @Service
 public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorService {
@@ -38,9 +42,41 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 		}
 		return null;
 	}
+	
+	@Override
+	public Optional<UsuarioAdministrador> getByCpf(Long cpf) {
+		try {
+			return usuarioAdministradorRepository.getByCpf(cpf);
+		} catch (Exception e) {
+			//TODO: Tratar erro
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
-	public UsuarioAdministrador saveOrUpdate(UsuarioAdministrador usuarioAdministrador) {
+	public UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador) 
+			throws 	AdministratorUserEmptyCpfException, 
+					AdministratorUserCpfAlreadyExistsException, 
+					AdministratorUserInvalidCpfException {
+		Long usuarioAdministradorCpf = usuarioAdministrador.getCpf();
+		
+		if(usuarioAdministradorCpf == null) {
+			throw new AdministratorUserEmptyCpfException();
+		}
+		else if(!CpfValidatorUtil.isValidCpf(Long.toString(usuarioAdministradorCpf))) {
+			throw new AdministratorUserInvalidCpfException(usuarioAdministradorCpf);
+		}
+		else if (this.getByCpf(usuarioAdministradorCpf).isPresent()){
+			throw new AdministratorUserCpfAlreadyExistsException(usuarioAdministradorCpf);
+		}
+		else {
+			return usuarioAdministradorRepository.save(usuarioAdministrador);
+		}
+	}
+	
+	@Override
+	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) {
 		try {
 			return usuarioAdministradorRepository.save(usuarioAdministrador);
 		} catch (Exception e) {

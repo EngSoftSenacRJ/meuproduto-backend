@@ -1,6 +1,6 @@
 package senac.edu.engsoft.meuproduto.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +20,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
+import com.sun.istack.NotNull;
+
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "TB_USUARIO")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -36,22 +43,28 @@ public class Usuario {
 	@Column(name="TYPE", insertable = false, updatable = false)
 	private UsuarioType usuarioType;
 	
-	@Column(name="rua_endereco_pessoal")
+	@NotEmpty(message = "ruaEnderecoPessoal é obrigatório")
+	@Column(name="RUA_ENDERECO_PESSOAL")
 	private String ruaEnderecoPessoal;
 	
-	@Column(name="numero_endereco_pessoal")
+	@NotEmpty(message = "numeroEnderecoPessoal é obrigatório")
+	@Column(name="NUMERO_ENDERECO_PESSOAL")
 	private String numeroEnderecoPessoal;
 	
-	@Column(name="bairro_endereco_pessoal")
+	@NotEmpty(message = "bairroEnderecoPessoal é obrigatório")
+	@Column(name="BAIRRO_ENDERECO_PESSOAL")
 	private String bairroEnderecoPessoal;
 	
-	@Column(name="cidade_endereco_pessoal")
+	@NotEmpty(message = "cidadeEnderecoPessoal é obrigatório")
+	@Column(name="CIDADE_ENDERECO_PESSOAL")
 	private String cidadeEnderecoPessoal;
 	
-	@Column(name="estado_endereco_pessoal")
+	@NotEmpty(message = "estadoEnderecoPessoal é obrigatório")
+	@Column(name="ESTADO_ENDERECO_PESSOAL")
 	private String estadoEnderecoPessoal;
 	
-	@Column(name="cep_endereco_pessoal")
+	@NotEmpty(message = "cepEnderecoPessoal é obrigatório")
+	@Column(name="CE_ENDERECO_PESSOAL")
 	private String cepEnderecoPessoal;
 	
 	@Column(name="PASSWORD")
@@ -61,16 +74,25 @@ public class Usuario {
 	private String salt;
 	
 	@Column(name="DATA_CRIACAO")
-	private Date dataCriacao;
+	private LocalDate dataCriacao;
 	
+	@NotEmpty(message = "nome é obrigatório")
+	@NotNull
 	@Column(name="NOME")
 	private String nome;
 	
 	@Column(name="TELEFONE_CONTATO")
-	private String telefoneContato;
+	private Long telefoneContato;
 	
+//	@NotEmpty(message = "cpf é obrigatório")
+	@NotNull
 	@Column(name="CPF")
-	private String cpf;
+	private Long cpf;
+	
+	@NotEmpty(message = "email é obrigatório")
+	@NotNull
+	@Column(name="EMAIL")
+	private String email;
 	
 	@JoinColumn(name = "ID_PERFIL")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -82,185 +104,38 @@ public class Usuario {
 		inverseJoinColumns = { @JoinColumn(name = "ID_LOJA") })
 	private Set<Loja> lojas = new HashSet<>();
 	
+	@PrePersist
+	private void prePersist() {
+		if(this.getDataCriacao() == null)
+			this.setDataCriacao(LocalDate.now());
+	}
+	
 	public Usuario() {
 		super();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getTelefoneContato() {
-		return telefoneContato;
-	}
-
-	public void setTelefoneContato(String telefoneContato) {
-		this.telefoneContato = telefoneContato;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public Set<Loja> getLojas() {
-		return lojas;
-	}
-
-	public void setLojas(Set<Loja> lojas) {
-		this.lojas = lojas;
-	}
-
-	public Perfil getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
-	}
-
-	public UsuarioType getUsuarioType() {
-		return usuarioType;
-	}
-
-	public void setUsuarioType(UsuarioType usuarioType) {
+	//Todos campos - id
+	public Usuario(UsuarioType usuarioType, String ruaEnderecoPessoal, String numeroEnderecoPessoal,
+			String bairroEnderecoPessoal, String cidadeEnderecoPessoal, String estadoEnderecoPessoal,
+			String cepEnderecoPessoal, String password, String salt, LocalDate dataCriacao, String nome,
+			Long telefoneContato, Long cpf, String email, Perfil perfil, Set<Loja> lojas) {
+		super();
 		this.usuarioType = usuarioType;
-	}
-
-	public String getRuaEnderecoPessoal() {
-		return ruaEnderecoPessoal;
-	}
-
-	public void setRuaEnderecoPessoal(String ruaEnderecoPessoal) {
 		this.ruaEnderecoPessoal = ruaEnderecoPessoal;
-	}
-
-	public String getNumeroEnderecoPessoal() {
-		return numeroEnderecoPessoal;
-	}
-
-	public void setNumeroEnderecoPessoal(String numeroEnderecoPessoal) {
 		this.numeroEnderecoPessoal = numeroEnderecoPessoal;
-	}
-
-	public String getBairroEnderecoPessoal() {
-		return bairroEnderecoPessoal;
-	}
-
-	public void setBairroEnderecoPessoal(String bairroEnderecoPessoal) {
 		this.bairroEnderecoPessoal = bairroEnderecoPessoal;
-	}
-
-	public String getCidadeEnderecoPessoal() {
-		return cidadeEnderecoPessoal;
-	}
-
-	public void setCidadeEnderecoPessoal(String cidadeEnderecoPessoal) {
 		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
-	}
-
-	public String getEstadoEnderecoPessoal() {
-		return estadoEnderecoPessoal;
-	}
-
-	public void setEstadoEnderecoPessoal(String estadoEnderecoPessoal) {
 		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
-	}
-
-	public String getCepEnderecoPessoal() {
-		return cepEnderecoPessoal;
-	}
-
-	public void setCepEnderecoPessoal(String cepEnderecoPessoal) {
 		this.cepEnderecoPessoal = cepEnderecoPessoal;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
 		this.salt = salt;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-		result = prime * result + ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((telefoneContato == null) ? 0 : telefoneContato.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
-				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
-		if (dataCriacao == null) {
-			if (other.dataCriacao != null)
-				return false;
-		} else if (!dataCriacao.equals(other.dataCriacao))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (telefoneContato == null) {
-			if (other.telefoneContato != null)
-				return false;
-		} else if (!telefoneContato.equals(other.telefoneContato))
-			return false;
-		return true;
+		this.dataCriacao = dataCriacao;
+		this.nome = nome;
+		this.telefoneContato = telefoneContato;
+		this.cpf = cpf;
+		this.email = email;
+		this.perfil = perfil;
+		this.lojas = lojas;
 	}
 	
 }

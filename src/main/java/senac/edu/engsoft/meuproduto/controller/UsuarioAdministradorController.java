@@ -1,8 +1,11 @@
 package senac.edu.engsoft.meuproduto.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +24,7 @@ import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioAdministrado
 import senac.edu.engsoft.meuproduto.service.UsuarioAdministradorService;
 
 @RestController
-@RequestMapping({"/funcionarios"})
+@RequestMapping({"/administradores"})
 public class UsuarioAdministradorController {
 
 	private UsuarioAdministradorService usuarioAdministradorService;
@@ -35,41 +38,44 @@ public class UsuarioAdministradorController {
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
-	@GetMapping
+	@GetMapping(produces="application/json")
 	public CollectionModel<UsuarioAdministradorResource> getAll() {
 		CollectionModel<UsuarioAdministradorResource> model = usuarioAdministradorResourceAssembler.toCollectionModel(usuarioAdministradorService.getAll());
 		return model;
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}", produces="application/json")
 	public UsuarioAdministradorResource getById(@PathVariable Long id) {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
-	@GetMapping(value="/loja")
+	@GetMapping(value="/administrador", produces="application/json")
 	public UsuarioAdministradorResource getByNome(@RequestParam(value="nome", required=true) String nome) {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getByNome(nome).orElseThrow(() -> new EntityModelNotFoundException());
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
-	@PostMapping
-	public UsuarioAdministradorResource create(@RequestBody UsuarioAdministrador _usuarioAdministrador) {
-		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.saveOrUpdate(_usuarioAdministrador);
+	@PostMapping(produces="application/json", consumes="application/json")
+	public UsuarioAdministradorResource create(@RequestBody @Valid UsuarioAdministrador _usuarioAdministrador) {
+		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.save(_usuarioAdministrador);
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
-	@PutMapping
+	@ResponseStatus(value=HttpStatus.OK)
+	@PutMapping(produces="application/json", consumes="application/json")
 	public UsuarioAdministradorResource update(@RequestBody UsuarioAdministrador _usuarioAdministrador) {
-		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.saveOrUpdate(_usuarioAdministrador);
+		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.update(_usuarioAdministrador);
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
-	@DeleteMapping(value = "/{id}")
-	public void delete(@PathVariable Long id) {
+	@ResponseStatus(value=HttpStatus.OK)
+	@DeleteMapping(value = "/{id}", produces="application/json")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		usuarioAdministradorService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

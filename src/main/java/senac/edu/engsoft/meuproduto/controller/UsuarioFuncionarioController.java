@@ -21,7 +21,7 @@ import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioFuncionarioR
 import senac.edu.engsoft.meuproduto.service.UsuarioFuncionarioService;
 
 @RestController
-@RequestMapping({"/administradores"})
+@RequestMapping({"/funcionarios"})
 public class UsuarioFuncionarioController {
 
 	private UsuarioFuncionarioService usuarioFuncionarioService;

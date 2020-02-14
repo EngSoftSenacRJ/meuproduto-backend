@@ -1,70 +1,44 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
-import java.util.Date;
-
 import org.springframework.hateoas.RepresentationModel;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFuncionarioResource> {
-
-	private Date dataCriacao;
-	private String nome;
-	private String telefoneContato;
-	private String cpf;
-	private String nomePerfil;
 	
-
+	private Long cpf;
+	private String nome;
+	private Long telefoneContato;
+	private String email;
+	private String password;
+	
+	private String numeroEnderecoPessoal;
+	private String bairroEnderecoPessoal;
+	private String cidadeEnderecoPessoal;
+	private String estadoEnderecoPessoal;
+	private String cepEnderecoPessoal;
+	
 	public UsuarioFuncionarioResource() {
 		super();
 	}
 
-	public UsuarioFuncionarioResource(Date dataCriacao, String nome, String telefoneContato, String cpf,
-			String nomePerfil) {
+	public UsuarioFuncionarioResource(Long cpf, String nome, Long telefoneContato, String email, String password,
+			String numeroEnderecoPessoal, String bairroEnderecoPessoal, String cidadeEnderecoPessoal,
+			String estadoEnderecoPessoal, String cepEnderecoPessoal) {
 		super();
-		this.dataCriacao = dataCriacao;
+		this.cpf = cpf;
 		this.nome = nome;
 		this.telefoneContato = telefoneContato;
-		this.cpf = cpf;
-		this.nomePerfil = nomePerfil;
-	}
-
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getTelefoneContato() {
-		return telefoneContato;
-	}
-
-	public void setTelefoneContato(String telefoneContato) {
-		this.telefoneContato = telefoneContato;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getNomePerfil() {
-		return nomePerfil;
-	}
-
-	public void setNomePerfil(String nomePerfil) {
-		this.nomePerfil = nomePerfil;
+		this.email = email;
+		this.password = password;
+		this.numeroEnderecoPessoal = numeroEnderecoPessoal;
+		this.bairroEnderecoPessoal = bairroEnderecoPessoal;
+		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
+		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
+		this.cepEnderecoPessoal = cepEnderecoPessoal;
 	}
 	
 }
