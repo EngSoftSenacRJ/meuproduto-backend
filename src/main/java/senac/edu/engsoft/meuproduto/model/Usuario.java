@@ -24,6 +24,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import lombok.Data;
@@ -37,10 +38,12 @@ public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="TYPE", insertable = false, updatable = false)
+	@JsonIgnore
 	private UsuarioType usuarioType;
 	
 	@NotEmpty(message = "ruaEnderecoPessoal é obrigatório")
@@ -68,12 +71,15 @@ public class Usuario {
 	private String cepEnderecoPessoal;
 	
 	@Column(name="PASSWORD")
+	@JsonIgnore
 	private String password;
 	
 	@Column(name="SALT")
+	@JsonIgnore
 	private String salt;
 	
 	@Column(name="DATA_CRIACAO")
+	@JsonIgnore
 	private LocalDate dataCriacao;
 	
 	@NotEmpty(message = "nome é obrigatório")
@@ -96,8 +102,10 @@ public class Usuario {
 	
 	@JoinColumn(name = "ID_PERFIL")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Perfil perfil;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "TB_USUARIO_LOJA",
 		joinColumns = { @JoinColumn(name = "ID_USUARIO") },
