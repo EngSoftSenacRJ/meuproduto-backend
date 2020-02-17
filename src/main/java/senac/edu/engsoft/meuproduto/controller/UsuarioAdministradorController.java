@@ -63,9 +63,6 @@ public class UsuarioAdministradorController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@PostMapping(produces="application/json", consumes="application/json")
 	public ResponseEntity<Void> create(@RequestBody UsuarioAdministrador _usuarioAdministrador) {
-//		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.save(_usuarioAdministrador);
-//		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
-		
 		usuarioAdministradorService.save(_usuarioAdministrador);
 		return ResponseEntity.ok().build();
 	}
