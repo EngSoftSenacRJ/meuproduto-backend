@@ -27,9 +27,4 @@ public class AppInitializator {
 		parametroService.carregarParametros();
 	}
 	
-//	@Bean
-//	public UsuarioAdministradorValidator beforeCreateUsuarioAdministradorValidator() {
-//	    return new UsuarioAdministradorValidator();
-//	}
-	
 }

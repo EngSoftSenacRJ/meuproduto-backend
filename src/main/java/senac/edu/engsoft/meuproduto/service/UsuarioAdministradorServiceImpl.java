@@ -53,6 +53,17 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 		}
 		return null;
 	}
+	
+	@Override
+	public Optional<UsuarioAdministrador> getByEmail(String email) {
+		try {
+			return usuarioAdministradorRepository.getByEmail(email);
+		} catch (Exception e) {
+			//TODO: Tratar erro
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador) 

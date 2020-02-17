@@ -18,5 +18,8 @@ public interface UsuarioAdministradorRepository extends CrudRepository<UsuarioAd
 	@Query(value="select l from UsuarioAdministrador l where l.cpf = :cpf")
 	Optional<UsuarioAdministrador> getByCpf(@Param("cpf") Long cpf);
 
+	@Query(value="select l from UsuarioAdministrador l where l.email = :email")
+	Optional<UsuarioAdministrador> getByEmail(String email);
+
 	
 }

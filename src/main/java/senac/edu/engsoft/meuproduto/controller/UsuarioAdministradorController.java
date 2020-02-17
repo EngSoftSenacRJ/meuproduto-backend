@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +24,10 @@ import senac.edu.engsoft.meuproduto.model.resource.UsuarioAdministradorResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioAdministradorResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.UsuarioAdministradorService;
 
+@CrossOrigin
 @RestController
 @RequestMapping({"/administradores"})
+//@BasePathAwareController
 public class UsuarioAdministradorController {
 
 	private UsuarioAdministradorService usuarioAdministradorService;
@@ -46,7 +49,7 @@ public class UsuarioAdministradorController {
 
 	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping(value = "/{id}", produces="application/json")
-	public UsuarioAdministradorResource getById(@PathVariable Long id) {
+	public UsuarioAdministradorResource getById(@PathVariable(required = true) Long id) {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
@@ -59,21 +62,24 @@ public class UsuarioAdministradorController {
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@PostMapping(produces="application/json", consumes="application/json")
-	public UsuarioAdministradorResource create(@RequestBody @Valid UsuarioAdministrador _usuarioAdministrador) {
-		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.save(_usuarioAdministrador);
-		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
+	public ResponseEntity<Void> create(@RequestBody UsuarioAdministrador _usuarioAdministrador) {
+//		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.save(_usuarioAdministrador);
+//		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
+		
+		usuarioAdministradorService.save(_usuarioAdministrador);
+		return ResponseEntity.ok().build();
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
 	@PutMapping(produces="application/json", consumes="application/json")
-	public UsuarioAdministradorResource update(@RequestBody UsuarioAdministrador _usuarioAdministrador) {
+	public UsuarioAdministradorResource update(@RequestBody @Valid UsuarioAdministrador _usuarioAdministrador) {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.update(_usuarioAdministrador);
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
 	@DeleteMapping(value = "/{id}", produces="application/json")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable(required = true) Long id) {
 		usuarioAdministradorService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

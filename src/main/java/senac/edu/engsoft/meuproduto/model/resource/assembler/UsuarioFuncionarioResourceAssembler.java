@@ -4,7 +4,6 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import senac.edu.engsoft.meuproduto.controller.UsuarioFuncionarioController;
-import senac.edu.engsoft.meuproduto.model.Usuario;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
 import senac.edu.engsoft.meuproduto.model.resource.UsuarioFuncionarioResource;
 
@@ -24,17 +23,18 @@ public class UsuarioFuncionarioResourceAssembler extends RepresentationModelAsse
 	
 	@Override
 	protected UsuarioFuncionarioResource instantiateModel(UsuarioFuncionario usuarioFuncionario) {
-		return new UsuarioFuncionarioResource(
-				usuarioFuncionario.getCpf(), 
-				usuarioFuncionario.getNome(), 
-				usuarioFuncionario.getTelefoneContato(), 
-				usuarioFuncionario.getEmail(), 
-				usuarioFuncionario.getPassword(), 
-				usuarioFuncionario.getNumeroEnderecoPessoal(), 
-				usuarioFuncionario.getBairroEnderecoPessoal(), 
-				usuarioFuncionario.getCidadeEnderecoPessoal(), 
-				usuarioFuncionario.getEstadoEnderecoPessoal(), 
-				usuarioFuncionario.getCepEnderecoPessoal());
+//		return new UsuarioFuncionarioResource(
+//				usuarioFuncionario.getCpf(), 
+//				usuarioFuncionario.getNome(), 
+//				usuarioFuncionario.getTelefoneContato(), 
+//				usuarioFuncionario.getEmail(),
+//				usuarioFuncionario.getNumeroEnderecoPessoal(), 
+//				usuarioFuncionario.getBairroEnderecoPessoal(), 
+//				usuarioFuncionario.getCidadeEnderecoPessoal(), 
+//				usuarioFuncionario.getEstadoEnderecoPessoal(), 
+//				usuarioFuncionario.getCepEnderecoPessoal());
+		
+		return null;
 	}
 
 }

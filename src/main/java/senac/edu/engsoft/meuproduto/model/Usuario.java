@@ -10,7 +10,6 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,12 +18,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sun.istack.NotNull;
 
 import lombok.Data;
@@ -34,11 +33,11 @@ import lombok.Data;
 @Table(name = "TB_USUARIO")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TYPE", discriminatorType = DiscriminatorType.STRING)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonIgnore
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
@@ -67,19 +66,16 @@ public class Usuario {
 	private String estadoEnderecoPessoal;
 	
 	@NotEmpty(message = "cepEnderecoPessoal é obrigatório")
-	@Column(name="CE_ENDERECO_PESSOAL")
+	@Column(name="CEP_ENDERECO_PESSOAL")
 	private String cepEnderecoPessoal;
 	
-	@Column(name="PASSWORD")
-	@JsonIgnore
-	private String password;
+	@Column(name="SENHA")
+	private String senha;
 	
-	@Column(name="SALT")
-	@JsonIgnore
-	private String salt;
-	
+	@Column(name="DATA_ANIVERSARIO")
+	private LocalDate dataAniversario;
+
 	@Column(name="DATA_CRIACAO")
-	@JsonIgnore
 	private LocalDate dataCriacao;
 	
 	@NotEmpty(message = "nome é obrigatório")
@@ -90,7 +86,6 @@ public class Usuario {
 	@Column(name="TELEFONE_CONTATO")
 	private Long telefoneContato;
 	
-//	@NotEmpty(message = "cpf é obrigatório")
 	@NotNull
 	@Column(name="CPF")
 	private Long cpf;
@@ -100,12 +95,7 @@ public class Usuario {
 	@Column(name="EMAIL")
 	private String email;
 	
-	@JoinColumn(name = "ID_PERFIL")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
-	private Perfil perfil;
-	
-	@JsonIgnore
+	@JsonIgnore //TODO
 	@ManyToMany
 	@JoinTable(name = "TB_USUARIO_LOJA",
 		joinColumns = { @JoinColumn(name = "ID_USUARIO") },
@@ -121,12 +111,30 @@ public class Usuario {
 	public Usuario() {
 		super();
 	}
+	
+	public Usuario(String ruaEnderecoPessoal, String numeroEnderecoPessoal,
+			String bairroEnderecoPessoal, String cidadeEnderecoPessoal, String estadoEnderecoPessoal,
+			String cepEnderecoPessoal, String nome,
+			Long telefoneContato, Long cpf, String email,
+			LocalDate dataAniversario) {
+		this.ruaEnderecoPessoal = ruaEnderecoPessoal;
+		this.numeroEnderecoPessoal = numeroEnderecoPessoal;
+		this.bairroEnderecoPessoal = bairroEnderecoPessoal;
+		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
+		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
+		this.cepEnderecoPessoal = cepEnderecoPessoal;
+		this.nome = nome;
+		this.telefoneContato = telefoneContato;
+		this.cpf = cpf;
+		this.email = email;
+		this.dataAniversario = dataAniversario;
+	}
 
 	//Todos campos - id
 	public Usuario(UsuarioType usuarioType, String ruaEnderecoPessoal, String numeroEnderecoPessoal,
 			String bairroEnderecoPessoal, String cidadeEnderecoPessoal, String estadoEnderecoPessoal,
-			String cepEnderecoPessoal, String password, String salt, LocalDate dataCriacao, String nome,
-			Long telefoneContato, Long cpf, String email, Perfil perfil, Set<Loja> lojas) {
+			String cepEnderecoPessoal, String senha, LocalDate dataCriacao, String nome,
+			Long telefoneContato, Long cpf, String email, Set<Loja> lojas, LocalDate dataAniversario) {
 		super();
 		this.usuarioType = usuarioType;
 		this.ruaEnderecoPessoal = ruaEnderecoPessoal;
@@ -135,15 +143,14 @@ public class Usuario {
 		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
 		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
 		this.cepEnderecoPessoal = cepEnderecoPessoal;
-		this.password = password;
-		this.salt = salt;
+		this.senha = senha;
 		this.dataCriacao = dataCriacao;
 		this.nome = nome;
 		this.telefoneContato = telefoneContato;
 		this.cpf = cpf;
 		this.email = email;
-		this.perfil = perfil;
 		this.lojas = lojas;
+		this.dataAniversario = dataAniversario;
 	}
 	
 }

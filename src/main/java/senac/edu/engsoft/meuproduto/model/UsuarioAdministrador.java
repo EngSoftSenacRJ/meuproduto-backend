@@ -1,7 +1,6 @@
 package senac.edu.engsoft.meuproduto.model;
 
-import java.util.Date;
-import java.util.Set;
+import java.time.LocalDate;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -15,10 +14,23 @@ import lombok.Setter;
 @DiscriminatorValue(value = UsuarioType.Values._ADMINISTRADOR)
 public class UsuarioAdministrador extends Usuario {
 	
-	private String cnpj;
-
 	public UsuarioAdministrador() {
 		super();
+	}
+
+	public UsuarioAdministrador(String ruaEnderecoPessoal, 
+			String numeroEnderecoPessoal,
+			String bairroEnderecoPessoal, 
+			String cidadeEnderecoPessoal, 
+			String estadoEnderecoPessoal,
+			String cepEnderecoPessoal, 
+			String nome,
+			Long telefoneContato, 
+			Long cpf, 
+			String email,
+			LocalDate dataAniversario) {
+		super(ruaEnderecoPessoal, numeroEnderecoPessoal, bairroEnderecoPessoal, cidadeEnderecoPessoal,
+				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario);
 	}
 	
 }
