@@ -1,6 +1,6 @@
 package senac.edu.engsoft.meuproduto.advice.exception;
 
-public class AdministratorUserCpfAlreadyExistsException extends RuntimeException {
+public class UserCpfAlreadyExistsException extends RuntimeException {
 
 	/**
 	 * 
@@ -9,11 +9,11 @@ public class AdministratorUserCpfAlreadyExistsException extends RuntimeException
 	
 	
 	
-	public AdministratorUserCpfAlreadyExistsException() {
+	public UserCpfAlreadyExistsException() {
 		super();
 	}
 
-	public AdministratorUserCpfAlreadyExistsException(Long cpf) {
+	public UserCpfAlreadyExistsException(Long cpf) {
 		super("CPF " + cpf + " já está cadastrado");
 	}
 

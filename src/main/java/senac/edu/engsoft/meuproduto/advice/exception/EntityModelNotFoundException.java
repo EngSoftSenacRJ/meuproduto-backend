@@ -14,7 +14,7 @@ public class EntityModelNotFoundException extends RuntimeException {
 	}
 
 	public EntityModelNotFoundException(Long id) {
-		super("Could not find Model by id " + id);
+		super("Entidade não encontrada para o ID " + id);
 	}
 
 }

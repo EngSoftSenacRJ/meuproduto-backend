@@ -7,28 +7,26 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import senac.edu.engsoft.meuproduto.model.dto.JwtRequest;
 import senac.edu.engsoft.meuproduto.model.dto.JwtResponse;
 import senac.edu.engsoft.meuproduto.security.JwtTokenUtil;
-import senac.edu.engsoft.meuproduto.service.JwtUserDetailsService;
+import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
 
 @RestController
 @CrossOrigin
-public class JwtAuthenticationController {
+public class AuthenticationController {
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
-	private JwtUserDetailsService userDetailsService;
+	private JwtUserDetailsServiceImpl userDetailsService;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {

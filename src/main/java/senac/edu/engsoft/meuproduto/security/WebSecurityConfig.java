@@ -11,12 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import senac.edu.engsoft.meuproduto.security.filter.JwtRequestFilter;
+import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Autowired
-	private UserDetailsService jwtUserDetailsService;
+	private JwtUserDetailsServiceImpl jwtUserDetailsService;
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
@@ -55,8 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors().and().csrf().disable()
 // dont authenticate this particular request
 				.authorizeRequests()
-					.antMatchers("/authenticate").permitAll()
-					.antMatchers(HttpMethod.POST, "/administradores").permitAll()
+					.antMatchers(HttpMethod.POST,"/authenticate").permitAll()
+					.antMatchers(HttpMethod.POST, "/register").permitAll()
 // all other requests need to be authenticated
 				.anyRequest().authenticated().and().
 // make sure we use stateless session; session won't be used to

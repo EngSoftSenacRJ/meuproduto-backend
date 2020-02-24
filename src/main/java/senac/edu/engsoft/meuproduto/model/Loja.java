@@ -1,239 +1,139 @@
 package senac.edu.engsoft.meuproduto.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+@Data
 @Entity
 @Table(name = "TB_LOJA")
+@JsonInclude
 public class Loja {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@Column(name="data_criacao")
-	private Date dataCriacao;
-	
+	@JsonIgnore
+	private LocalDateTime dataCriacao;
+
+	@NotNull(message = "Nome da loja é obrigatório")
+	@NotEmpty(message = "Nome da loja é obrigatório")
+	@Size(min = 3, max = 50, message = "Nome da loja deve ter no mpinimo '3' e no máximo '50' caracteres")
 	@Column(name="nome")
 	private String nome;
-	
+
+	@NotNull(message = "Razão Social da loja é obrigatório")
+	@NotEmpty(message = "Razão Social da loja é obrigatório")
 	@Column(name="razao_social")
 	private String razaoSocial;
 	
 	@Column(name="cnpj")
 	private String cnpj;
-	
+
+	@NotNull(message = "Rua Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Rua Endereço Comercial da loja é obrigatório")
 	@Column(name="rua_endereco_comercial")
 	private String ruaEnderecoComercial;
-	
+
+	@NotNull(message = "Número Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Número Endereço Comercial da loja é obrigatório")
 	@Column(name="numero_endereco_comercial")
 	private String numeroEnderecoComercial;
-	
+
+	@NotNull(message = "Bairro Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Bairro Endereço Comercial da loja é obrigatório")
 	@Column(name="bairro_endereco_comercial")
 	private String bairroEnderecoComercial;
-	
+
+	@NotNull(message = "Cidade Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Cidade Endereço Comercial da loja é obrigatório")
 	@Column(name="cidade_endereco_comercial")
 	private String cidadeEnderecoComercial;
-	
+
+	@NotNull(message = "Estado Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Estado Endereço Comercial da loja é obrigatório")
 	@Column(name="estado_endereco_comercial")
 	private String estadoEnderecoComercial;
-	
+
+	@NotNull(message = "CEP Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "CEP Endereço Comercial da loja é obrigatório")
 	@Column(name="cep_endereco_comercial")
 	private String cepEnderecoComercial;
-	
+
+	@NotNull(message = "Telefone Contato Endereço Comercial da loja é obrigatório")
+	@NotEmpty(message = "Telefone Contato Endereço Comercial da loja é obrigatório")
 	@Column(name="TELEFONE_CONTATO")
 	private String telefoneContato;
+
+	@Column(name="EMAIL_USUARIO_CRIADOR_LOJA")
+	private String emailUsuarioCriadorLoja;
 	
 	/*
 	 * Criar os 7 dias da semana automaticamente ao criar uma loja
 	 */
 	@OneToMany(mappedBy = "loja", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@JsonIgnore
 	private Set<HorarioFuncionamento> horarioFuncionamentoSet = new HashSet<>();
 	
 	@ManyToMany(mappedBy="lojas")
+	@JsonIgnore
 	private Set<Usuario> usuarios = new HashSet<>();
 	
 	@OneToMany(mappedBy = "loja", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@JsonIgnore
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
+
+	@PostPersist
+	public void postPersist(){
+		setDataCriacao(LocalDateTime.now());
+	}
 	
 	public Loja() {
 		super();
 	}
 
-	public Loja(Date dataCriacao, String nome, String razaoSocial, String cnpj, String ruaEnderecoComercial,
-			String numeroEnderecoComercial, String bairroEnderecoComercial, String cidadeEnderecoComercial,
-			String estadoEnderecoComercial, String cepEnderecoComercial, String telefoneContato,
-			Set<HorarioFuncionamento> horarioFuncionamentoSet) {
-		super();
-		this.dataCriacao = dataCriacao;
-		this.nome = nome;
-		this.razaoSocial = razaoSocial;
-		this.cnpj = cnpj;
-		this.ruaEnderecoComercial = ruaEnderecoComercial;
-		this.numeroEnderecoComercial = numeroEnderecoComercial;
-		this.bairroEnderecoComercial = bairroEnderecoComercial;
-		this.cidadeEnderecoComercial = cidadeEnderecoComercial;
-		this.estadoEnderecoComercial = estadoEnderecoComercial;
-		this.cepEnderecoComercial = cepEnderecoComercial;
-		this.telefoneContato = telefoneContato;
-		this.horarioFuncionamentoSet = horarioFuncionamentoSet;
-	}
+//	public Loja(LocalDateTime dataCriacao, String nome, String razaoSocial, String cnpj, String ruaEnderecoComercial,
+//			String numeroEnderecoComercial, String bairroEnderecoComercial, String cidadeEnderecoComercial,
+//			String estadoEnderecoComercial, String cepEnderecoComercial, String telefoneContato,
+//			Set<HorarioFuncionamento> horarioFuncionamentoSet) {
+//		super();
+//		this.dataCriacao = dataCriacao;
+//		this.nome = nome;
+//		this.razaoSocial = razaoSocial;
+//		this.cnpj = cnpj;
+//		this.ruaEnderecoComercial = ruaEnderecoComercial;
+//		this.numeroEnderecoComercial = numeroEnderecoComercial;
+//		this.bairroEnderecoComercial = bairroEnderecoComercial;
+//		this.cidadeEnderecoComercial = cidadeEnderecoComercial;
+//		this.estadoEnderecoComercial = estadoEnderecoComercial;
+//		this.cepEnderecoComercial = cepEnderecoComercial;
+//		this.telefoneContato = telefoneContato;
+//		this.horarioFuncionamentoSet = horarioFuncionamentoSet;
+//	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
-
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getRuaEnderecoComercial() {
-		return ruaEnderecoComercial;
-	}
-
-	public void setRuaEnderecoComercial(String ruaEnderecoComercial) {
-		this.ruaEnderecoComercial = ruaEnderecoComercial;
-	}
-
-	public String getNumeroEnderecoComercial() {
-		return numeroEnderecoComercial;
-	}
-
-	public void setNumeroEnderecoComercial(String numeroEnderecoComercial) {
-		this.numeroEnderecoComercial = numeroEnderecoComercial;
-	}
-
-	public String getBairroEnderecoComercial() {
-		return bairroEnderecoComercial;
-	}
-
-	public void setBairroEnderecoComercial(String bairroEnderecoComercial) {
-		this.bairroEnderecoComercial = bairroEnderecoComercial;
-	}
-
-	public String getCidadeEnderecoComercial() {
-		return cidadeEnderecoComercial;
-	}
-
-	public void setCidadeEnderecoComercial(String cidadeEnderecoComercial) {
-		this.cidadeEnderecoComercial = cidadeEnderecoComercial;
-	}
-
-	public String getEstadoEnderecoComercial() {
-		return estadoEnderecoComercial;
-	}
-
-	public void setEstadoEnderecoComercial(String estadoEnderecoComercial) {
-		this.estadoEnderecoComercial = estadoEnderecoComercial;
-	}
-
-	public String getCepEnderecoComercial() {
-		return cepEnderecoComercial;
-	}
-
-	public void setCepEnderecoComercial(String cepEnderecoComercial) {
-		this.cepEnderecoComercial = cepEnderecoComercial;
-	}
-
-	public Set<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(Set<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
-	public String getTelefoneContato() {
-		return telefoneContato;
-	}
-
-	public void setTelefoneContato(String telefoneContato) {
-		this.telefoneContato = telefoneContato;
-	}
-
-	public Set<HorarioFuncionamento> getHorarioFuncionamentoSet() {
-		return horarioFuncionamentoSet;
-	}
-
-	public void setHorarioFuncionamentoSet(Set<HorarioFuncionamento> horarioFuncionamentoSet) {
-		this.horarioFuncionamentoSet = horarioFuncionamentoSet;
-	}
-
-	public Set<LojaProduto> getLojaProdutoSet() {
-		return lojaProdutoSet;
-	}
-
-	public void setLojaProdutoSet(Set<LojaProduto> lojaProdutoSet) {
-		this.lojaProdutoSet = lojaProdutoSet;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Loja)) return false;
+		Loja loja = (Loja) o;
+		return Objects.equals(id, loja.id);
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return Objects.hash(id);
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Loja other = (Loja) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-	
 }

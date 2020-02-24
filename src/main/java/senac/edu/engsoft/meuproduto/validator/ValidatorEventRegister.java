@@ -1,10 +1,5 @@
 package senac.edu.engsoft.meuproduto.validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +7,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.validation.Validator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 @Configuration
 public class ValidatorEventRegister implements InitializingBean {
- 
+
 	 private static final List<String> EVENTS;
 	    static {
-	        List<String> events = new ArrayList<String>();
+	        List<String> events = new ArrayList<>();
 	        events.add("beforeCreate");
 	        events.add("afterCreate");
 	        events.add("beforeSave");
@@ -36,7 +36,7 @@ public class ValidatorEventRegister implements InitializingBean {
 	    ValidatingRepositoryEventListener validatingRepositoryEventListener;
 
 	    @Override
-	    public void afterPropertiesSet() throws Exception {
+	    public void afterPropertiesSet() {
 	        Map<String, Validator> validators = beanFactory.getBeansOfType(Validator.class);
 	        for (Map.Entry<String, Validator> entry : validators.entrySet()) {
 	            EVENTS.stream().filter(p -> entry.getKey().startsWith(p)).findFirst()

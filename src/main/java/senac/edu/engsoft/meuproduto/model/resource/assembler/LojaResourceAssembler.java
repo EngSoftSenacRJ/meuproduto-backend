@@ -18,26 +18,12 @@ public class LojaResourceAssembler extends RepresentationModelAssemblerSupport<L
 
 	@Override
 	public LojaResource toModel(Loja loja) {
-		return createModelWithId(loja.getId(), loja);
+		return instantiateModel(loja);
 	}
 	
 	@Override
 	protected LojaResource instantiateModel(Loja loja) {
-		StringBuilder sbEnderecoCompleto = new StringBuilder();
-		if(loja.getRuaEnderecoComercial() != null && loja.getRuaEnderecoComercial().trim().length() > 0) {
-			sbEnderecoCompleto.append("Rua ");
-			sbEnderecoCompleto.append(loja.getRuaEnderecoComercial());
-		}
-		if(loja.getNumeroEnderecoComercial() != null && loja.getNumeroEnderecoComercial().trim().length() > 0) {
-			sbEnderecoCompleto.append(", Número ");
-			sbEnderecoCompleto.append(loja.getNumeroEnderecoComercial());
-		}
-		if(loja.getBairroEnderecoComercial() != null && loja.getBairroEnderecoComercial().trim().length() > 0) {
-			sbEnderecoCompleto.append(", Bairro ");
-			sbEnderecoCompleto.append(loja.getBairroEnderecoComercial());
-		}
-		
-		return new LojaResource(loja.getNome(), sbEnderecoCompleto.toString());
+		return new LojaResource(loja);
 	}
 
 }

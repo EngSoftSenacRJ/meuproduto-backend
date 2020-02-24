@@ -1,9 +1,11 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
-import org.springframework.hateoas.RepresentationModel;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,24 +21,25 @@ public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdm
 	private String cidadeEnderecoPessoal;
 	private String estadoEnderecoPessoal;
 	private String cepEnderecoPessoal;
+
+	private LocalDate dataAniversario;
 	
 	public UsuarioAdministradorResource() {
 		super();
 	}
 
-	public UsuarioAdministradorResource(Long cpf, String nome, Long telefoneContato, String email,
-			String numeroEnderecoPessoal, String bairroEnderecoPessoal, String cidadeEnderecoPessoal,
-			String estadoEnderecoPessoal, String cepEnderecoPessoal) {
+	public UsuarioAdministradorResource(UsuarioAdministrador usuarioAdministrador) {
 		super();
-		this.cpf = cpf;
-		this.nome = nome;
-		this.telefoneContato = telefoneContato;
-		this.email = email;
-		this.numeroEnderecoPessoal = numeroEnderecoPessoal;
-		this.bairroEnderecoPessoal = bairroEnderecoPessoal;
-		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
-		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
-		this.cepEnderecoPessoal = cepEnderecoPessoal;
+		this.cpf = usuarioAdministrador.getCpf();
+		this.nome = usuarioAdministrador.getNome();
+		this.telefoneContato = usuarioAdministrador.getTelefoneContato();
+		this.email = usuarioAdministrador.getUsername();
+		this.numeroEnderecoPessoal = usuarioAdministrador.getNumeroEnderecoPessoal();
+		this.bairroEnderecoPessoal = usuarioAdministrador.getBairroEnderecoPessoal();
+		this.cidadeEnderecoPessoal = usuarioAdministrador.getCidadeEnderecoPessoal();
+		this.estadoEnderecoPessoal = usuarioAdministrador.getEstadoEnderecoPessoal();
+		this.cepEnderecoPessoal = usuarioAdministrador.getCepEnderecoPessoal();
+		this.dataAniversario = usuarioAdministrador.getDataAniversario();
 	}
 
 }

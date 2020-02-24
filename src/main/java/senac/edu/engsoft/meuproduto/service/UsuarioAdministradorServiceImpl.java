@@ -1,15 +1,11 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
-import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserCpfAlreadyExistsException;
-import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserEmptyCpfException;
-import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserInvalidCpfException;
+import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserFailedDeleteException;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
-import senac.edu.engsoft.meuproduto.service.util.CpfValidatorUtil;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorService {
@@ -23,110 +19,63 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 
 	@Override
 	public Optional<UsuarioAdministrador> getById(Long id) {
-		try {
-			return usuarioAdministradorRepository.findById(id);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return usuarioAdministradorRepository.findById(id);
 	}
 	
 	@Override
 	public Optional<UsuarioAdministrador> getByNome(String nome) {
-		try {
-			return usuarioAdministradorRepository.getByNome(nome);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return usuarioAdministradorRepository.getByNome(nome);
 	}
 	
 	@Override
 	public Optional<UsuarioAdministrador> getByCpf(Long cpf) {
-		try {
-			return usuarioAdministradorRepository.getByCpf(cpf);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return usuarioAdministradorRepository.getByCpf(cpf);
 	}
 	
 	@Override
 	public Optional<UsuarioAdministrador> getByEmail(String email) {
-		try {
-			return usuarioAdministradorRepository.getByEmail(email);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return usuarioAdministradorRepository.getByEmail(email);
 	}
 
-	@Override
-	public UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador) 
-			throws 	AdministratorUserEmptyCpfException, 
-					AdministratorUserCpfAlreadyExistsException, 
-					AdministratorUserInvalidCpfException {
-		Long usuarioAdministradorCpf = usuarioAdministrador.getCpf();
-		
-		if(usuarioAdministradorCpf == null) {
-			throw new AdministratorUserEmptyCpfException();
-		}
-		else if(!CpfValidatorUtil.isValidCpf(Long.toString(usuarioAdministradorCpf))) {
-			throw new AdministratorUserInvalidCpfException(usuarioAdministradorCpf);
-		}
-		else if (this.getByCpf(usuarioAdministradorCpf).isPresent()){
-			throw new AdministratorUserCpfAlreadyExistsException(usuarioAdministradorCpf);
-		}
-		else {
-			return usuarioAdministradorRepository.save(usuarioAdministrador);
-		}
-	}
+//	@Override
+//	public UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador)
+//			throws UserEmptyCpfException,
+//			UserCpfAlreadyExistsException,
+//			UserInvalidCpfException {
+//		Long usuarioAdministradorCpf = usuarioAdministrador.getCpf();
+//
+//		if(usuarioAdministradorCpf == null) {
+//			throw new UserEmptyCpfException();
+//		}
+//		else if(!CpfValidatorUtil.isValidCpf(Long.toString(usuarioAdministradorCpf))) {
+//			throw new UserInvalidCpfException(usuarioAdministradorCpf);
+//		}
+//		else if (this.getByCpf(usuarioAdministradorCpf).isPresent()){
+//			throw new UserCpfAlreadyExistsException(usuarioAdministradorCpf);
+//		}
+//		else {
+//			return usuarioAdministradorRepository.save(usuarioAdministrador);
+//		}
+//	}
 	
 	@Override
-	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) {
-		try {
-			return usuarioAdministradorRepository.save(usuarioAdministrador);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) throws AdministratorUserFailedDeleteException {
+		return usuarioAdministradorRepository.save(usuarioAdministrador);
 	}
 
 	@Override
 	public void delete(Long id) {
-		try {
-			usuarioAdministradorRepository.deleteById(id);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
+		usuarioAdministradorRepository.deleteById(id);
 	}
 
 	@Override
 	public void deleteAll() {
-		try {
-			usuarioAdministradorRepository.deleteAll();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
+		usuarioAdministradorRepository.deleteAll();
 	}
 
 	@Override
 	public Iterable<UsuarioAdministrador> getAll() {
-		try {
-			return usuarioAdministradorRepository.findAll();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return null;
+		return usuarioAdministradorRepository.findAll();
 	}
 	
 }

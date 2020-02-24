@@ -31,16 +31,7 @@ public class UsuarioAdministradorResourceAssembler extends RepresentationModelAs
 	
 	@Override
 	protected UsuarioAdministradorResource instantiateModel(UsuarioAdministrador usuarioAdministrador) {
-		return new UsuarioAdministradorResource(
-				usuarioAdministrador.getCpf(), 
-				usuarioAdministrador.getNome(), 
-				usuarioAdministrador.getTelefoneContato(), 
-				usuarioAdministrador.getEmail(),
-				usuarioAdministrador.getNumeroEnderecoPessoal(), 
-				usuarioAdministrador.getBairroEnderecoPessoal(), 
-				usuarioAdministrador.getCidadeEnderecoPessoal(), 
-				usuarioAdministrador.getEstadoEnderecoPessoal(), 
-				usuarioAdministrador.getCepEnderecoPessoal());
+		return new UsuarioAdministradorResource(usuarioAdministrador);
 	}
 
 }

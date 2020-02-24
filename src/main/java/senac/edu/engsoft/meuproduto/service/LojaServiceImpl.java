@@ -1,89 +1,77 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
+import senac.edu.engsoft.meuproduto.advice.exception.UserCreationValidationException;
 import senac.edu.engsoft.meuproduto.model.Loja;
+import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.LojaRepository;
+import senac.edu.engsoft.meuproduto.service.util.HorarioFuncionamentoLojaUtil;
+
+import java.util.Optional;
 
 @Service
 public class LojaServiceImpl implements LojaService {
 
 	private final LojaRepository lojaRepository;
+	private final UsuarioAdministradorService usuarioAdministradorService;
 	
-	public LojaServiceImpl(LojaRepository lojaRepository) {
+	public LojaServiceImpl(LojaRepository lojaRepository,
+						   UsuarioAdministradorService usuarioAdministradorService) {
 		super();
 		this.lojaRepository = lojaRepository;
+		this.usuarioAdministradorService = usuarioAdministradorService;
 	}
 
 	@Override
 	public Optional<Loja> getById(Long id) {
-		try {
-			return lojaRepository.findById(id);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return lojaRepository.findById(id);
 	}
 	
 	@Override
 	public Optional<Loja> getByNome(String nome) {
-		try {
-			return lojaRepository.getByNome(nome);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+		return lojaRepository.getByNome(nome);
 	}
 
 	@Override
-	public Loja saveOrUpdate(Loja loja) {
-		try {
-			return lojaRepository.save(loja);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+	public Loja save(Loja loja) {
+		validateLoja(loja);
+		HorarioFuncionamentoLojaUtil.setDefaultHorarioFuncionamentoLoja(loja);
+		return lojaRepository.save(loja);
+	}
+
+	@Override
+	public Loja update(Loja loja) {
+		validateLoja(loja);
+		return lojaRepository.save(loja);
 	}
 
 	@Override
 	public void delete(Long id) {
-		try {
-			lojaRepository.deleteById(id);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
+		lojaRepository.deleteById(id);
 	}
 
 	@Override
 	public void deleteAll() {
-		try {
-			lojaRepository.deleteAll();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
+		lojaRepository.deleteAll();
 	}
 
 	@Override
 	public Iterable<Loja> getAll() {
-		try {
-			return lojaRepository.findAll();
-//			Iterable<Loja> iLojas = lojaRepository.findAll();
-//			List<Loja> lojas = new ArrayList<>();
-//			iLojas.forEach(lojas::add);
-//			return lojas;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		return lojaRepository.findAll();
+	}
+
+	private void validateLoja(Loja loja){
+		String nomeLoja = loja.getNome();
+		Optional<Loja> lojaExistente = lojaRepository.getByNome(nomeLoja);
+		if(lojaExistente.isPresent()){
+			throw new UserCreationValidationException("Loja já existente com esse nome: " + nomeLoja);
 		}
-		return null;
+
+		String emailUsuarioCriadorLoja = loja.getEmailUsuarioCriadorLoja();
+		Optional<UsuarioAdministrador> usuarioAdministradorCriadorLoja = usuarioAdministradorService.getByEmail(emailUsuarioCriadorLoja);
+		if(!usuarioAdministradorCriadorLoja.isPresent() || !usuarioAdministradorCriadorLoja.get().isEnabled()){
+			throw new UserCreationValidationException("Email do Administrador fornecido não encontrado ou conta se encontra desabilitada");
+		}
 	}
 	
 }

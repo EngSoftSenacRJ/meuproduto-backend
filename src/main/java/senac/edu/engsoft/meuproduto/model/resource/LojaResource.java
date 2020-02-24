@@ -1,39 +1,67 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
+import senac.edu.engsoft.meuproduto.model.HorarioFuncionamento;
+import senac.edu.engsoft.meuproduto.model.Loja;
+
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LojaResource extends RepresentationModel<LojaResource> {
 
-//	@ApiModelProperty(notes="Nome da Loja", required=false)
+	@Getter
+	@Setter
+	private class HorarioFuncionamentoResource {
+
+		private String diaSemana;
+		private Boolean aberto;
+		private LocalTime horarioFuncionamentoDe;
+		private LocalTime horarioFuncionamentoAte;
+
+		public HorarioFuncionamentoResource() {
+			super();
+		}
+	}
+
 	private String nome;
-	
-//	@ApiModelProperty(notes="Endereço completo da Loja", required=false)
-	private String enderecoComercialCompleto;
+	private String razaoSocial;
+	private String cnpj;
+	private String ruaEnderecoComercial;
+	private String numeroEnderecoComercial;
+	private String bairroEnderecoComercial;
+	private String cidadeEnderecoComercial;
+	private String estadoEnderecoComercial;
+	private String cepEnderecoComercial;
+	private String telefoneContato;
+	private Set<HorarioFuncionamentoResource> horarioFuncionamentoSet = new HashSet<>();
 
 	public LojaResource() {
 		super();
 	}
 
-	public LojaResource(String nome, String enderecoComercialCompleto) {
-		super();
-		this.nome = nome;
-		this.enderecoComercialCompleto = enderecoComercialCompleto;
-	}
+	public LojaResource(Loja loja) {
+		this.nome = loja.getNome();
+		this.razaoSocial = loja.getRazaoSocial();
+		this.cnpj = loja.getCnpj();
+		this.ruaEnderecoComercial = loja.getRuaEnderecoComercial();
+		this.numeroEnderecoComercial = loja.getNumeroEnderecoComercial();
+		this.bairroEnderecoComercial = loja.getBairroEnderecoComercial();
+		this.cidadeEnderecoComercial = loja.getCidadeEnderecoComercial();
+		this.estadoEnderecoComercial = loja.getEstadoEnderecoComercial();
+		this.cepEnderecoComercial = loja.getCepEnderecoComercial();
+		this.telefoneContato = loja.getTelefoneContato();
 
-	public String getNome() {
-		return nome;
+		Set<HorarioFuncionamentoResource> horarioFuncionamentos = new HashSet<>();
+		for(HorarioFuncionamento horarioFuncionamento : loja.getHorarioFuncionamentoSet()){
+			HorarioFuncionamentoResource horarioFuncionamentoResourceNew = new HorarioFuncionamentoResource();
+			horarioFuncionamentoResourceNew.setDiaSemana(horarioFuncionamento.getDiaSemana().toString());
+			horarioFuncionamentoResourceNew.setAberto(horarioFuncionamento.getAberto());
+			horarioFuncionamentoResourceNew.setHorarioFuncionamentoDe(horarioFuncionamento.getHorarioFuncionamentoDe());
+			horarioFuncionamentoResourceNew.setHorarioFuncionamentoAte(horarioFuncionamento.getHorarioFuncionamentoAte());
+			horarioFuncionamentoSet.add(horarioFuncionamentoResourceNew);
+		}
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEnderecoComercialCompleto() {
-		return enderecoComercialCompleto;
-	}
-
-	public void setEnderecoComercialCompleto(String enderecoComercialCompleto) {
-		this.enderecoComercialCompleto = enderecoComercialCompleto;
-	}
-	
 }

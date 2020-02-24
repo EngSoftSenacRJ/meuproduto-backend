@@ -1,12 +1,11 @@
 package senac.edu.engsoft.meuproduto.model;
 
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,6 +15,10 @@ public class UsuarioAdministrador extends Usuario {
 	
 	public UsuarioAdministrador() {
 		super();
+	}
+
+	public UsuarioAdministrador(Usuario usuario){
+		super(usuario);
 	}
 
 	public UsuarioAdministrador(String ruaEnderecoPessoal, 
@@ -30,7 +33,7 @@ public class UsuarioAdministrador extends Usuario {
 			String email,
 			LocalDate dataAniversario) {
 		super(ruaEnderecoPessoal, numeroEnderecoPessoal, bairroEnderecoPessoal, cidadeEnderecoPessoal,
-				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario);
+				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario, false);
 	}
 	
 }

@@ -20,7 +20,7 @@ public class UsuarioAdministradorValidator implements Validator {
 		if(StringUtils.isEmpty(usuarioAdministrador.getCpf())) {
 			errors.rejectValue("cpf", "cpf.empty");
 		}
-		if(StringUtils.isEmpty(usuarioAdministrador.getEmail())) {
+		if(StringUtils.isEmpty(usuarioAdministrador.getUsername())) {
 			errors.rejectValue("email", "email.empty");
 		}
 		if(StringUtils.isEmpty(usuarioAdministrador.getNome())) {

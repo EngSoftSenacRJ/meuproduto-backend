@@ -1,48 +1,36 @@
 package senac.edu.engsoft.meuproduto.model;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.sun.istack.NotNull;
-
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "TB_USUARIO")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TYPE", discriminatorType = DiscriminatorType.STRING)
-@JsonInclude(JsonInclude.Include.ALWAYS)
-public class Usuario {
+@JsonInclude
+public class Usuario implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="TYPE", insertable = false, updatable = false)
-	@JsonIgnore
 	private UsuarioType usuarioType;
 	
 	@NotEmpty(message = "ruaEnderecoPessoal é obrigatório")
@@ -68,14 +56,13 @@ public class Usuario {
 	@NotEmpty(message = "cepEnderecoPessoal é obrigatório")
 	@Column(name="CEP_ENDERECO_PESSOAL")
 	private String cepEnderecoPessoal;
-	
-	@Column(name="SENHA")
-	private String senha;
-	
+
 	@Column(name="DATA_ANIVERSARIO")
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dataAniversario;
 
 	@Column(name="DATA_CRIACAO")
+	@JsonIgnore
 	private LocalDate dataCriacao;
 	
 	@NotEmpty(message = "nome é obrigatório")
@@ -89,19 +76,50 @@ public class Usuario {
 	@NotNull
 	@Column(name="CPF")
 	private Long cpf;
-	
+
+	/*
+		Spring security Fields
+	 */
+	@Column(name="SENHA")
+	private String password;
+
 	@NotEmpty(message = "email é obrigatório")
 	@NotNull
 	@Column(name="EMAIL")
-	private String email;
-	
-	@JsonIgnore //TODO
+	private String username;
+
+	@Column(name="HABILITADO")
+	@JsonIgnore
+	private boolean enabled;
+	/*
+		Spring security Fields
+	 */
+
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "TB_USUARIO_LOJA",
 		joinColumns = { @JoinColumn(name = "ID_USUARIO") },
 		inverseJoinColumns = { @JoinColumn(name = "ID_LOJA") })
 	private Set<Loja> lojas = new HashSet<>();
-	
+
+	public Usuario(Usuario usuario) {
+		this.ruaEnderecoPessoal = usuario.getRuaEnderecoPessoal();
+		this.numeroEnderecoPessoal = usuario.getNumeroEnderecoPessoal();
+		this.bairroEnderecoPessoal = usuario.getBairroEnderecoPessoal();
+		this.cidadeEnderecoPessoal = usuario.getCidadeEnderecoPessoal();
+		this.estadoEnderecoPessoal = usuario.getEstadoEnderecoPessoal();
+		this.cepEnderecoPessoal = usuario.getCepEnderecoPessoal();
+		this.nome = usuario.getNome();
+		this.telefoneContato = usuario.getTelefoneContato();
+		this.cpf = usuario.getCpf();
+		this.username = usuario.getUsername();
+		this.dataAniversario = usuario.getDataAniversario();
+		this.password = usuario.getPassword();
+		this.enabled = true;
+	}
+
+
+
 	@PrePersist
 	private void prePersist() {
 		if(this.getDataCriacao() == null)
@@ -116,7 +134,7 @@ public class Usuario {
 			String bairroEnderecoPessoal, String cidadeEnderecoPessoal, String estadoEnderecoPessoal,
 			String cepEnderecoPessoal, String nome,
 			Long telefoneContato, Long cpf, String email,
-			LocalDate dataAniversario) {
+			LocalDate dataAniversario, boolean desabilitado) {
 		this.ruaEnderecoPessoal = ruaEnderecoPessoal;
 		this.numeroEnderecoPessoal = numeroEnderecoPessoal;
 		this.bairroEnderecoPessoal = bairroEnderecoPessoal;
@@ -126,7 +144,7 @@ public class Usuario {
 		this.nome = nome;
 		this.telefoneContato = telefoneContato;
 		this.cpf = cpf;
-		this.email = email;
+		this.username = email;
 		this.dataAniversario = dataAniversario;
 	}
 
@@ -143,14 +161,38 @@ public class Usuario {
 		this.cidadeEnderecoPessoal = cidadeEnderecoPessoal;
 		this.estadoEnderecoPessoal = estadoEnderecoPessoal;
 		this.cepEnderecoPessoal = cepEnderecoPessoal;
-		this.senha = senha;
+		this.password = senha;
 		this.dataCriacao = dataCriacao;
 		this.nome = nome;
 		this.telefoneContato = telefoneContato;
 		this.cpf = cpf;
-		this.email = email;
+		this.username = email;
 		this.lojas = lojas;
 		this.dataAniversario = dataAniversario;
 	}
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 }
