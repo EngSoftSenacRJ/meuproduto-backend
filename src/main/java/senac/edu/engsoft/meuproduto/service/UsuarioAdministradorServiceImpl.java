@@ -21,7 +21,12 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 	public Optional<UsuarioAdministrador> getById(Long id) {
 		return usuarioAdministradorRepository.findById(id);
 	}
-	
+
+	@Override
+	public Optional<UsuarioAdministrador> getByUsername(String username) {
+		return usuarioAdministradorRepository.getByUsername(username);
+	}
+
 	@Override
 	public Optional<UsuarioAdministrador> getByNome(String nome) {
 		return usuarioAdministradorRepository.getByNome(nome);

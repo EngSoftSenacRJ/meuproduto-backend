@@ -9,6 +9,7 @@ public interface UsuarioAdministradorService {
 
 	Iterable<UsuarioAdministrador> getAll();
 	Optional<UsuarioAdministrador> getById(Long id);
+	Optional<UsuarioAdministrador> getByUsername(String username);
 	Optional<UsuarioAdministrador> getByNome(String nome);
 	Optional<UsuarioAdministrador> getByCpf(Long cpf);
 	Optional<UsuarioAdministrador> getByEmail(String email);
@@ -16,5 +17,4 @@ public interface UsuarioAdministradorService {
 	UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) throws AdministratorUserFailedDeleteException;
 	void delete(Long id);
 	void deleteAll();
-	
 }

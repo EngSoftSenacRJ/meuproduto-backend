@@ -1,11 +1,11 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -58,7 +58,9 @@ public class Usuario implements UserDetails {
 	private String cepEnderecoPessoal;
 
 	@Column(name="DATA_ANIVERSARIO")
-	@JsonSerialize(using = LocalDateSerializer.class)
+//	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonFormat(pattern="dd/MM/yyyy")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
 
 	@Column(name="DATA_CRIACAO")

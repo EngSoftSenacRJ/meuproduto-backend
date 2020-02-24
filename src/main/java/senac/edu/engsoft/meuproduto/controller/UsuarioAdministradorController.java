@@ -43,10 +43,10 @@ public class UsuarioAdministradorController {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
-	
+
 	@GetMapping(value="/administrador", produces="application/json")
-	public UsuarioAdministradorResource getByNome(@RequestParam(value="nome") String nome) {
-		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getByNome(nome).orElseThrow(() -> new EntityModelNotFoundException());
+	public UsuarioAdministradorResource getByUsername(@RequestParam(value="username") String username) {
+		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getByUsername(username).orElseThrow(() -> new EntityModelNotFoundException());
 		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	

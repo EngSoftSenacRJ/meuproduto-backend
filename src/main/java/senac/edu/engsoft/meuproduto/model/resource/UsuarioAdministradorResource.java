@@ -1,7 +1,10 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.RepresentationModel;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 
@@ -9,6 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@JsonInclude
 public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdministradorResource> {
 
 	private Long cpf;
@@ -22,6 +26,8 @@ public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdm
 	private String estadoEnderecoPessoal;
 	private String cepEnderecoPessoal;
 
+	@JsonFormat(pattern="dd/MM/yyyy")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
 	
 	public UsuarioAdministradorResource() {

@@ -11,6 +11,9 @@ import java.util.Optional;
 @Repository
 public interface UsuarioAdministradorRepository extends CrudRepository<UsuarioAdministrador, Long>{
 
+	@Query(value="select l from UsuarioAdministrador l where l.username = :username")
+	Optional<UsuarioAdministrador> getByUsername(@Param("username") String username);
+
 	@Query(value="select l from UsuarioAdministrador l where l.nome = :nome")
 	Optional<UsuarioAdministrador> getByNome(@Param("nome") String nome);
 
