@@ -24,10 +24,10 @@ public class LojaController {
 		this.lojaResourceAssembler = lojaResourceAssembler;
 	}
 	
-	@ResponseStatus(value=HttpStatus.OK)
+//	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping
-	public CollectionModel<LojaResource> getAll() {;
-		return lojaResourceAssembler.toCollectionModel(lojaService.getAll());
+	public ResponseEntity<CollectionModel<LojaResource>> getAll() {
+		return new ResponseEntity<>(lojaResourceAssembler.toCollectionModel(lojaService.getAll()), HttpStatus.OK);
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)

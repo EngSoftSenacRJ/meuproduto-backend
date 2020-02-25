@@ -1,6 +1,7 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@JsonInclude
 public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFuncionarioResource> {
 
 	private Long id;

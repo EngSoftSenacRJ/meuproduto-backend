@@ -1,5 +1,6 @@
 package senac.edu.engsoft.meuproduto.model.resource;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -10,6 +11,9 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@JsonInclude
 public class LojaResource extends RepresentationModel<LojaResource> {
 
 	@Getter
