@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @JsonInclude
 public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdministradorResource> {
 
+	private Long id;
 	private Long cpf;
 	private String nome;
 	private Long telefoneContato;
@@ -37,6 +38,7 @@ public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdm
 
 	public UsuarioAdministradorResource(UsuarioAdministrador usuarioAdministrador) {
 		super();
+		this.id = usuarioAdministrador.getId();
 		this.cpf = usuarioAdministrador.getCpf();
 		this.nome = usuarioAdministrador.getNome();
 		this.telefoneContato = usuarioAdministrador.getTelefoneContato();
