@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -71,7 +72,8 @@ public class Usuario implements UserDetails {
 	@NotNull
 	@Column(name="NOME")
 	private String nome;
-	
+
+	@Valid
 	@Column(name="TELEFONE_CONTATO")
 	private Long telefoneContato;
 	

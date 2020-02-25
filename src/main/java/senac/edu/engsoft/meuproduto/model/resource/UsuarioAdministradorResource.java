@@ -19,7 +19,8 @@ public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdm
 	private String nome;
 	private Long telefoneContato;
 	private String email;
-	
+
+	private String ruaEnderecoPessoal;
 	private String numeroEnderecoPessoal;
 	private String bairroEnderecoPessoal;
 	private String cidadeEnderecoPessoal;
@@ -40,6 +41,7 @@ public class UsuarioAdministradorResource extends RepresentationModel<UsuarioAdm
 		this.nome = usuarioAdministrador.getNome();
 		this.telefoneContato = usuarioAdministrador.getTelefoneContato();
 		this.email = usuarioAdministrador.getUsername();
+		this.ruaEnderecoPessoal = usuarioAdministrador.getRuaEnderecoPessoal();
 		this.numeroEnderecoPessoal = usuarioAdministrador.getNumeroEnderecoPessoal();
 		this.bairroEnderecoPessoal = usuarioAdministrador.getBairroEnderecoPessoal();
 		this.cidadeEnderecoPessoal = usuarioAdministrador.getCidadeEnderecoPessoal();

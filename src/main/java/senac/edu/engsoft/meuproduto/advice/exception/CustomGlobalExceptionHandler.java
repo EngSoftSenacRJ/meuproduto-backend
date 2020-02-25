@@ -53,7 +53,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(getErrorResponse(sb.toString(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({UserCreationValidationException.class, DisabledException.class})
+    @ExceptionHandler({ObjectCreationValidationException.class, DisabledException.class})
     public ResponseEntity<CustomErrorResponse> badRequest(Exception ex, WebRequest request){
         return new ResponseEntity<>(getErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }

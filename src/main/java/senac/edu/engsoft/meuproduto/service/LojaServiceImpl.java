@@ -1,7 +1,7 @@
 package senac.edu.engsoft.meuproduto.service;
 
 import org.springframework.stereotype.Service;
-import senac.edu.engsoft.meuproduto.advice.exception.UserCreationValidationException;
+import senac.edu.engsoft.meuproduto.advice.exception.ObjectCreationValidationException;
 import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.LojaRepository;
@@ -64,13 +64,13 @@ public class LojaServiceImpl implements LojaService {
 		String nomeLoja = loja.getNome();
 		Optional<Loja> lojaExistente = lojaRepository.getByNome(nomeLoja);
 		if(lojaExistente.isPresent()){
-			throw new UserCreationValidationException("Loja já existente com esse nome: " + nomeLoja);
+			throw new ObjectCreationValidationException("Loja já existente com esse nome: " + nomeLoja);
 		}
 
 		String emailUsuarioCriadorLoja = loja.getEmailUsuarioCriadorLoja();
 		Optional<UsuarioAdministrador> usuarioAdministradorCriadorLoja = usuarioAdministradorService.getByEmail(emailUsuarioCriadorLoja);
 		if(!usuarioAdministradorCriadorLoja.isPresent() || !usuarioAdministradorCriadorLoja.get().isEnabled()){
-			throw new UserCreationValidationException("Email do Administrador fornecido não encontrado ou conta se encontra desabilitada");
+			throw new ObjectCreationValidationException("Email do Administrador fornecido não encontrado ou conta se encontra desabilitada");
 		}
 	}
 	

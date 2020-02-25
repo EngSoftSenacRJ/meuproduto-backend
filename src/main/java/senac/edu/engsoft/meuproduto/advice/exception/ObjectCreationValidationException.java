@@ -1,6 +1,6 @@
 package senac.edu.engsoft.meuproduto.advice.exception;
 
-public class UserCreationValidationException extends RuntimeException {
+public class ObjectCreationValidationException extends RuntimeException {
 
 	/**
 	 * 
@@ -9,11 +9,11 @@ public class UserCreationValidationException extends RuntimeException {
 	
 	
 	
-	public UserCreationValidationException() {
+	public ObjectCreationValidationException() {
 		super();
 	}
 
-	public UserCreationValidationException(String msg) {
+	public ObjectCreationValidationException(String msg) {
 		super(msg);
 	}
 
