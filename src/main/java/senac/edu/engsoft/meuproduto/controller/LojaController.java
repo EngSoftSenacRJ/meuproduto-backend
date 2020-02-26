@@ -55,9 +55,10 @@ public class LojaController {
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
-	@PutMapping
-	public LojaResource update(@RequestBody @Valid Loja _loja) {
-		Loja loja = lojaService.update(_loja);
+	@PutMapping(value = "/{id}", produces="application/json", consumes="application/json")
+	public LojaResource update(@RequestBody Loja _loja, @PathVariable Long id) {
+		Loja lojaAtual = lojaService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
+		Loja loja = lojaService.update(id, _loja, lojaAtual);
 		return lojaResourceAssembler.toModel(loja);
 	}
 

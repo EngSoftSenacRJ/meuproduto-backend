@@ -40,9 +40,9 @@ public class LojaServiceImpl implements LojaService {
 	}
 
 	@Override
-	public Loja update(Loja loja) {
-		validateLoja(loja);
-		return lojaRepository.save(loja);
+	public Loja update(Long id, Loja loja, Loja lojaAtual) {
+		lojaAtual.copyForNew(loja);
+		return lojaRepository.save(lojaAtual); //update
 	}
 
 	@Override

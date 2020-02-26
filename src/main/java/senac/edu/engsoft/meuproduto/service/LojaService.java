@@ -10,7 +10,7 @@ public interface LojaService {
 	Optional<Loja> getById(Long id);
 	Optional<Loja> getByNome(String nome);
 	Loja save(Loja loja);
-	Loja update(Loja loja);
+	Loja update(Long id, Loja loja, Loja lojaAtual);
 	void delete(Long id);
 	void deleteAll();
 }

@@ -136,4 +136,29 @@ public class Loja {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
+	public void copyForNew(Loja other) {
+		if(other.getNome() != null)
+			this.setNome(other.getNome());
+		if(other.getRazaoSocial() != null)
+			this.setRazaoSocial(other.getRazaoSocial());
+		if(other.getCnpj() != null)
+			this.setCnpj(other.getCnpj());
+		if(other.getRuaEnderecoComercial() != null)
+			this.setRuaEnderecoComercial(other.getRuaEnderecoComercial());
+		if(other.getNumeroEnderecoComercial() != null)
+			this.setNumeroEnderecoComercial(other.getNumeroEnderecoComercial());
+		if(other.getBairroEnderecoComercial() != null)
+			this.setBairroEnderecoComercial(other.getBairroEnderecoComercial());
+		if(other.getCidadeEnderecoComercial() != null)
+			this.setCidadeEnderecoComercial(other.getCidadeEnderecoComercial());
+		if(other.getEstadoEnderecoComercial() != null)
+			this.setEstadoEnderecoComercial(other.getEstadoEnderecoComercial());
+		if(other.getCepEnderecoComercial() != null)
+			this.setCepEnderecoComercial(other.getCepEnderecoComercial());
+		if(other.getTelefoneContato() != null)
+			this.setTelefoneContato(other.getTelefoneContato());
+		if(other.getEmailUsuarioCriadorLoja() != null)
+			this.setEmailUsuarioCriadorLoja(other.getEmailUsuarioCriadorLoja());
+	}
 }
