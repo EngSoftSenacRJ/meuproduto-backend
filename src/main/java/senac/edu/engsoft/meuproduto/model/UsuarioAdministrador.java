@@ -62,7 +62,6 @@ public class UsuarioAdministrador extends Usuario {
 			super.setPassword(other.getPassword());
 		if(other.getTokenValidacaoEmail() != null)
 			super.setTokenValidacaoEmail(other.getTokenValidacaoEmail());
-		super.setEnabled(other.isEnabled());
 
 		return this;
 	}
