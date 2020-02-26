@@ -30,6 +30,7 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 		}
 	}
 
+	private Long id;
 	private String nome;
 	private String razaoSocial;
 	private String cnpj;
@@ -47,6 +48,7 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 	}
 
 	public LojaResource(Loja loja) {
+		this.id = loja.getId();
 		this.nome = loja.getNome();
 		this.razaoSocial = loja.getRazaoSocial();
 		this.cnpj = loja.getCnpj();
