@@ -11,6 +11,9 @@ import senac.edu.engsoft.meuproduto.model.resource.LojaResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.LojaResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.LojaService;
 
+import javax.validation.Valid;
+
+@CrossOrigin
 @RestController
 @RequestMapping({"/lojas"})
 public class LojaController {
@@ -46,14 +49,14 @@ public class LojaController {
 	
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@PostMapping
-	public ResponseEntity<Object> create(@RequestBody Loja _loja) {
+	public ResponseEntity<Object> create(@RequestBody @Valid Loja _loja) {
 		Loja loja = lojaService.save(_loja);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
 	@PutMapping
-	public LojaResource update(@RequestBody Loja _loja) {
+	public LojaResource update(@RequestBody @Valid Loja _loja) {
 		Loja loja = lojaService.update(_loja);
 		return lojaResourceAssembler.toModel(loja);
 	}

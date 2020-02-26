@@ -1,6 +1,5 @@
 package senac.edu.engsoft.meuproduto.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,22 +13,31 @@ import senac.edu.engsoft.meuproduto.model.dto.JwtResponse;
 import senac.edu.engsoft.meuproduto.security.JwtTokenUtil;
 import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
+import javax.validation.Valid;
+
 
 @RestController
 @CrossOrigin
 public class AuthenticationController {
 	
-	@Autowired
+
 	private AuthenticationManager authenticationManager;
-	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
 	private JwtUserDetailsServiceImpl userDetailsService;
-	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	public AuthenticationController(AuthenticationManager authenticationManager,
+									JwtTokenUtil jwtTokenUtil,
+									JwtUserDetailsServiceImpl userDetailsService,
+									BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.authenticationManager = authenticationManager;
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.userDetailsService = userDetailsService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
+
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);

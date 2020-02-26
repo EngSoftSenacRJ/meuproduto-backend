@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import senac.edu.engsoft.meuproduto.model.json.validator.EmailValidator;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -89,12 +90,18 @@ public class Usuario implements UserDetails {
 
 	@NotEmpty(message = "email é obrigatório")
 	@NotNull
+	@EmailValidator
 	@Column(name="EMAIL")
 	private String username;
 
 	@Column(name="HABILITADO")
 	@JsonIgnore
 	private boolean enabled;
+
+	@Column(name="TOKEN_VALIDACAO_EMAIL")
+	@JsonIgnore
+	private String tokenValidacaoEmail;
+
 	/*
 		Spring security Fields
 	 */
@@ -119,7 +126,8 @@ public class Usuario implements UserDetails {
 		this.username = usuario.getUsername();
 		this.dataAniversario = usuario.getDataAniversario();
 		this.password = usuario.getPassword();
-		this.enabled = true;
+		this.tokenValidacaoEmail = usuario.getTokenValidacaoEmail();
+		this.enabled = false;
 	}
 
 

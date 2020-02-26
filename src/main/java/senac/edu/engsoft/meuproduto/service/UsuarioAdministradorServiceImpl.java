@@ -1,7 +1,6 @@
 package senac.edu.engsoft.meuproduto.service;
 
 import org.springframework.stereotype.Service;
-import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserFailedDeleteException;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
 
@@ -64,7 +63,7 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 //	}
 	
 	@Override
-	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) throws AdministratorUserFailedDeleteException {
+	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) {
 		return usuarioAdministradorRepository.save(usuarioAdministrador);
 	}
 

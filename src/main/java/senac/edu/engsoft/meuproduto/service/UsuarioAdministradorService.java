@@ -1,6 +1,5 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import senac.edu.engsoft.meuproduto.advice.exception.AdministratorUserFailedDeleteException;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 
 import java.util.Optional;
@@ -14,7 +13,7 @@ public interface UsuarioAdministradorService {
 	Optional<UsuarioAdministrador> getByCpf(Long cpf);
 	Optional<UsuarioAdministrador> getByEmail(String email);
 //	UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador);
-	UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) throws AdministratorUserFailedDeleteException;
+	UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador);
 	void delete(Long id);
 	void deleteAll();
 }

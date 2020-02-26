@@ -6,6 +6,8 @@ import senac.edu.engsoft.meuproduto.model.Usuario;
 import senac.edu.engsoft.meuproduto.repository.UsuarioRepository;
 import senac.edu.engsoft.meuproduto.service.util.CpfValidatorUtil;
 
+import java.util.Optional;
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
@@ -33,5 +35,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 		else {
 			return usuarioRepository.save(usuario);
 		}
+	}
+
+	@Override
+	public Optional<Usuario> getById(Long id) {
+		return usuarioRepository.findById(id);
+	}
+
+	@Override
+	public Usuario update(Usuario usuario) {
+		return usuarioRepository.save(usuario);
 	}
 }
