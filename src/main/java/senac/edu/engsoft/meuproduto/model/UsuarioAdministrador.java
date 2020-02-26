@@ -58,8 +58,6 @@ public class UsuarioAdministrador extends Usuario {
 			super.setUsername(other.getUsername());
 		if(other.getDataAniversario() != null)
 			super.setDataAniversario(other.getDataAniversario());
-		if(other.getPassword() != null)
-			super.setPassword(other.getPassword());
 		if(other.getTokenValidacaoEmail() != null)
 			super.setTokenValidacaoEmail(other.getTokenValidacaoEmail());
 
