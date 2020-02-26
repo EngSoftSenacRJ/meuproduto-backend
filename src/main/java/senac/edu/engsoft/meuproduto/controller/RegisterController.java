@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import senac.edu.engsoft.meuproduto.advice.exception.EntityIdFoundForInsertOperationException;
 import senac.edu.engsoft.meuproduto.model.Usuario;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
@@ -61,6 +62,10 @@ public class RegisterController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(HttpServletRequest request, @RequestBody @Valid Usuario usuario) {
+		if(usuario.getId() != null){
+			throw new EntityIdFoundForInsertOperationException(usuario.getId());
+		}
+
 		String encodedPassword = bCryptPasswordEncoder.encode(usuario.getPassword());
 		usuario.setPassword(encodedPassword);
 

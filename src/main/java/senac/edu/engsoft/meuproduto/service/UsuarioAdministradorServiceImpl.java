@@ -1,10 +1,17 @@
 package senac.edu.engsoft.meuproduto.service;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorService {
@@ -63,8 +70,11 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 //	}
 	
 	@Override
-	public UsuarioAdministrador update(UsuarioAdministrador usuarioAdministrador) {
-		return usuarioAdministradorRepository.save(usuarioAdministrador);
+	public UsuarioAdministrador update(Long id, UsuarioAdministrador usuarioAdministrador) throws InvocationTargetException, IllegalAccessException {
+		Optional<UsuarioAdministrador> usuarioAdministradorEncontrado = getById(id);
+		UsuarioAdministrador usuarioAdministradorParaAtualizar = usuarioAdministradorEncontrado.get();
+		usuarioAdministradorEncontrado.get().copyForNew(usuarioAdministrador);
+		return usuarioAdministradorRepository.save(usuarioAdministradorParaAtualizar); //update
 	}
 
 	@Override
@@ -81,5 +91,28 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 	public Iterable<UsuarioAdministrador> getAll() {
 		return usuarioAdministradorRepository.findAll();
 	}
-	
+
+
+	public void copyNonNullProperties(Object source, Object target) {
+		BeanUtils.copyProperties(source, target, getNullPropertyNames(target));
+	}
+
+	public String[] getNullPropertyNames (Object source) {
+
+		final BeanWrapper src = new BeanWrapperImpl(source);
+		PropertyDescriptor[] propDesList = src.getPropertyDescriptors();
+
+		Set<String> emptyNames = new HashSet<String>();
+
+		for(PropertyDescriptor propDesc : propDesList) {
+			Object srcValue = src.getPropertyValue(propDesc.getName());
+
+			if (srcValue == null) {
+				emptyNames.add(propDesc.getName());
+			}
+		}
+
+		String[] result = new String[emptyNames.size()];
+		return emptyNames.toArray(result);
+	}
 }

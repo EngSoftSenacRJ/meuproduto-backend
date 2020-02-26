@@ -23,7 +23,7 @@ public class UsuarioAdministradorResourceAssembler extends RepresentationModelAs
 	public UsuarioAdministradorResource toModel(UsuarioAdministrador usuarioAdministrador) {
 		UsuarioAdministradorResource usuarioAdministradorResource = instantiateModel(usuarioAdministrador);
 		usuarioAdministradorResource.add(linkTo(methodOn(UsuarioAdministradorController.class).delete(usuarioAdministrador.getId())).withRel("delete [DELETE]"));
-		usuarioAdministradorResource.add(linkTo(methodOn(UsuarioAdministradorController.class).update(usuarioAdministrador)).withRel("update [PUT]"));
+		usuarioAdministradorResource.add(linkTo(methodOn(UsuarioAdministradorController.class).update(usuarioAdministrador, usuarioAdministrador.getId())).withRel("update [PUT]"));
 		usuarioAdministradorResource.add(linkTo(methodOn(UsuarioAdministradorController.class).getById(usuarioAdministrador.getId())).withSelfRel());
 		
 		return usuarioAdministradorResource;

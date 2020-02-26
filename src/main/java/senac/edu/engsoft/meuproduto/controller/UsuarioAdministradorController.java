@@ -12,7 +12,7 @@ import senac.edu.engsoft.meuproduto.model.resource.UsuarioAdministradorResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioAdministradorResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.UsuarioAdministradorService;
 
-import javax.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
 
 @CrossOrigin
 @RestController
@@ -59,10 +59,19 @@ public class UsuarioAdministradorController {
 //	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
-	@PutMapping(produces="application/json", consumes="application/json")
-	public UsuarioAdministradorResource update(@RequestBody @Valid UsuarioAdministrador _usuarioAdministrador) {
-		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.update(_usuarioAdministrador);
-		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
+	@PutMapping(value = "/{id}", produces="application/json", consumes="application/json")
+	public UsuarioAdministradorResource update(@RequestBody UsuarioAdministrador _usuarioAdministrador, @PathVariable Long id) {
+		usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
+		UsuarioAdministrador usuarioAdministrador = null;
+		try {
+			usuarioAdministrador = usuarioAdministradorService.update(id, _usuarioAdministrador);
+			return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
@@ -71,8 +80,15 @@ public class UsuarioAdministradorController {
 		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
 		usuarioAdministrador.setEnabled(false);
 		try {
-			usuarioAdministradorService.update(usuarioAdministrador);
+			usuarioAdministradorService.update(id, usuarioAdministrador);
 		}catch (AdministratorUserFailedDeleteException e){
+			e.printStackTrace();
+			return ResponseEntity.noContent().build();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return ResponseEntity.noContent().build();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 			return ResponseEntity.noContent().build();
 		}
 

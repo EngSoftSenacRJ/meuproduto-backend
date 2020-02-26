@@ -5,14 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @DiscriminatorValue(value = UsuarioType.Values._ADMINISTRADOR)
 public class UsuarioAdministrador extends Usuario {
-	
+
 	public UsuarioAdministrador() {
 		super();
 	}
@@ -21,19 +20,51 @@ public class UsuarioAdministrador extends Usuario {
 		super(usuario);
 	}
 
-	public UsuarioAdministrador(String ruaEnderecoPessoal, 
-			String numeroEnderecoPessoal,
-			String bairroEnderecoPessoal, 
-			String cidadeEnderecoPessoal, 
-			String estadoEnderecoPessoal,
-			String cepEnderecoPessoal, 
-			String nome,
-			Long telefoneContato, 
-			Long cpf, 
-			String email,
-			LocalDate dataAniversario) {
-		super(ruaEnderecoPessoal, numeroEnderecoPessoal, bairroEnderecoPessoal, cidadeEnderecoPessoal,
-				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario, false);
+//	public UsuarioAdministrador(String ruaEnderecoPessoal,
+//			String numeroEnderecoPessoal,
+//			String bairroEnderecoPessoal,
+//			String cidadeEnderecoPessoal,
+//			String estadoEnderecoPessoal,
+//			String cepEnderecoPessoal,
+//			String nome,
+//			Long telefoneContato,
+//			Long cpf,
+//			String email,
+//			LocalDate dataAniversario) {
+//		super(ruaEnderecoPessoal, numeroEnderecoPessoal, bairroEnderecoPessoal, cidadeEnderecoPessoal,
+//				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario, false);
+//	}
+
+	public UsuarioAdministrador copyForNew(UsuarioAdministrador other){
+		if(other.getRuaEnderecoPessoal() != null)
+			super.setRuaEnderecoPessoal(other.getRuaEnderecoPessoal());
+		if(other.getNumeroEnderecoPessoal() != null)
+			super.setNumeroEnderecoPessoal(other.getNumeroEnderecoPessoal());
+		if(other.getBairroEnderecoPessoal() != null)
+			super.setBairroEnderecoPessoal(other.getBairroEnderecoPessoal());
+		if(other.getCidadeEnderecoPessoal() != null)
+			super.setCidadeEnderecoPessoal(other.getCidadeEnderecoPessoal());
+		if(other.getEstadoEnderecoPessoal() != null)
+			super.setEstadoEnderecoPessoal(other.getEstadoEnderecoPessoal());
+		if(other.getCepEnderecoPessoal() != null)
+			super.setCepEnderecoPessoal(other.getCepEnderecoPessoal());
+		if(other.getNome() != null)
+			super.setNome(other.getNome());
+		if(other.getTelefoneContato() != null)
+			super.setTelefoneContato(other.getTelefoneContato());
+		if(other.getCpf() != null)
+			super.setCpf(other.getCpf());
+		if(other.getUsername() != null)
+			super.setUsername(other.getUsername());
+		if(other.getDataAniversario() != null)
+			super.setDataAniversario(other.getDataAniversario());
+		if(other.getPassword() != null)
+			super.setPassword(other.getPassword());
+		if(other.getTokenValidacaoEmail() != null)
+			super.setTokenValidacaoEmail(other.getTokenValidacaoEmail());
+		super.setEnabled(other.isEnabled());
+
+		return this;
 	}
 	
 }

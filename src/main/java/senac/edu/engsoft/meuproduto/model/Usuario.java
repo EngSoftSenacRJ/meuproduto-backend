@@ -28,7 +28,6 @@ public class Usuario implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonIgnore
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
@@ -65,7 +64,7 @@ public class Usuario implements UserDetails {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
 
-	@Column(name="DATA_CRIACAO")
+	@Column(name="DATA_CRIACAO", insertable = false, updatable = false)
 	@JsonIgnore
 	private LocalDate dataCriacao;
 	
@@ -91,7 +90,7 @@ public class Usuario implements UserDetails {
 	@NotEmpty(message = "email é obrigatório")
 	@NotNull
 	@EmailValidator
-	@Column(name="EMAIL")
+	@Column(name="EMAIL", updatable = false)
 	private String username;
 
 	@Column(name="HABILITADO")
@@ -130,10 +129,10 @@ public class Usuario implements UserDetails {
 		this.enabled = false;
 	}
 
-
-
 	@PrePersist
 	private void prePersist() {
+		if(this.getId() != null)
+			this.setId(null);
 		if(this.getDataCriacao() == null)
 			this.setDataCriacao(LocalDate.now());
 	}
