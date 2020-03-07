@@ -3,6 +3,7 @@ package senac.edu.engsoft.meuproduto.model.resource;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.hateoas.RepresentationModel;
 import senac.edu.engsoft.meuproduto.model.MarcaProduto;
 
@@ -14,6 +15,7 @@ public class MarcaProdutoResource extends RepresentationModel<MarcaProdutoResour
 	private Long id;
 	private String nome;
 	private String descricao;
+	private boolean habilitado;
 
 	public MarcaProdutoResource() {
 		super();
@@ -23,5 +25,6 @@ public class MarcaProdutoResource extends RepresentationModel<MarcaProdutoResour
 		this.id = marcaProduto.getId();
 		this.nome = marcaProduto.getNome();
 		this.descricao = marcaProduto.getDescricao();
+		this.habilitado = BooleanUtils.isTrue(marcaProduto.getHabilitado());
 	}
 }
