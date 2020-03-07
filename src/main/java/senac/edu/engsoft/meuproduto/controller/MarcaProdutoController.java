@@ -10,6 +10,7 @@ import senac.edu.engsoft.meuproduto.model.resource.MarcaProdutoResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.MarcaProdutoResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.MarcaProdutoService;
 
+@CrossOrigin
 @RestController
 @RequestMapping({"/marcas"})
 public class MarcaProdutoController {

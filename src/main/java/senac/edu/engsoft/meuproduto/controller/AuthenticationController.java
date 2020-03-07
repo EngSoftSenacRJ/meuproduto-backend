@@ -15,7 +15,6 @@ import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
 import javax.validation.Valid;
 
-
 @RestController
 @CrossOrigin
 public class AuthenticationController {
