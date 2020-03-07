@@ -57,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers(HttpMethod.POST,"/authenticate").permitAll()
 					.antMatchers("/register/**").permitAll()
 					.antMatchers(HttpMethod.POST, "/emails").permitAll()
+					.antMatchers(HttpMethod.GET, "/marcas/**").permitAll()
 // all other requests need to be authenticated
 				.anyRequest().authenticated().and().
 // make sure we use stateless session; session won't be used to
