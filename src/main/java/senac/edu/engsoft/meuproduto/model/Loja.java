@@ -28,6 +28,12 @@ public class Loja {
 	@JsonIgnore
 	private LocalDateTime dataCriacao;
 
+	@Column(name="LATITUDE")
+	private String latitude;
+
+	@Column(name="LONGITUDE")
+	private String longitude;
+
 	@NotNull(message = "Nome da loja é obrigatório")
 	@NotEmpty(message = "Nome da loja é obrigatório")
 	@Size(min = 3, max = 50, message = "Nome da loja deve ter no mpinimo '3' e no máximo '50' caracteres")
@@ -38,7 +44,9 @@ public class Loja {
 	@NotEmpty(message = "Razão Social da loja é obrigatório")
 	@Column(name="razao_social")
 	private String razaoSocial;
-	
+
+	@NotNull(message = "CNPJ da loja é obrigatório")
+	@NotEmpty(message = "CNPJ da loja é obrigatório")
 	@Column(name="cnpj")
 	private String cnpj;
 
@@ -77,6 +85,8 @@ public class Loja {
 	@Column(name="TELEFONE_CONTATO")
 	private String telefoneContato;
 
+	@NotNull(message = "Email do Usuário é obrigatório para criar loja")
+	@NotEmpty(message = "Email do Usuário é obrigatório para criar loja")
 	@Column(name="EMAIL_USUARIO_CRIADOR_LOJA")
 	private String emailUsuarioCriadorLoja;
 	
@@ -160,5 +170,9 @@ public class Loja {
 			this.setTelefoneContato(other.getTelefoneContato());
 		if(other.getEmailUsuarioCriadorLoja() != null)
 			this.setEmailUsuarioCriadorLoja(other.getEmailUsuarioCriadorLoja());
+		if(other.getLatitude() != null)
+			this.setLatitude(other.getLatitude());
+		if(other.getLongitude() != null)
+			this.setLatitude(other.getLongitude());
 	}
 }

@@ -23,6 +23,21 @@ public class MarcaProdutoServiceImpl implements MarcaProdutoService {
 	}
 
 	@Override
+	public Optional<MarcaProduto> getById(Long id) {
+		return marcaProdutoRepository.findById(id);
+	}
+
+	@Override
+	public MarcaProduto update(MarcaProduto marcaProduto) {
+		return marcaProdutoRepository.save(marcaProduto);
+	}
+
+	@Override
+	public void delete(Long id) {
+		marcaProdutoRepository.deleteById(id);
+	}
+
+	@Override
 	public MarcaProduto save(MarcaProduto marcaProduto) {
 		Optional<MarcaProduto> existingMarcaProduto = marcaProdutoRepository.getByNome(marcaProduto.getNome());
 		if(existingMarcaProduto.isPresent()){
