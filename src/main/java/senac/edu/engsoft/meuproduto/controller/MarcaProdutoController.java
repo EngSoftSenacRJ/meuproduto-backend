@@ -43,7 +43,7 @@ public class MarcaProdutoController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		MarcaProduto marcaProduto = marcaProdutoService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
-		marcaProdutoService.delete(marcaProduto.getId());
+		marcaProdutoService.desabilitar(marcaProduto);
 		return ResponseEntity.noContent().build();
 	}
 

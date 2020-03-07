@@ -10,5 +10,5 @@ public interface MarcaProdutoService {
 	Optional<MarcaProduto> getById(Long id);
 	MarcaProduto update(MarcaProduto marcaProduto);
 	MarcaProduto save(MarcaProduto marcaProduto);
-	void delete(Long id);
+	void desabilitar(MarcaProduto marcaProduto);
 }

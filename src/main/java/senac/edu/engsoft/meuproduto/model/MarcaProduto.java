@@ -16,6 +16,9 @@ public class MarcaProduto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name="HABILITADO")
+	private Boolean habilitado;
+
 	@NotEmpty
 	@NotNull
 	@Size(min = 1, max = 50)
@@ -27,6 +30,12 @@ public class MarcaProduto {
 	@Size(min = 5, max = 200)
 	@Column(name="DESCRICAO")
 	private String descricao;
+
+	@PrePersist
+	public void prePersist(){
+		if(this.getHabilitado() == null)
+			setHabilitado(true);
+	}
 
 	public MarcaProduto() {
 		super();

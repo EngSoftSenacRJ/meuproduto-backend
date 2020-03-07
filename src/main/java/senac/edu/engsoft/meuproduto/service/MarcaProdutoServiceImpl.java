@@ -33,8 +33,9 @@ public class MarcaProdutoServiceImpl implements MarcaProdutoService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		marcaProdutoRepository.deleteById(id);
+	public void desabilitar(MarcaProduto marcaProduto) {
+		marcaProduto.setHabilitado(false);
+		marcaProdutoRepository.save(marcaProduto);
 	}
 
 	@Override
