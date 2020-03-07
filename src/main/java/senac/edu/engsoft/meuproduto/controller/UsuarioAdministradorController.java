@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 @CrossOrigin
 @RestController
 @RequestMapping({"/administradores"})
-//@BasePathAwareController
 public class UsuarioAdministradorController {
 
 	private UsuarioAdministradorService usuarioAdministradorService;

@@ -11,6 +11,7 @@ import senac.edu.engsoft.meuproduto.model.MarcaProduto;
 @JsonInclude
 public class MarcaProdutoResource extends RepresentationModel<MarcaProdutoResource> {
 
+	private Long id;
 	private String nome;
 	private String descricao;
 
@@ -19,6 +20,7 @@ public class MarcaProdutoResource extends RepresentationModel<MarcaProdutoResour
 	}
 
 	public MarcaProdutoResource(MarcaProduto marcaProduto) {
+		this.id = marcaProduto.getId();
 		this.nome = marcaProduto.getNome();
 		this.descricao = marcaProduto.getDescricao();
 	}
