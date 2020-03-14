@@ -8,7 +8,6 @@ import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -47,30 +46,9 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 	public Optional<UsuarioAdministrador> getByEmail(String email) {
 		return usuarioAdministradorRepository.getByEmail(email);
 	}
-
-//	@Override
-//	public UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador)
-//			throws UserEmptyCpfException,
-//			UserCpfAlreadyExistsException,
-//			UserInvalidCpfException {
-//		Long usuarioAdministradorCpf = usuarioAdministrador.getCpf();
-//
-//		if(usuarioAdministradorCpf == null) {
-//			throw new UserEmptyCpfException();
-//		}
-//		else if(!CpfValidatorUtil.isValidCpf(Long.toString(usuarioAdministradorCpf))) {
-//			throw new UserInvalidCpfException(usuarioAdministradorCpf);
-//		}
-//		else if (this.getByCpf(usuarioAdministradorCpf).isPresent()){
-//			throw new UserCpfAlreadyExistsException(usuarioAdministradorCpf);
-//		}
-//		else {
-//			return usuarioAdministradorRepository.save(usuarioAdministrador);
-//		}
-//	}
 	
 	@Override
-	public UsuarioAdministrador update(Long id, UsuarioAdministrador usuarioAdministrador) throws InvocationTargetException, IllegalAccessException {
+	public UsuarioAdministrador update(Long id, UsuarioAdministrador usuarioAdministrador) {
 		Optional<UsuarioAdministrador> usuarioAdministradorEncontrado = getById(id);
 		UsuarioAdministrador usuarioAdministradorParaAtualizar = usuarioAdministradorEncontrado.get();
 		usuarioAdministradorEncontrado.get().copyForNew(usuarioAdministrador);

@@ -2,7 +2,6 @@ package senac.edu.engsoft.meuproduto.service;
 
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 public interface UsuarioAdministradorService {
@@ -13,8 +12,7 @@ public interface UsuarioAdministradorService {
 	Optional<UsuarioAdministrador> getByNome(String nome);
 	Optional<UsuarioAdministrador> getByCpf(Long cpf);
 	Optional<UsuarioAdministrador> getByEmail(String email);
-//	UsuarioAdministrador save(UsuarioAdministrador usuarioAdministrador);
-	UsuarioAdministrador update(Long id, UsuarioAdministrador usuarioAdministrador) throws InvocationTargetException, IllegalAccessException;
+	UsuarioAdministrador update(Long id, UsuarioAdministrador usuarioAdministrador);
 	void delete(Long id);
 	void deleteAll();
 }

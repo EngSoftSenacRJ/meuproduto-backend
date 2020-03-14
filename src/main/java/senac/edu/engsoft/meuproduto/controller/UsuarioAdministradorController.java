@@ -12,8 +12,6 @@ import senac.edu.engsoft.meuproduto.model.resource.UsuarioAdministradorResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioAdministradorResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.UsuarioAdministradorService;
 
-import java.lang.reflect.InvocationTargetException;
-
 @CrossOrigin
 @RestController
 @RequestMapping({"/administradores"})
@@ -61,16 +59,8 @@ public class UsuarioAdministradorController {
 	@PutMapping(value = "/{id}", produces="application/json", consumes="application/json")
 	public UsuarioAdministradorResource update(@RequestBody UsuarioAdministrador _usuarioAdministrador, @PathVariable Long id) {
 		usuarioAdministradorService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
-		UsuarioAdministrador usuarioAdministrador = null;
-		try {
-			usuarioAdministrador = usuarioAdministradorService.update(id, _usuarioAdministrador);
-			return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		UsuarioAdministrador usuarioAdministrador = usuarioAdministradorService.update(id, _usuarioAdministrador);
+		return usuarioAdministradorResourceAssembler.toModel(usuarioAdministrador);
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
@@ -81,12 +71,6 @@ public class UsuarioAdministradorController {
 		try {
 			usuarioAdministradorService.update(id, usuarioAdministrador);
 		}catch (AdministratorUserFailedDeleteException e){
-			e.printStackTrace();
-			return ResponseEntity.noContent().build();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			return ResponseEntity.noContent().build();
-		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 			return ResponseEntity.noContent().build();
 		}

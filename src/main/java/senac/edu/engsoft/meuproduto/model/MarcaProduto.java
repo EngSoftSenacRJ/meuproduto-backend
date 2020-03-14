@@ -1,6 +1,8 @@
 package senac.edu.engsoft.meuproduto.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "TB_MARCA_PRODUTO")
 public class MarcaProduto {
@@ -47,4 +51,12 @@ public class MarcaProduto {
 		this.descricao = descricao;
 	}
 
+    public void copyForNew(MarcaProduto other) {
+		this.setHabilitado(true);
+
+		if(other.getNome() != null)
+			this.setNome(other.getNome());
+		if(other.getDescricao() != null)
+			this.setDescricao(other.getDescricao());
+    }
 }

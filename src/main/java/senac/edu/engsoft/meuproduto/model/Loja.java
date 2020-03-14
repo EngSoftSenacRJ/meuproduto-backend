@@ -29,10 +29,10 @@ public class Loja {
 	private LocalDateTime dataCriacao;
 
 	@Column(name="LATITUDE")
-	private String latitude;
+	private Double latitude;
 
 	@Column(name="LONGITUDE")
-	private String longitude;
+	private Double longitude;
 
 	@NotNull(message = "Nome da loja é obrigatório")
 	@NotEmpty(message = "Nome da loja é obrigatório")
@@ -113,26 +113,6 @@ public class Loja {
 	public Loja() {
 		super();
 	}
-
-//	public Loja(LocalDateTime dataCriacao, String nome, String razaoSocial, String cnpj, String ruaEnderecoComercial,
-//			String numeroEnderecoComercial, String bairroEnderecoComercial, String cidadeEnderecoComercial,
-//			String estadoEnderecoComercial, String cepEnderecoComercial, String telefoneContato,
-//			Set<HorarioFuncionamento> horarioFuncionamentoSet) {
-//		super();
-//		this.dataCriacao = dataCriacao;
-//		this.nome = nome;
-//		this.razaoSocial = razaoSocial;
-//		this.cnpj = cnpj;
-//		this.ruaEnderecoComercial = ruaEnderecoComercial;
-//		this.numeroEnderecoComercial = numeroEnderecoComercial;
-//		this.bairroEnderecoComercial = bairroEnderecoComercial;
-//		this.cidadeEnderecoComercial = cidadeEnderecoComercial;
-//		this.estadoEnderecoComercial = estadoEnderecoComercial;
-//		this.cepEnderecoComercial = cepEnderecoComercial;
-//		this.telefoneContato = telefoneContato;
-//		this.horarioFuncionamentoSet = horarioFuncionamentoSet;
-//	}
-
 
 	@Override
 	public boolean equals(Object o) {

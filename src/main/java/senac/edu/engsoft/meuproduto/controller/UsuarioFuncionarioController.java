@@ -3,6 +3,7 @@ package senac.edu.engsoft.meuproduto.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
@@ -48,19 +49,26 @@ public class UsuarioFuncionarioController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@PostMapping
 	public UsuarioFuncionarioResource create(@RequestBody UsuarioFuncionario _usuarioFuncionario) {
-		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.saveOrUpdate(_usuarioFuncionario);
+		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.save(_usuarioFuncionario);
 		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
 	}
-	
-	@PutMapping
-	public UsuarioFuncionarioResource update(@RequestBody UsuarioFuncionario _usuarioFuncionario) {
-		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.saveOrUpdate(_usuarioFuncionario);
+
+	@ResponseStatus(value=HttpStatus.OK)
+	@PutMapping(value = "/{id}", produces="application/json", consumes="application/json")
+	public UsuarioFuncionarioResource update(@RequestBody UsuarioFuncionario _usuarioFuncionario, @PathVariable Long id) {
+		usuarioFuncionarioService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
+		UsuarioFuncionario usuarioFuncionario = null;
+		usuarioFuncionario = usuarioFuncionarioService.update(id, _usuarioFuncionario);
 		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
 	}
-	
-	@DeleteMapping(value = "/{id}")
-	public void delete(@PathVariable Long id) {
-		usuarioFuncionarioService.delete(id);
+
+	@ResponseStatus(value=HttpStatus.OK)
+	@DeleteMapping(value = "/{id}", produces="application/json")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.getById(id).orElseThrow(() -> new EntityModelNotFoundException(id));
+		usuarioFuncionario.setEnabled(false);
+		usuarioFuncionarioService.update(id, usuarioFuncionario);
+		return ResponseEntity.ok().build();
 	}
 	
 }

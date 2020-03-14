@@ -1,11 +1,10 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
 import senac.edu.engsoft.meuproduto.repository.UsuarioFuncionarioRepository;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService {
@@ -40,14 +39,16 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 	}
 
 	@Override
-	public UsuarioFuncionario saveOrUpdate(UsuarioFuncionario usuarioFuncionario) {
-		try {
-			return usuarioFuncionarioRepository.save(usuarioFuncionario);
-		} catch (Exception e) {
-			//TODO: Tratar erro
-			e.printStackTrace();
-		}
-		return null;
+	public UsuarioFuncionario save(UsuarioFuncionario usuarioFuncionario) {
+		return usuarioFuncionarioRepository.save(usuarioFuncionario); //save
+	}
+
+	@Override
+	public UsuarioFuncionario update(Long id, UsuarioFuncionario usuarioFuncionario) {
+		Optional<UsuarioFuncionario> usuarioFuncionarioEncontrado = getById(id);
+		UsuarioFuncionario usuarioFuncionarioParaAtualizar = usuarioFuncionarioEncontrado.get();
+		usuarioFuncionarioEncontrado.get().copyForNew(usuarioFuncionario);
+		return usuarioFuncionarioRepository.save(usuarioFuncionarioParaAtualizar); //update
 	}
 
 	@Override
@@ -58,17 +59,6 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 			//TODO: Tratar erro
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void deleteAll() {
-		try {
-			usuarioFuncionarioRepository.deleteAll();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
 	}
 
 	@Override
