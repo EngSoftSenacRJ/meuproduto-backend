@@ -13,4 +13,7 @@ public interface MarcaProdutoRepository extends CrudRepository<MarcaProduto, Lon
 
     @Query(value="select l from MarcaProduto l where l.nome = :nome")
     Optional<MarcaProduto> getByNome(@Param("nome") String nome);
+    @Query(value="select l from MarcaProduto l where l.habilitado = true")
+    Iterable<MarcaProduto> findAllEnabled();
+
 }

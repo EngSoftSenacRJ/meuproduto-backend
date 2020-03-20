@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = UsuarioType.Values._FUNCIONARIO)
 public class UsuarioFuncionario extends Usuario {
 
+    @NotEmpty(message = "usernameAdministrador é obrigatório")
     @Column(name = "USERNAME_ADMINISTRADOR")
 	private String usernameAdministrador;
 

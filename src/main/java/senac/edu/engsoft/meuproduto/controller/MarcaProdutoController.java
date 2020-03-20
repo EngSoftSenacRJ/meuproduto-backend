@@ -27,9 +27,15 @@ public class MarcaProdutoController {
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
-	@GetMapping
+	@GetMapping(value = "/")
 	public CollectionModel<MarcaProdutoResource> getAll() {;
 		return marcaProdutoResourceAssembler.toCollectionModel(marcaProdutoService.getAll());
+	}
+
+	@ResponseStatus(value=HttpStatus.OK)
+	@GetMapping(value = "/enabled")
+	public CollectionModel<MarcaProdutoResource> getAllEnabled() {;
+		return marcaProdutoResourceAssembler.toCollectionModel(marcaProdutoService.getAllEnabled());
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)

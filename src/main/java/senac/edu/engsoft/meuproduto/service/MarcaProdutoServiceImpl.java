@@ -23,6 +23,11 @@ public class MarcaProdutoServiceImpl implements MarcaProdutoService {
 	}
 
 	@Override
+	public Iterable<MarcaProduto> getAllEnabled() {
+		return marcaProdutoRepository.findAllEnabled();
+	}
+
+	@Override
 	public Optional<MarcaProduto> getById(Long id) {
 		return marcaProdutoRepository.findById(id);
 	}

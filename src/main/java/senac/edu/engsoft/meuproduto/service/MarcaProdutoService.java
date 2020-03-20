@@ -11,4 +11,5 @@ public interface MarcaProdutoService {
 	MarcaProduto update(MarcaProduto marcaProduto);
 	MarcaProduto save(MarcaProduto marcaProduto);
 	void desabilitar(MarcaProduto marcaProduto);
+	Iterable<MarcaProduto> getAllEnabled();
 }
