@@ -1,5 +1,6 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,15 +22,16 @@ public class MarcaProduto {
 	private Long id;
 
 	@Column(name="HABILITADO")
+	@JsonIgnore
 	private Boolean habilitado;
 
-	@NotEmpty
+	@NotEmpty(message = "nome é obrigatório")
 	@NotNull
 	@Size(min = 1, max = 50)
 	@Column(name="NOME")
 	private String nome;
 
-	@NotEmpty
+	@NotEmpty(message = "descricao é obrigatória")
 	@NotNull
 	@Size(min = 5, max = 200)
 	@Column(name="DESCRICAO")

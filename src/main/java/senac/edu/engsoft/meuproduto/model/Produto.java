@@ -1,12 +1,15 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,12 +27,16 @@ public class Produto {
 
 	@NotNull(message = "Nome é obrigatório")
 	@NotBlank(message = "Nome é obrigatório")
+	@Size(min = 3, max = 50, message = "Nome do produto deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name = "NOME")
 	private String nome;
 
+	@Size(min = 0, max = 100, message = "Descrição do produto deve ter no máximo '50' caracteres")
 	@Column(name = "DESCRICAO")
 	private String descricao;
 
+	@NotNull
+	@Min(value = 1, message = "Meses de Garantia do produto deve ter no mínimo '1' dígito")
 	@Column(name="MESES_GARANTIA")
 	private Integer mesesGarantia;
 
@@ -44,6 +51,7 @@ public class Produto {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Categoria categoria;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
 

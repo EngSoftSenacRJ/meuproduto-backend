@@ -1,13 +1,12 @@
 package senac.edu.engsoft.meuproduto;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import senac.edu.engsoft.meuproduto.service.ParametroService;
+
+import javax.annotation.PostConstruct;
 
 @Component
 public class AppInitializator {

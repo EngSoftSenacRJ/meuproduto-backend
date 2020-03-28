@@ -1,5 +1,7 @@
 package senac.edu.engsoft.meuproduto.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
+@Tag(name = "Autenticação de Usuário 'Administrador' e 'Funcionário'", description = "Autenticação de Usuário 'Administrador' e 'Funcionário' API")
 public class AuthenticationController {
 	
 
@@ -36,6 +39,7 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@Operation(summary = "Autenticar usuário", description = "Autenticar usuário 'Administrador' ou 'Funcionário'")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());

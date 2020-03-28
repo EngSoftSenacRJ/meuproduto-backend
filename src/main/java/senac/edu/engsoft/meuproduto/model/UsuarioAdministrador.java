@@ -20,21 +20,6 @@ public class UsuarioAdministrador extends Usuario {
 		super(usuario);
 	}
 
-//	public UsuarioAdministrador(String ruaEnderecoPessoal,
-//			String numeroEnderecoPessoal,
-//			String bairroEnderecoPessoal,
-//			String cidadeEnderecoPessoal,
-//			String estadoEnderecoPessoal,
-//			String cepEnderecoPessoal,
-//			String nome,
-//			Long telefoneContato,
-//			Long cpf,
-//			String email,
-//			LocalDate dataAniversario) {
-//		super(ruaEnderecoPessoal, numeroEnderecoPessoal, bairroEnderecoPessoal, cidadeEnderecoPessoal,
-//				estadoEnderecoPessoal, cepEnderecoPessoal, nome, telefoneContato, cpf, email, dataAniversario, false);
-//	}
-
 	public UsuarioAdministrador copyForNew(UsuarioAdministrador other){
 		if(other.getRuaEnderecoPessoal() != null)
 			super.setRuaEnderecoPessoal(other.getRuaEnderecoPessoal());

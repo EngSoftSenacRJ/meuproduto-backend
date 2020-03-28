@@ -1,5 +1,7 @@
 package senac.edu.engsoft.meuproduto.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import senac.edu.engsoft.meuproduto.service.CategoriaProdutoService;
 @CrossOrigin
 @RestController
 @RequestMapping({"/categorias"})
+@Tag(name = "Categoria do Produto", description = "Categoria do Produto API")
 public class CategoriaProdutoController {
 
 	private CategoriaProdutoService categoriaProdutoService;
@@ -25,6 +28,7 @@ public class CategoriaProdutoController {
 	
 	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping
+	@Operation(summary = "Buscar Categorias", description = "Buscar lista de Categorias de produtos")
 	public CollectionModel<CategoriaProdutoResource> getAll() {;
 		return categoriaProdutoResourceAssembler.toCollectionModel(categoriaProdutoService.getAll());
 	}

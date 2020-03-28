@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import senac.edu.engsoft.meuproduto.model.json.validator.EmailValidator;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ public class Usuario implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
@@ -36,31 +36,38 @@ public class Usuario implements UserDetails {
 	
 	@NotEmpty(message = "ruaEnderecoPessoal é obrigatório")
 	@Column(name="RUA_ENDERECO_PESSOAL")
+	@Size(min = 3, max = 50, message = "Rua Endereço Pessoal deve ter no mínimo '3' e no máximo '50' caracteres")
 	private String ruaEnderecoPessoal;
 	
 	@NotEmpty(message = "numeroEnderecoPessoal é obrigatório")
+	@Pattern(regexp = "[0-9]{1,10}", message = "Número Endereço Pessoal deve ter no mínimo '1' e no máximo '10' dígitos")
 	@Column(name="NUMERO_ENDERECO_PESSOAL")
 	private String numeroEnderecoPessoal;
 	
 	@NotEmpty(message = "bairroEnderecoPessoal é obrigatório")
+	@Size(min = 3, max = 50, message = "Bairro Endereço Pessoal deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name="BAIRRO_ENDERECO_PESSOAL")
 	private String bairroEnderecoPessoal;
 	
 	@NotEmpty(message = "cidadeEnderecoPessoal é obrigatório")
+	@Size(min = 3, max = 50, message = "Cidade Endereço Pessoal deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name="CIDADE_ENDERECO_PESSOAL")
 	private String cidadeEnderecoPessoal;
 	
 	@NotEmpty(message = "estadoEnderecoPessoal é obrigatório")
+	@Size(min = 3, max = 50, message = "Estado Endereço Pessoal deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name="ESTADO_ENDERECO_PESSOAL")
 	private String estadoEnderecoPessoal;
 	
 	@NotEmpty(message = "cepEnderecoPessoal é obrigatório")
+	@Pattern(regexp = "[0-9]{8}", message = "CEP Endereço Pessoal deve ter '8' dígitos")
 	@Column(name="CEP_ENDERECO_PESSOAL")
 	private String cepEnderecoPessoal;
 
 	@Column(name="DATA_ANIVERSARIO")
-//	@JsonSerialize(using = LocalDateSerializer.class)
+	@Past
 	@JsonFormat(pattern="dd/MM/yyyy")
+	@NotNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
 
@@ -73,17 +80,23 @@ public class Usuario implements UserDetails {
 	@Column(name="NOME")
 	private String nome;
 
-	@Valid
+	@NotNull
+	@DecimalMin(value = "10000000000", message = "Telefone Contato deve ter no mínimo '10' dígitos")
+	@DecimalMax(value = "99999999999", message = "Telefone Contato deve ter no máximo '11' dígitos")
 	@Column(name="TELEFONE_CONTATO")
 	private Long telefoneContato;
 	
 	@NotNull
+	@DecimalMin(value = "10000000000", message = "CPF deve ter no mínimo '11' dígitos")
+	@DecimalMax(value = "99999999999", message = "CPF deve ter no máximo '11' dígitos")
 	@Column(name="CPF")
 	private Long cpf;
 
 	/*
 		Spring security Fields
 	 */
+	@NotNull
+	@NotEmpty(message = "Password é obrigatória")
 	@Column(name="SENHA")
 	private String password;
 
@@ -183,26 +196,31 @@ public class Usuario implements UserDetails {
 	}
 
 	@Override
+	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isEnabled() {
 		return enabled;
 	}

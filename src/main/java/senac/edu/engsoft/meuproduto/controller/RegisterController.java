@@ -1,5 +1,7 @@
 package senac.edu.engsoft.meuproduto.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin
+@Tag(name = "Cadastro Usuário Administrador", description = "Cadastro Usuário Administrador API")
 public class RegisterController {
 
 	private UsuarioService usuarioService;
@@ -41,26 +44,27 @@ public class RegisterController {
 	}
 
 	@RequestMapping(value = "/register/confirmEmail", method = RequestMethod.GET)
-//	ResponseEntity<?>
+	@Operation(summary = "Confirmar Email cadastrado", description = "Confirmar Email cadastrado")
 	public void confirmarEmail(HttpServletResponse response, @RequestParam Long id, @RequestParam String token) throws IOException {
 		Optional<Usuario> usuario = usuarioService.getById(id);
 		if(!usuario.isPresent() || token == null || !usuario.get().getTokenValidacaoEmail().equals(token)){
 			//TODO: Implementar redirect para uma página de erro
 
-			response.sendRedirect("http://www.google.com.br/search?q=falha");
+			response.sendRedirect("http://localhost:4200/login?status=erro");
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}else{
 			Usuario usuarioEncontrado = usuario.get();
 			usuarioEncontrado.setTokenValidacaoEmail(null);
 			usuarioEncontrado.setEnabled(true);
 			usuarioService.update(usuarioEncontrado);
-			response.sendRedirect("http://www.google.com.br/search?q=sucesso");
+			response.sendRedirect("http://localhost:4200/login?status=sucesso");
 //			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@Operation(summary = "Cadastrado usuário", description = "Cadastrar usuário 'Administrador' ou 'Funcionário'")
 	public ResponseEntity<?> register(HttpServletRequest request, @RequestBody @Valid Usuario usuario) {
 		if(usuario.getId() != null){
 			throw new EntityIdFoundForInsertOperationException(usuario.getId());
