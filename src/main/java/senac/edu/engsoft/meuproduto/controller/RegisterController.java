@@ -47,20 +47,19 @@ public class RegisterController {
 	@Operation(summary = "Confirmar Email cadastrado", description = "Confirmar Email cadastrado")
 	public void confirmarEmail(HttpServletResponse response, @RequestParam Long id, @RequestParam String token) throws IOException {
 		Optional<Usuario> usuario = usuarioService.getById(id);
-		if(!usuario.isPresent() || token == null || !usuario.get().getTokenValidacaoEmail().equals(token)){
-			//TODO: Implementar redirect para uma página de erro
-
+		if(!usuario.isPresent() || token == null ||
+				(!usuario.get().isEnabled() && !usuario.get().getTokenValidacaoEmail().equals(token))
+		){
 			response.sendRedirect("http://localhost:4200/login?status=erro");
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}else{
 			Usuario usuarioEncontrado = usuario.get();
-			usuarioEncontrado.setTokenValidacaoEmail(null);
-			usuarioEncontrado.setEnabled(true);
-			usuarioService.update(usuarioEncontrado);
+			if(!usuarioEncontrado.isEnabled()) {
+				usuarioEncontrado.setEnabled(true);
+				usuarioEncontrado.setTokenValidacaoEmail(null);
+				usuarioService.update(usuarioEncontrado);
+			}
 			response.sendRedirect("http://localhost:4200/login?status=sucesso");
-//			return ResponseEntity.status(HttpStatus.OK).build();
 		}
-
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
