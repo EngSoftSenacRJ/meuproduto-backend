@@ -40,6 +40,14 @@ public class UsuarioFuncionarioController {
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
+	@GetMapping(value = "/enabled")
+	@Operation(summary = "Buscar Funcionarios habilitadas", description = "Buscar lista de usuários do tipo 'Funcionario' que estão habilitadas")
+	public CollectionModel<UsuarioFuncionarioResource> getAllEnabled() {;
+		CollectionModel<UsuarioFuncionarioResource> model = usuarioFuncionarioResourceAssembler.toCollectionModel(usuarioFuncionarioService.getAllEnabled());
+		return model;
+	}
+
+	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping(value = "/{id}")
 	@Operation(summary = "Buscar Funcionário por 'id'", description = "Buscar usuário do tipo 'Funcionario' por 'id")
 	public UsuarioFuncionarioResource getById(@PathVariable(required = true) Long id) {

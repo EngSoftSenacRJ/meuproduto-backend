@@ -1,5 +1,6 @@
 package senac.edu.engsoft.meuproduto.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
 import senac.edu.engsoft.meuproduto.repository.UsuarioFuncionarioRepository;
@@ -10,10 +11,13 @@ import java.util.Optional;
 public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService {
 
 	private final UsuarioFuncionarioRepository usuarioFuncionarioRepository;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public UsuarioFuncionarioServiceImpl(UsuarioFuncionarioRepository usuarioFuncionarioRepository) {
+	public UsuarioFuncionarioServiceImpl(UsuarioFuncionarioRepository usuarioFuncionarioRepository,
+										 BCryptPasswordEncoder bCryptPasswordEncoder) {
 		super();
 		this.usuarioFuncionarioRepository = usuarioFuncionarioRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Override
@@ -40,6 +44,8 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 
 	@Override
 	public UsuarioFuncionario save(UsuarioFuncionario usuarioFuncionario) {
+		String encodedPassword = bCryptPasswordEncoder.encode(usuarioFuncionario.getPassword());
+		usuarioFuncionario.setPassword(encodedPassword);
 		return usuarioFuncionarioRepository.save(usuarioFuncionario); //save
 	}
 
@@ -71,5 +77,16 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 		}
 		return null;
 	}
-	
+
+	@Override
+	public Iterable<UsuarioFuncionario> getAllEnabled() {
+		try {
+			return usuarioFuncionarioRepository.findAllEnabled();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
