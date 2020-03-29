@@ -11,9 +11,12 @@ import java.util.Optional;
 @Repository
 public interface UsuarioFuncionarioRepository extends CrudRepository<UsuarioFuncionario, Long>{
 
-	@Query(value="select l from UsuarioFuncionario l where l.nome = :nome")
+	@Query(value="select l from UsuarioFuncionario l where l.nome = :nome ")
 	Optional<UsuarioFuncionario> getByNome(@Param("nome") String nome);
 
-	@Query(value="select l from UsuarioFuncionario l where l.enabled = 1")
+	@Query(value="select l from UsuarioFuncionario l where l.enabled = true ")
     Iterable<UsuarioFuncionario> findAllEnabled();
+
+	@Query(value="select l from UsuarioFuncionario l where l.usernameAdministrador = :usernameAdministrador")
+	Iterable<UsuarioFuncionario> getByUsernameAdministrador(@Param("usernameAdministrador") String usernameAdministrador);
 }

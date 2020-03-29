@@ -55,11 +55,18 @@ public class UsuarioFuncionarioController {
 		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
 	}
 	
-	@GetMapping(value="/loja")
+	@GetMapping
 	@Operation(summary = "Buscar Funcionário por 'nome'", description = "Buscar usuário do tipo 'Funcionario' por 'nome")
 	public UsuarioFuncionarioResource getByNome(@RequestParam(value="nome", required=true) String nome) {
 		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.getByNome(nome).orElseThrow(() -> new EntityModelNotFoundException());
 		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
+	}
+
+	@GetMapping
+	@Operation(summary = "Buscar Funcionários por 'usernameAdministrador'", description = "Buscar usuários do tipo 'Funcionario' por 'usernameAdministrador")
+	public CollectionModel<UsuarioFuncionarioResource> getByUsernameAdministrador(@RequestParam(value="usernameAdministrador", required=true) String usernameAdministrador) {
+		CollectionModel<UsuarioFuncionarioResource> model = usuarioFuncionarioResourceAssembler.toCollectionModel(usuarioFuncionarioService.getByUsernameAdministrador(usernameAdministrador));
+		return model;
 	}
 	
 	@ResponseStatus(value=HttpStatus.CREATED)

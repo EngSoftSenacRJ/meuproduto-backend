@@ -89,4 +89,15 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 		return null;
 	}
 
+	@Override
+	public Iterable<UsuarioFuncionario> getByUsernameAdministrador(String usernameAdministrador) {
+		try {
+			return usuarioFuncionarioRepository.getByUsernameAdministrador(usernameAdministrador);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
