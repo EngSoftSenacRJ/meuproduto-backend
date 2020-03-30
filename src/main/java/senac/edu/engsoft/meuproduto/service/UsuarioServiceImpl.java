@@ -3,7 +3,7 @@ package senac.edu.engsoft.meuproduto.service;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.ObjectCreationValidationException;
 import senac.edu.engsoft.meuproduto.model.Usuario;
-import senac.edu.engsoft.meuproduto.repository.UsuarioRepository;
+import senac.edu.engsoft.meuproduto.service.repository.UsuarioRepository;
 import senac.edu.engsoft.meuproduto.service.util.CpfValidatorUtil;
 
 import java.util.Optional;

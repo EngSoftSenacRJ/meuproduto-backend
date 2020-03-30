@@ -3,7 +3,7 @@ package senac.edu.engsoft.meuproduto.service;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.ObjectCreationValidationException;
 import senac.edu.engsoft.meuproduto.model.MarcaProduto;
-import senac.edu.engsoft.meuproduto.repository.MarcaProdutoRepository;
+import senac.edu.engsoft.meuproduto.service.repository.MarcaProdutoRepository;
 
 import java.util.Optional;
 

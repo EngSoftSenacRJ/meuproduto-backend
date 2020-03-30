@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.ObjectCreationValidationException;
 import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
-import senac.edu.engsoft.meuproduto.repository.LojaRepository;
+import senac.edu.engsoft.meuproduto.service.repository.LojaRepository;
 import senac.edu.engsoft.meuproduto.service.util.HorarioFuncionamentoLojaUtil;
 
 import java.util.Optional;

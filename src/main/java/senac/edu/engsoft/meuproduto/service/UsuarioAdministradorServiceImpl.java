@@ -5,7 +5,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
-import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
+import senac.edu.engsoft.meuproduto.service.repository.UsuarioAdministradorRepository;
 
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;

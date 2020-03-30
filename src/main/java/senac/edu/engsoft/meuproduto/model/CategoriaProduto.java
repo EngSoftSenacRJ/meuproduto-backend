@@ -1,29 +1,31 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "TB_CATEGORIA_PRODUTO")
 public class CategoriaProduto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name="NOME")
 	private String nome;
 
 	@Column(name="DESCRICAO")
 	private String descricao;
-	
+
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Produto> produtoSet = new HashSet<>();
+
 	public CategoriaProduto() {
 		super();
 	}

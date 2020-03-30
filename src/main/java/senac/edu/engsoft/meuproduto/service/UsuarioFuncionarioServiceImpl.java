@@ -3,7 +3,7 @@ package senac.edu.engsoft.meuproduto.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
-import senac.edu.engsoft.meuproduto.repository.UsuarioFuncionarioRepository;
+import senac.edu.engsoft.meuproduto.service.repository.UsuarioFuncionarioRepository;
 
 import java.util.Optional;
 

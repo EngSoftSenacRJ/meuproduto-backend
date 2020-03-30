@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Getter
@@ -36,6 +38,10 @@ public class MarcaProduto {
 	@Size(min = 5, max = 200)
 	@Column(name="DESCRICAO")
 	private String descricao;
+
+	@OneToMany(mappedBy = "marca", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Produto> produtoSet = new HashSet<>();
 
 	@PrePersist
 	public void prePersist(){

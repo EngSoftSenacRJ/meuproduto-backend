@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
-import senac.edu.engsoft.meuproduto.repository.UsuarioAdministradorRepository;
+import senac.edu.engsoft.meuproduto.service.repository.UsuarioAdministradorRepository;
 
 import java.util.Optional;
 

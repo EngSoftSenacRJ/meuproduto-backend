@@ -1,13 +1,17 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -19,19 +23,34 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "TB_PRODUTO")
+@Indexed
+@AnalyzerDef(name = "customanalyzer",
+		tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+		filters = {
+				@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+				@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+						@Parameter(name = "language", value = "Portuguese")
+				})
+		})
 public class Produto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@DocumentId
+	@JsonIgnore
 	private Long id;
 
 	@NotNull(message = "Nome é obrigatório")
-	@NotBlank(message = "Nome é obrigatório")
+	@NotEmpty(message = "Nome é obrigatório")
 	@Size(min = 3, max = 50, message = "Nome do produto deve ter no mínimo '3' e no máximo '50' caracteres")
+	@Field
+	@Analyzer(definition = "customanalyzer")
 	@Column(name = "NOME")
 	private String nome;
 
 	@Size(min = 0, max = 100, message = "Descrição do produto deve ter no máximo '50' caracteres")
+	@Field
+	@Analyzer(definition = "customanalyzer")
 	@Column(name = "DESCRICAO")
 	private String descricao;
 
@@ -41,19 +60,37 @@ public class Produto {
 	private Integer mesesGarantia;
 
 	@NotNull(message = "Marca é obrigatório")
-	@NotBlank(message = "Marca é obrigatório")
-	@Column(name="MARCA")
-	private String marca;
+	@IndexedEmbedded
+	@JsonBackReference
+	@JoinColumn(name = "ID_MARCA", insertable = false, updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	private MarcaProduto marca;
 
 	@NotNull(message = "Categoria é obrigatório")
-	@NotBlank(message = "Categoria é obrigatório")
-	@JoinColumn(name = "ID_CATEGORIA")
+	@IndexedEmbedded
+	@JsonBackReference
+	@JoinColumn(name = "ID_CATEGORIA", insertable = false, updatable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Categoria categoria;
+	private CategoriaProduto categoria;
 
 	@JsonIgnore
+	@IndexedEmbedded
 	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
+
+	public void copyForNew(Produto other) {
+		if(other.getNome() != null)
+			this.setNome(other.getNome());
+		if(other.getDescricao() != null)
+			this.setDescricao(other.getDescricao());
+		if(other.getMesesGarantia() != null)
+			this.setMesesGarantia(other.getMesesGarantia());
+		if(other.getMarca() != null)
+			this.setMarca(other.getMarca());
+		if(other.getCategoria() != null)
+			this.setCategoria(other.getCategoria());
+		//TODO: lojaProdutoSet
+	}
 
 	@Override
 	public int hashCode() {
@@ -79,5 +116,4 @@ public class Produto {
 			return false;
 		return true;
 	}
-	
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import senac.edu.engsoft.meuproduto.model.Parametro;
 import senac.edu.engsoft.meuproduto.model.ParametroEnum;
-import senac.edu.engsoft.meuproduto.repository.ParametroRepository;
+import senac.edu.engsoft.meuproduto.service.repository.ParametroRepository;
 
 @Service
 public class ParametroServiceImpl implements ParametroService {

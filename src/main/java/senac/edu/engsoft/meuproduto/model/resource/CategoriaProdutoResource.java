@@ -11,6 +11,7 @@ import senac.edu.engsoft.meuproduto.model.CategoriaProduto;
 @JsonInclude
 public class CategoriaProdutoResource extends RepresentationModel<CategoriaProdutoResource> {
 
+	private Long id;
 	private String nome;
 	private String descricao;
 
@@ -19,6 +20,7 @@ public class CategoriaProdutoResource extends RepresentationModel<CategoriaProdu
 	}
 
 	public CategoriaProdutoResource(CategoriaProduto categoriaProduto) {
+		this.id = categoriaProduto.getId();
 		this.nome = categoriaProduto.getNome();
 		this.descricao = categoriaProduto.getDescricao();
 	}

@@ -3,6 +3,9 @@ package senac.edu.engsoft.meuproduto.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.hibernate.search.annotations.Latitude;
+import org.hibernate.search.annotations.Longitude;
+import org.hibernate.search.annotations.Spatial;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,6 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
+@Spatial
 @Entity
 @Table(name = "TB_LOJA")
 @JsonInclude
@@ -29,17 +33,19 @@ public class Loja {
 	@JsonIgnore
 	private LocalDateTime dataCriacao;
 
+	@Latitude
 	@Column(name="LATITUDE")
-	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$", message = "Formato da latitude é inválida")
-	private Double latitude;
+//	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$", message = "Formato da latitude é inválida")
+	private String latitude;
 
+	@Longitude
 	@Column(name="LONGITUDE")
-	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$", message = "Formato da longitude é inválida")
-	private Double longitude;
+//	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$", message = "Formato da longitude é inválida")
+	private String longitude;
 
 	@NotNull(message = "Nome da loja é obrigatório")
 	@NotEmpty(message = "Nome da loja é obrigatório")
-	@Pattern(regexp = "[a-zA-Z]{3,50}", message = "Nome da loja deve ter no mínimo '3' e no máximo '50' caracteres")
+	@Pattern(regexp = "[a-zA-Z ]{3,50}", message = "Nome da loja deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name="nome")
 	private String nome;
 
