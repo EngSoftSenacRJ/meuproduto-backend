@@ -19,7 +19,7 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 	private Long cpf;
 	private String nome;
 	private Long telefoneContato;
-	private String email;
+	private String username;
 
 	private String ruaEnderecoPessoal;
 	private String numeroEnderecoPessoal;
@@ -42,7 +42,7 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 		this.cpf = usuarioFuncionario.getCpf();
 		this.nome = usuarioFuncionario.getNome();
 		this.telefoneContato = usuarioFuncionario.getTelefoneContato();
-		this.email = usuarioFuncionario.getUsername();
+		this.username = usuarioFuncionario.getUsername();
 		this.ruaEnderecoPessoal = usuarioFuncionario.getRuaEnderecoPessoal();
 		this.numeroEnderecoPessoal = usuarioFuncionario.getNumeroEnderecoPessoal();
 		this.bairroEnderecoPessoal = usuarioFuncionario.getBairroEnderecoPessoal();
