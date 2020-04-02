@@ -62,10 +62,17 @@ public class UsuarioFuncionarioController {
 //		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
 //	}
 
+	@GetMapping(value = "/administrador/enabled")
+	@Operation(summary = "Buscar Funcionários por 'usernameAdministrador' e 'enabled'", description = "Buscar usuários do tipo 'Funcionario' por 'usernameAdministrador  e 'enabled'")
+	public CollectionModel<UsuarioFuncionarioResource> getByUsernameAdministradorAndEnabled(@RequestParam(value="usernameAdministrador", required=true) String usernameAdministrador) {
+		CollectionModel<UsuarioFuncionarioResource> model = usuarioFuncionarioResourceAssembler.toCollectionModel(usuarioFuncionarioService.getByUsernameAdministrador(usernameAdministrador, true));
+		return model;
+	}
+
 	@GetMapping(value = "/administrador")
 	@Operation(summary = "Buscar Funcionários por 'usernameAdministrador'", description = "Buscar usuários do tipo 'Funcionario' por 'usernameAdministrador")
 	public CollectionModel<UsuarioFuncionarioResource> getByUsernameAdministrador(@RequestParam(value="usernameAdministrador", required=true) String usernameAdministrador) {
-		CollectionModel<UsuarioFuncionarioResource> model = usuarioFuncionarioResourceAssembler.toCollectionModel(usuarioFuncionarioService.getByUsernameAdministrador(usernameAdministrador));
+		CollectionModel<UsuarioFuncionarioResource> model = usuarioFuncionarioResourceAssembler.toCollectionModel(usuarioFuncionarioService.getByUsernameAdministrador(usernameAdministrador, null));
 		return model;
 	}
 	

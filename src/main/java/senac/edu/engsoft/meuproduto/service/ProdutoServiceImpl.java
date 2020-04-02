@@ -5,11 +5,16 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
+import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
+import senac.edu.engsoft.meuproduto.model.CategoriaProduto;
+import senac.edu.engsoft.meuproduto.model.MarcaProduto;
 import senac.edu.engsoft.meuproduto.model.Produto;
+import senac.edu.engsoft.meuproduto.model.dto.ProdutoDTO;
 import senac.edu.engsoft.meuproduto.service.repository.ProdutoRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
@@ -19,15 +24,31 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	private final ProdutoRepository produtoRepository;
 
-	public ProdutoServiceImpl(ProdutoRepository produtoRepository, EntityManager entityManager) {
+	private CategoriaProdutoService categoriaProdutoService;
+	private MarcaProdutoService marcaProdutoService;
+
+	public ProdutoServiceImpl(ProdutoRepository produtoRepository,
+							  EntityManager entityManager,
+							  CategoriaProdutoService categoriaProdutoService,
+							  MarcaProdutoService marcaProdutoService) {
 		super();
 		this.produtoRepository = produtoRepository;
 		this.entityManager = entityManager;
+		this.categoriaProdutoService = categoriaProdutoService;
+		this.marcaProdutoService = marcaProdutoService;
 	}
 
 	@Override
-	public Produto save(Produto produto) {
-		return produtoRepository.save(produto);
+	public Produto save(ProdutoDTO _produtoDTO) {
+		MarcaProduto _marcaProduto = marcaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
+		CategoriaProduto _categoriaProduto = categoriaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
+		Produto _produto = new Produto();
+		_produto.setMarca(_marcaProduto);
+		_produto.setCategoria(_categoriaProduto);
+		_produto.setMesesGarantia(_produtoDTO.getMesesGarantia());
+		_produto.setDescricao(_produtoDTO.getDescricao());
+		_produto.setNome(_produtoDTO.getNome());
+		return produtoRepository.save(_produto);
 	}
 
 	@Override
@@ -58,6 +79,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 		FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Produto.class);
 		return jpaQuery.getResultList();
+	}
+
+	@Override
+	public Optional<Produto> getById(Long id) {
+		return produtoRepository.findById(id);
 	}
 
 	@Override

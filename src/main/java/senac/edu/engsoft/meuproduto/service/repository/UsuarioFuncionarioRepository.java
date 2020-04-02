@@ -17,6 +17,6 @@ public interface UsuarioFuncionarioRepository extends CrudRepository<UsuarioFunc
 	@Query(value="select l from UsuarioFuncionario l where l.enabled = true ")
     Iterable<UsuarioFuncionario> findAllEnabled();
 
-	@Query(value="select l from UsuarioFuncionario l where l.usernameAdministrador = :usernameAdministrador")
-	Iterable<UsuarioFuncionario> getByUsernameAdministrador(@Param("usernameAdministrador") String usernameAdministrador);
+	@Query(value="select l from UsuarioFuncionario l where l.usernameAdministrador = :usernameAdministrador and (l.enabled = :enabled or :enabled is null)")
+	Iterable<UsuarioFuncionario> getByUsernameAdministrador(@Param("usernameAdministrador") String usernameAdministrador, @Param("enabled") Boolean enabled);
 }

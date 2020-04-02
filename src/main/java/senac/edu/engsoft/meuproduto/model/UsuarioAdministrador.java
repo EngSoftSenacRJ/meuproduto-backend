@@ -21,6 +21,8 @@ public class UsuarioAdministrador extends Usuario {
 	}
 
 	public UsuarioAdministrador copyForNew(UsuarioAdministrador other){
+		if(other.getNewPassword() != null && other.getNewPassword().length() > 1)
+			super.setPassword(other.getNewPassword());
 		if(other.getRuaEnderecoPessoal() != null)
 			super.setRuaEnderecoPessoal(other.getRuaEnderecoPessoal());
 		if(other.getNumeroEnderecoPessoal() != null)

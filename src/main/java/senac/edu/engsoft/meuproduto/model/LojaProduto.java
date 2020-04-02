@@ -1,5 +1,7 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /*
@@ -11,6 +13,7 @@ public class LojaProduto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@JoinColumn(name = "ID_LOJA")
@@ -31,6 +34,12 @@ public class LojaProduto {
 	public LojaProduto(Long id, Loja loja, Produto produto, Double preco) {
 		super();
 		this.id = id;
+		this.loja = loja;
+		this.produto = produto;
+		this.preco = preco;
+	}
+
+	public LojaProduto(Loja loja, Produto produto, Double preco) {
 		this.loja = loja;
 		this.produto = produto;
 		this.preco = preco;

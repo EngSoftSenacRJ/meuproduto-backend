@@ -90,9 +90,9 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 	}
 
 	@Override
-	public Iterable<UsuarioFuncionario> getByUsernameAdministrador(String usernameAdministrador) {
+	public Iterable<UsuarioFuncionario> getByUsernameAdministrador(String usernameAdministrador, Boolean enabled) {
 		try {
-			return usuarioFuncionarioRepository.getByUsernameAdministrador(usernameAdministrador);
+			return usuarioFuncionarioRepository.getByUsernameAdministrador(usernameAdministrador, enabled);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

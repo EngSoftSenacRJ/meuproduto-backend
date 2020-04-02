@@ -106,6 +106,9 @@ public class Usuario implements UserDetails {
 	@Column(name="SENHA")
 	private String password;
 
+	@Transient
+	private String newPassword;
+
 	@NotEmpty(message = "email é obrigatório")
 	@NotNull
 	@EmailValidator
@@ -113,8 +116,10 @@ public class Usuario implements UserDetails {
 	private String username;
 
 	@Column(name="HABILITADO")
-	@JsonIgnore
 	private boolean enabled;
+
+	@Column(name="EMAIL_CONFIRMADO")
+	private boolean emailConfirmado;
 
 	@Column(name="TOKEN_VALIDACAO_EMAIL")
 	@JsonIgnore
@@ -146,14 +151,15 @@ public class Usuario implements UserDetails {
 		this.password = usuario.getPassword();
 		this.tokenValidacaoEmail = usuario.getTokenValidacaoEmail();
 		this.enabled = false;
+		this.emailConfirmado = false;
 	}
 
 	@PrePersist
 	private void prePersist() {
-		if(this.getId() != null)
-			this.setId(null);
-		if(this.getDataCriacao() == null)
-			this.setDataCriacao(LocalDate.now());
+		this.setEnabled(true);
+		this.setEmailConfirmado(false);
+		this.setDataCriacao(LocalDate.now());
+		this.setId(null);
 	}
 	
 	public Usuario() {

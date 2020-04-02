@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import senac.edu.engsoft.meuproduto.model.Usuario;
 import senac.edu.engsoft.meuproduto.security.JwtTokenUtil;
 import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
@@ -49,7 +50,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
-			if(!userDetails.isEnabled()){
+			//TODO: Verificar
+			if(!userDetails.isEnabled() && !((Usuario)userDetails).isEmailConfirmado()){
 				SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
 			}else
 

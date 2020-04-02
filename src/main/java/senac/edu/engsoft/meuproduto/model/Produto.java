@@ -54,6 +54,8 @@ public class Produto {
 	@Column(name = "DESCRICAO")
 	private String descricao;
 
+	//TODO: imagem
+
 	@NotNull
 	@Min(value = 1, message = "Meses de Garantia do produto deve ter no mínimo '1' dígito")
 	@Column(name="MESES_GARANTIA")

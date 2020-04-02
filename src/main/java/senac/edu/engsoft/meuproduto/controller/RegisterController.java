@@ -48,13 +48,13 @@ public class RegisterController {
 	public void confirmarEmail(HttpServletResponse response, @RequestParam Long id, @RequestParam String token) throws IOException {
 		Optional<Usuario> usuario = usuarioService.getById(id);
 		if(!usuario.isPresent() || token == null ||
-				(!usuario.get().isEnabled() && !usuario.get().getTokenValidacaoEmail().equals(token))
+				(!usuario.get().isEmailConfirmado() && !usuario.get().getTokenValidacaoEmail().equals(token))
 		){
 			response.sendRedirect("http://localhost:4200/login?status=erro");
 		}else{
 			Usuario usuarioEncontrado = usuario.get();
-			if(!usuarioEncontrado.isEnabled()) {
-				usuarioEncontrado.setEnabled(true);
+			if(!usuarioEncontrado.isEmailConfirmado()) {
+				usuarioEncontrado.setEmailConfirmado(true);
 				usuarioEncontrado.setTokenValidacaoEmail(null);
 				usuarioService.update(usuarioEncontrado);
 			}

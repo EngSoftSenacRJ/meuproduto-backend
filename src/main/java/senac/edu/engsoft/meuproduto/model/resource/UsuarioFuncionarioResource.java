@@ -28,6 +28,9 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 	private String estadoEnderecoPessoal;
 	private String cepEnderecoPessoal;
 
+	private boolean enabled;
+	private boolean emailConfirmado;
+
 	@JsonFormat(pattern="dd/MM/yyyy")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
@@ -50,6 +53,8 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 		this.estadoEnderecoPessoal = usuarioFuncionario.getEstadoEnderecoPessoal();
 		this.cepEnderecoPessoal = usuarioFuncionario.getCepEnderecoPessoal();
 		this.dataAniversario = usuarioFuncionario.getDataAniversario();
+		this.enabled = usuarioFuncionario.isEnabled();
+		this.emailConfirmado = usuarioFuncionario.isEmailConfirmado();
 	}
 	
 }
