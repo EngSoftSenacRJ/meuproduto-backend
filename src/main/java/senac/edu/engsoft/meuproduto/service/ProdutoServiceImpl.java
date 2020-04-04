@@ -68,6 +68,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
+	public void indexAll() throws InterruptedException {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		fullTextEntityManager.createIndexer().startAndWait();
+	}
+
+	@Override
 	public Iterable<Produto> search(String searchText) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
@@ -82,8 +88,13 @@ public class ProdutoServiceImpl implements ProdutoService {
 				.matching(searchText + "*")
 				.createQuery();
 
+//		org.apache.lucene.search.Query luceneQuery = queryBuilder
+//				.all()
+//				.createQuery();
+
 		FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Produto.class);
-		return jpaQuery.getResultList();
+		Iterable<Produto> produtos = jpaQuery.getResultList();
+		return produtos;
 	}
 
 	@Override

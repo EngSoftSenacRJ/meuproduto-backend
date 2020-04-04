@@ -13,4 +13,5 @@ public interface ProdutoService {
 	Produto save(ProdutoDTO produto);
 	Produto update(Long id, Produto produto, Produto produtoAtual);
 	void delete(Long id);
+    void indexAll() throws InterruptedException;
 }
