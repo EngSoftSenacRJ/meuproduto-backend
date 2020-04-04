@@ -3,6 +3,7 @@ package senac.edu.engsoft.meuproduto.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.model.UsuarioAdministrador;
 import senac.edu.engsoft.meuproduto.service.repository.UsuarioAdministradorRepository;
@@ -16,10 +17,13 @@ import java.util.Set;
 public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorService {
 
 	private final UsuarioAdministradorRepository usuarioAdministradorRepository;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public UsuarioAdministradorServiceImpl(UsuarioAdministradorRepository usuarioAdministradorRepository) {
+	public UsuarioAdministradorServiceImpl(UsuarioAdministradorRepository usuarioAdministradorRepository,
+										   BCryptPasswordEncoder bCryptPasswordEncoder) {
 		super();
 		this.usuarioAdministradorRepository = usuarioAdministradorRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Override
@@ -52,6 +56,8 @@ public class UsuarioAdministradorServiceImpl implements UsuarioAdministradorServ
 		Optional<UsuarioAdministrador> usuarioAdministradorEncontrado = getById(id);
 		UsuarioAdministrador usuarioAdministradorParaAtualizar = usuarioAdministradorEncontrado.get();
 		usuarioAdministradorEncontrado.get().copyForNew(usuarioAdministrador);
+		String encodedPassword = bCryptPasswordEncoder.encode(usuarioAdministrador.getNewPassword());
+		usuarioAdministradorParaAtualizar.setPassword(encodedPassword);
 		return usuarioAdministradorRepository.save(usuarioAdministradorParaAtualizar); //update
 	}
 

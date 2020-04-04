@@ -64,14 +64,14 @@ public class Produto {
 	@NotNull(message = "Marca é obrigatório")
 	@IndexedEmbedded
 	@JsonBackReference
-	@JoinColumn(name = "ID_MARCA", insertable = false, updatable = false)
+	@JoinColumn(name = "ID_MARCA")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private MarcaProduto marca;
 
 	@NotNull(message = "Categoria é obrigatório")
 	@IndexedEmbedded
 	@JsonBackReference
-	@JoinColumn(name = "ID_CATEGORIA", insertable = false, updatable = false)
+	@JoinColumn(name = "ID_CATEGORIA")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CategoriaProduto categoria;
 

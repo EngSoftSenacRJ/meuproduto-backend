@@ -47,6 +47,7 @@ public class UsuarioFuncionario extends Usuario {
             super.setDataAniversario(other.getDataAniversario());
         if(other.getTokenValidacaoEmail() != null)
             super.setTokenValidacaoEmail(other.getTokenValidacaoEmail());
+        super.setEnabled(other.isEnabled());
 
         return this;
     }

@@ -119,6 +119,7 @@ public class Usuario implements UserDetails {
 	private boolean enabled;
 
 	@Column(name="EMAIL_CONFIRMADO")
+	@JsonIgnore
 	private boolean emailConfirmado;
 
 	@Column(name="TOKEN_VALIDACAO_EMAIL")
@@ -232,7 +233,7 @@ public class Usuario implements UserDetails {
 	}
 
 	@Override
-	@JsonIgnore
+//	@JsonIgnore
 	public boolean isEnabled() {
 		return enabled;
 	}

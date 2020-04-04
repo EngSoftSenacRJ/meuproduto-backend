@@ -54,6 +54,8 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 		Optional<UsuarioFuncionario> usuarioFuncionarioEncontrado = getById(id);
 		UsuarioFuncionario usuarioFuncionarioParaAtualizar = usuarioFuncionarioEncontrado.get();
 		usuarioFuncionarioEncontrado.get().copyForNew(usuarioFuncionario);
+		String encodedPassword = bCryptPasswordEncoder.encode(usuarioFuncionario.getNewPassword());
+		usuarioFuncionarioParaAtualizar.setPassword(encodedPassword);
 		return usuarioFuncionarioRepository.save(usuarioFuncionarioParaAtualizar); //update
 	}
 
