@@ -1,6 +1,7 @@
 package senac.edu.engsoft.meuproduto.service;
 
 import org.springframework.stereotype.Service;
+import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
 import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.LojaProduto;
 import senac.edu.engsoft.meuproduto.model.Produto;
@@ -34,7 +35,12 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 	public LojaProduto save(LojaProdutoDTO lojaProdutoDTO) {
 		Optional<Loja> loja = lojaService.getById(lojaProdutoDTO.getIdLoja());
 		Optional<Produto> produto = produtoService.getById(lojaProdutoDTO.getIdProduto());
-		//TODO: Se loja ou produto nao existir
+		if(!loja.isPresent()){
+			throw new EntityModelNotFoundException(lojaProdutoDTO.getIdLoja());
+		}
+		if(!produto.isPresent()){
+			throw new EntityModelNotFoundException(lojaProdutoDTO.getIdProduto());
+		}
 		return lojaProdutoRepository.save(new LojaProduto(loja.get(), produto.get(), lojaProdutoDTO.getPreco()));
 	}
 

@@ -6,6 +6,7 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
+import senac.edu.engsoft.meuproduto.advice.exception.ProdutoAlreadyExistException;
 import senac.edu.engsoft.meuproduto.model.CategoriaProduto;
 import senac.edu.engsoft.meuproduto.model.MarcaProduto;
 import senac.edu.engsoft.meuproduto.model.Produto;
@@ -40,6 +41,10 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 	@Override
 	public Produto save(ProdutoDTO _produtoDTO) {
+		if(produtoRepository.getByNome(_produtoDTO.getNome()) != null){
+			throw new ProdutoAlreadyExistException(_produtoDTO.getNome());
+		}
+
 		MarcaProduto _marcaProduto = marcaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
 		CategoriaProduto _categoriaProduto = categoriaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
 		Produto _produto = new Produto();
