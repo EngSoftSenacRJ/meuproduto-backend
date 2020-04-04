@@ -45,8 +45,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 			throw new ProdutoAlreadyExistException(_produtoDTO.getNome());
 		}
 
-		MarcaProduto _marcaProduto = marcaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
-		CategoriaProduto _categoriaProduto = categoriaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException());
+		MarcaProduto _marcaProduto = marcaProdutoService.getById(_produtoDTO.getMarcaId()).orElseThrow(() -> new EntityModelNotFoundException(MarcaProduto.class, _produtoDTO.getMarcaId()));
+		CategoriaProduto _categoriaProduto = categoriaProdutoService.getById(_produtoDTO.getCategoriaId()).orElseThrow(() -> new EntityModelNotFoundException(CategoriaProduto.class, _produtoDTO.getCategoriaId()));
 		Produto _produto = new Produto();
 		_produto.setMarca(_marcaProduto);
 		_produto.setCategoria(_categoriaProduto);
