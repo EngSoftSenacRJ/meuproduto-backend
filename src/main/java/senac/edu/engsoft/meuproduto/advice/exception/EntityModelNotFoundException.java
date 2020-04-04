@@ -1,5 +1,7 @@
 package senac.edu.engsoft.meuproduto.advice.exception;
 
+import java.util.Arrays;
+
 public class EntityModelNotFoundException extends RuntimeException {
 
 	/**
@@ -17,8 +19,8 @@ public class EntityModelNotFoundException extends RuntimeException {
 		super("Entidade não encontrada para o ID " + id);
 	}
 
-	public EntityModelNotFoundException(Class c, Long id) {
-		super("Entidade "+c.getName()+" não encontrada para o ID " + id);
+	public EntityModelNotFoundException(Class c, Long ...id) {
+		super("Entidade "+c.getName()+" não encontrada para o ID " + id != null ? Arrays.stream(id).toString() : null);
 	}
 
 }

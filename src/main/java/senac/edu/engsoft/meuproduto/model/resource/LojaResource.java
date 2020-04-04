@@ -16,7 +16,11 @@ import java.util.Set;
 @JsonInclude
 public class LojaResource extends RepresentationModel<LojaResource> {
 
-	@Getter
+	public LojaResource() {
+		super();
+	}
+
+    @Getter
 	@Setter
 	private class HorarioFuncionamentoResource {
 
@@ -27,6 +31,22 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 
 		public HorarioFuncionamentoResource() {
 			super();
+		}
+	}
+
+	@Getter
+	@Setter
+	private class ProdutoPrecoResource {
+		private ProdutoResource produtoResource;
+		private Double preco;
+
+		public ProdutoPrecoResource() {
+			super();
+		}
+
+		public ProdutoPrecoResource(ProdutoResource produtoResource, Double preco) {
+			this.produtoResource = produtoResource;
+			this.preco = preco;
 		}
 	}
 
@@ -42,12 +62,9 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 	private String cepEnderecoComercial;
 	private String telefoneContato;
 	private Set<HorarioFuncionamentoResource> horarioFuncionamentoSet = new HashSet<>();
+	private Set<ProdutoPrecoResource> produtoPrecoSet = new HashSet<>();
 
-	public LojaResource() {
-		super();
-	}
-
-	public LojaResource(Loja loja) {
+	public LojaResource(Loja loja, boolean listarProdutos) {
 		this.id = loja.getId();
 		this.nome = loja.getNome();
 		this.razaoSocial = loja.getRazaoSocial();
@@ -60,7 +77,7 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 		this.cepEnderecoComercial = loja.getCepEnderecoComercial();
 		this.telefoneContato = loja.getTelefoneContato();
 
-		Set<HorarioFuncionamentoResource> horarioFuncionamentos = new HashSet<>();
+		horarioFuncionamentoSet.clear();
 		for(HorarioFuncionamento horarioFuncionamento : loja.getHorarioFuncionamentoSet()){
 			HorarioFuncionamentoResource horarioFuncionamentoResourceNew = new HorarioFuncionamentoResource();
 			horarioFuncionamentoResourceNew.setDiaSemana(horarioFuncionamento.getDiaSemana().toString());
@@ -68,6 +85,13 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 			horarioFuncionamentoResourceNew.setHorarioFuncionamentoDe(horarioFuncionamento.getHorarioFuncionamentoDe());
 			horarioFuncionamentoResourceNew.setHorarioFuncionamentoAte(horarioFuncionamento.getHorarioFuncionamentoAte());
 			horarioFuncionamentoSet.add(horarioFuncionamentoResourceNew);
+		}
+
+		if(listarProdutos) {
+			produtoPrecoSet.clear();
+			for (senac.edu.engsoft.meuproduto.model.LojaProduto lojaProduto : loja.getLojaProdutoSet()) {
+				produtoPrecoSet.add(new ProdutoPrecoResource(new ProdutoResource(lojaProduto.getProduto()), lojaProduto.getPreco()));
+			}
 		}
 	}
 }

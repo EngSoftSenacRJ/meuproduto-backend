@@ -14,6 +14,8 @@ import java.util.List;
 public class LojaResourceAssembler extends RepresentationModelAssemblerSupport<Loja, LojaResource> {
 	
 	private static Class<LojaController> controllerClass = LojaController.class;
+	private boolean listarProdutos;
+
 
 	public LojaResourceAssembler() {
 		super(controllerClass, LojaResource.class);
@@ -23,10 +25,10 @@ public class LojaResourceAssembler extends RepresentationModelAssemblerSupport<L
 	public LojaResource toModel(Loja loja) {
 		return instantiateModel(loja);
 	}
-	
+
 	@Override
 	protected LojaResource instantiateModel(Loja loja) {
-		return new LojaResource(loja);
+		return new LojaResource(loja, this.listarProdutos);
 	}
 
 	@Override
@@ -39,4 +41,8 @@ public class LojaResourceAssembler extends RepresentationModelAssemblerSupport<L
 		return lojaResourceCollectionModel;
 	}
 
+	public CollectionModel<LojaResource> toCollectionModel(Iterable<Loja> lojas, boolean listarProdutos) {
+		this.listarProdutos = listarProdutos;
+		return toCollectionModel(lojas);
+	}
 }

@@ -5,8 +5,9 @@ import senac.edu.engsoft.meuproduto.model.dto.LojaProdutoDTO;
 
 public interface LojaProdutoService {
 
-//	Iterable<LojaProduto> getAll();
+	Iterable<LojaProduto> getAll();
 	LojaProduto save(LojaProdutoDTO lojaProdutoDTO);
-//	Loja update(Long id, Loja loja, Loja lojaAtual);
 	void delete(Long id);
+    LojaProduto update(LojaProdutoDTO lojaProdutoDTO);
+	LojaProduto getByLojaIdAndProdutoId(Long lojaId, Long produtoId);
 }

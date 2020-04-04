@@ -14,6 +14,7 @@ import senac.edu.engsoft.meuproduto.model.resource.assembler.LojaResourceAssembl
 import senac.edu.engsoft.meuproduto.service.LojaService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -29,12 +30,12 @@ public class LojaController {
 		this.lojaService = lojaService;
 		this.lojaResourceAssembler = lojaResourceAssembler;
 	}
-	
-//	@ResponseStatus(value=HttpStatus.OK)
+
+
 	@GetMapping
 	@Operation(summary = "Buscar Lojas", description = "Buscar lista de Lojas")
-	public ResponseEntity<CollectionModel<LojaResource>> getAll() {
-		return new ResponseEntity<>(lojaResourceAssembler.toCollectionModel(lojaService.getAll()), HttpStatus.OK);
+	public ResponseEntity<CollectionModel<LojaResource>> getAll(@RequestParam("listarProdutos") Optional<Boolean> listarProdutos) {
+		return new ResponseEntity<>(lojaResourceAssembler.toCollectionModel(lojaService.getAll(), listarProdutos.isPresent() ? listarProdutos.get() : false), HttpStatus.OK);
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)

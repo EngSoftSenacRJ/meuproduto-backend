@@ -1,5 +1,6 @@
 package senac.edu.engsoft.meuproduto.service;
 
+import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
 import senac.edu.engsoft.meuproduto.model.Loja;
@@ -32,7 +33,31 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 //	}
 
 	@Override
+	public LojaProduto getByLojaIdAndProdutoId(Long lojaId, Long produtoId) {
+		LojaProduto _lojaProduto = lojaProdutoRepository.getByLojaIdAndProdutoId(lojaId, produtoId).orElseThrow(() -> new EntityModelNotFoundException(LojaProduto.class, lojaId, produtoId));
+		return _lojaProduto;
+	}
+
+	@Override
+	public Iterable<LojaProduto> getAll() {
+		return lojaProdutoRepository.findAll();
+	}
+
+	@Override
 	public LojaProduto save(LojaProdutoDTO lojaProdutoDTO) {
+		Pair<Loja, Produto> lojaProdutoPair = validateLojaProduto(lojaProdutoDTO);
+		return lojaProdutoRepository.save(new LojaProduto(lojaProdutoPair.getKey(), lojaProdutoPair.getValue(), lojaProdutoDTO.getPreco()));
+	}
+
+	@Override
+	public LojaProduto update(LojaProdutoDTO lojaProdutoDTO) {
+		validateLojaProduto(lojaProdutoDTO);
+		LojaProduto _lojaProduto = lojaProdutoRepository.getByLojaIdAndProdutoId(lojaProdutoDTO.getIdLoja(), lojaProdutoDTO.getIdProduto()).orElseThrow(() -> new EntityModelNotFoundException(LojaProduto.class, lojaProdutoDTO.getIdLoja(), lojaProdutoDTO.getIdProduto()));
+		_lojaProduto.setPreco(lojaProdutoDTO.getPreco());
+		return lojaProdutoRepository.save(_lojaProduto);
+	}
+
+	private Pair<Loja, Produto> validateLojaProduto(LojaProdutoDTO lojaProdutoDTO){
 		Optional<Loja> loja = lojaService.getById(lojaProdutoDTO.getIdLoja());
 		Optional<Produto> produto = produtoService.getById(lojaProdutoDTO.getIdProduto());
 		if(!loja.isPresent()){
@@ -41,19 +66,14 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 		if(!produto.isPresent()){
 			throw new EntityModelNotFoundException(lojaProdutoDTO.getIdProduto());
 		}
-		return lojaProdutoRepository.save(new LojaProduto(loja.get(), produto.get(), lojaProdutoDTO.getPreco()));
+		return new Pair<Loja, Produto>(loja.get(), produto.get());
 	}
-
-	//TODO:
-//	@Override
-//	public Loja update(LojaProdutoDTO lojaProdutoDTO) {
-//
-//		return lojaRepository.save(lojaAtual); //update
-//	}
 
 	@Override
 	public void delete(Long id) {
 		lojaProdutoRepository.deleteById(id);
 	}
-	
+
+
+
 }
