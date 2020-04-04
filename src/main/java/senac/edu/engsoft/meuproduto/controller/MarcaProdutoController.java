@@ -30,7 +30,7 @@ public class MarcaProdutoController {
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
-	@GetMapping(value = "/")
+	@GetMapping
 	@Operation(summary = "Buscar Marcas", description = "Buscar lista de Marcas dos produtos")
 	public CollectionModel<MarcaProdutoResource> getAll() {;
 		return marcaProdutoResourceAssembler.toCollectionModel(marcaProdutoService.getAll());
