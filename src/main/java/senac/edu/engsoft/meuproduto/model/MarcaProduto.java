@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +18,8 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "TB_MARCA_PRODUTO")
-public class MarcaProduto {
+@Indexed
+public class MarcaProduto extends BaseIndexedEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

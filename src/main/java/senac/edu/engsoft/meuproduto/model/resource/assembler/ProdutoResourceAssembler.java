@@ -26,7 +26,7 @@ public class ProdutoResourceAssembler extends RepresentationModelAssemblerSuppor
 	
 	@Override
 	protected ProdutoResource instantiateModel(Produto produto) {
-		return new ProdutoResource(produto);
+		return new ProdutoResource(produto, true);
 	}
 
 	@Override

@@ -1,9 +1,5 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
 import senac.edu.engsoft.meuproduto.advice.exception.ProdutoAlreadyExistException;
@@ -68,36 +64,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	@Override
-	public void indexAll() throws InterruptedException {
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		fullTextEntityManager.createIndexer().startAndWait();
-	}
-
-	@Override
-	public Iterable<Produto> search(String searchText) {
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
-				.buildQueryBuilder()
-				.forEntity(Produto.class)
-				.get();
-
-		org.apache.lucene.search.Query luceneQuery = queryBuilder
-				.keyword()
-				.wildcard()
-				.onFields("nome", "descricao")
-				.matching(searchText + "*")
-				.createQuery();
-
-//		org.apache.lucene.search.Query luceneQuery = queryBuilder
-//				.all()
-//				.createQuery();
-
-		FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Produto.class);
-		Iterable<Produto> produtos = jpaQuery.getResultList();
-		return produtos;
-	}
-
-	@Override
 	public Optional<Produto> getById(Long id) {
 		return produtoRepository.findById(id);
 	}
@@ -106,5 +72,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public Iterable<Produto> getAll() {
 		return produtoRepository.findAll();
 	}
-	
+
+	@Override
+	public Iterable<Produto> getByCategoriaIdAndMarcaId(Long categoriaId, Long marcaId) {
+		return produtoRepository.getByCategoriaIdAndMarcaId(categoriaId, marcaId);
+	}
+
+
 }

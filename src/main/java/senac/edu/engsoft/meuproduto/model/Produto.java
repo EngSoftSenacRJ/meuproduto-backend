@@ -2,11 +2,9 @@ package senac.edu.engsoft.meuproduto.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.Parameter;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
@@ -24,15 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_PRODUTO")
 @Indexed
-@AnalyzerDef(name = "customanalyzer",
-		tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-		filters = {
-				@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-				@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
-						@Parameter(name = "language", value = "Portuguese")
-				})
-		})
-public class Produto {
+public class Produto extends BaseIndexedEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +44,8 @@ public class Produto {
 	@Column(name = "DESCRICAO")
 	private String descricao;
 
-	//TODO: imagem
+	@Column(name = "IMAGEM")
+	private String imagemBase64;
 
 	@NotNull
 	@Min(value = 1, message = "Meses de Garantia do produto deve ter no mínimo '1' dígito")
@@ -62,14 +53,16 @@ public class Produto {
 	private Integer mesesGarantia;
 
 	@NotNull(message = "Marca é obrigatório")
-	@IndexedEmbedded
+//	@Field
+//	@IndexedEmbedded
 	@JsonBackReference
 	@JoinColumn(name = "ID_MARCA")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private MarcaProduto marca;
 
 	@NotNull(message = "Categoria é obrigatório")
-	@IndexedEmbedded
+//	@Field
+//	@IndexedEmbedded
 	@JsonBackReference
 	@JoinColumn(name = "ID_CATEGORIA")
 	@ManyToOne(fetch = FetchType.LAZY)

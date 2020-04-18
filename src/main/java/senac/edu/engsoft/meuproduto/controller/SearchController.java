@@ -7,9 +7,14 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import senac.edu.engsoft.meuproduto.model.resource.ProdutoResource;
-import senac.edu.engsoft.meuproduto.model.resource.assembler.ProdutoResourceAssembler;
-import senac.edu.engsoft.meuproduto.service.ProdutoService;
+import senac.edu.engsoft.meuproduto.model.LojaProduto;
+import senac.edu.engsoft.meuproduto.model.dto.SearchRequestDTO;
+import senac.edu.engsoft.meuproduto.model.resource.ProdutoSearchResponseResource;
+import senac.edu.engsoft.meuproduto.model.resource.assembler.ProdutoSearchResponseResourceAssembler;
+import senac.edu.engsoft.meuproduto.service.SearchService;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -17,20 +22,21 @@ import senac.edu.engsoft.meuproduto.service.ProdutoService;
 @Tag(name = "Search", description = "Search API")
 public class SearchController {
 
-	private ProdutoService produtoService;
-	private final ProdutoResourceAssembler produtoResourceAssembler;
+	private SearchService searchService;
+	private final ProdutoSearchResponseResourceAssembler produtoSearchResponseResourceAssembler;
 
 	@Autowired
-	public SearchController(ProdutoService produtoService, ProdutoResourceAssembler produtoResourceAssembler) {
-		this.produtoService = produtoService;
-		this.produtoResourceAssembler = produtoResourceAssembler;
+	public SearchController(SearchService searchService, ProdutoSearchResponseResourceAssembler produtoSearchResponseResourceAssembler) {
+		this.searchService = searchService;
+		this.produtoSearchResponseResourceAssembler = produtoSearchResponseResourceAssembler;
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping
 	@Operation(summary = "", description = "")
-	public ResponseEntity<CollectionModel<ProdutoResource>> search(@RequestParam(value="search", required=true) String searchText) {
-		return new ResponseEntity<>(produtoResourceAssembler.toCollectionModel(produtoService.search(searchText)), HttpStatus.OK);
+	public ResponseEntity<CollectionModel<ProdutoSearchResponseResource>> search(@RequestBody @Valid SearchRequestDTO searchRequestDTO) {
+		List<LojaProduto> lojaProdutos = (List<LojaProduto>) searchService.search(searchRequestDTO);
+		return new ResponseEntity<>(produtoSearchResponseResourceAssembler.toCollectionModel(lojaProdutos), HttpStatus.OK);
 	}
 
 }

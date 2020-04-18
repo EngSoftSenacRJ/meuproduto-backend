@@ -36,6 +36,12 @@ public class ProdutoController {
 		return new ResponseEntity<>(produtoResourceAssembler.toCollectionModel(produtoService.getAll()), HttpStatus.OK);
 	}
 
+	@GetMapping
+	@Operation(summary = "Buscar Produtos por 'categoria' e 'marca'", description = "Buscar lista de Produtos por ID da Categoria e ID da Marca")
+	public ResponseEntity<CollectionModel<ProdutoResource>> getByCategoriaIdAndMarcaId(@RequestParam(value="categoriaId") Long categoriaId, @RequestParam(value="marcaId") Long marcaId) {
+		return new ResponseEntity<>(produtoResourceAssembler.toCollectionModel(produtoService.getByCategoriaIdAndMarcaId(categoriaId, marcaId)), HttpStatus.OK);
+	}
+
 //	@ResponseStatus(value=HttpStatus.OK)
 //	@GetMapping(value = "/{id}")
 //	public LojaResource getById(@PathVariable Long id) {

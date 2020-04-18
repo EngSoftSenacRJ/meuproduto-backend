@@ -1,4 +1,4 @@
-package senac.edu.engsoft.meuproduto.util;
+package senac.edu.engsoft.meuproduto.service.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

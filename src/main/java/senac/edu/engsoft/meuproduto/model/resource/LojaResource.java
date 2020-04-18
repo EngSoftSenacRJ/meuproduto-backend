@@ -90,7 +90,7 @@ public class LojaResource extends RepresentationModel<LojaResource> {
 		if(listarProdutos) {
 			produtoPrecoSet.clear();
 			for (senac.edu.engsoft.meuproduto.model.LojaProduto lojaProduto : loja.getLojaProdutoSet()) {
-				produtoPrecoSet.add(new ProdutoPrecoResource(new ProdutoResource(lojaProduto.getProduto()), lojaProduto.getPreco()));
+				produtoPrecoSet.add(new ProdutoPrecoResource(new ProdutoResource(lojaProduto.getProduto(), false), lojaProduto.getPreco()));
 			}
 		}
 	}
