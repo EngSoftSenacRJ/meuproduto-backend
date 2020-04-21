@@ -26,14 +26,14 @@ public class SearchController {
 	private final ProdutoSearchResponseResourceAssembler produtoSearchResponseResourceAssembler;
 
 	@Autowired
-	public SearchController(SearchService searchService, ProdutoSearchResponseResourceAssembler produtoSearchResponseResourceAssembler) {
+	public SearchController(SearchService searchService,
+							ProdutoSearchResponseResourceAssembler produtoSearchResponseResourceAssembler) {
 		this.searchService = searchService;
 		this.produtoSearchResponseResourceAssembler = produtoSearchResponseResourceAssembler;
 	}
 
-	@ResponseStatus(value=HttpStatus.OK)
 	@GetMapping
-	@Operation(summary = "", description = "")
+	@Operation(summary = "Search products", description = "Search products")
 	public ResponseEntity<CollectionModel<ProdutoSearchResponseResource>> search(@RequestBody @Valid SearchRequestDTO searchRequestDTO) {
 		List<LojaProduto> lojaProdutos = (List<LojaProduto>) searchService.search(searchRequestDTO);
 		return new ResponseEntity<>(produtoSearchResponseResourceAssembler.toCollectionModel(lojaProdutos), HttpStatus.OK);

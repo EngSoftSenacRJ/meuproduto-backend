@@ -9,15 +9,10 @@ import senac.edu.engsoft.meuproduto.model.Produto;
 import senac.edu.engsoft.meuproduto.model.dto.ProdutoDTO;
 import senac.edu.engsoft.meuproduto.service.repository.ProdutoRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
-
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	private final ProdutoRepository produtoRepository;
 
@@ -25,12 +20,10 @@ public class ProdutoServiceImpl implements ProdutoService {
 	private MarcaProdutoService marcaProdutoService;
 
 	public ProdutoServiceImpl(ProdutoRepository produtoRepository,
-							  EntityManager entityManager,
 							  CategoriaProdutoService categoriaProdutoService,
 							  MarcaProdutoService marcaProdutoService) {
 		super();
 		this.produtoRepository = produtoRepository;
-		this.entityManager = entityManager;
 		this.categoriaProdutoService = categoriaProdutoService;
 		this.marcaProdutoService = marcaProdutoService;
 	}

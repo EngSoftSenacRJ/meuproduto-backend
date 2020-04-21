@@ -13,5 +13,5 @@ public interface ProdutoRepository extends CrudRepository<Produto, Long>{
     public Produto getByNome(@Param("nome") String nome);
 
     @Query(value = "select p from Produto p where p.categoria.id = :categoriaId and p.marca.id = :marcaId")
-    Iterable<Produto> getByCategoriaIdAndMarcaId(@Param("categoriaId") Long categoriaId, @Param("marcaId") Long marcaId);
+    public Iterable<Produto> getByCategoriaIdAndMarcaId(@Param("categoriaId") Long categoriaId, @Param("marcaId") Long marcaId);
 }
