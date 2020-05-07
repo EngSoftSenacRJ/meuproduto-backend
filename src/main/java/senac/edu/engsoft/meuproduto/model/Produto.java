@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
@@ -22,6 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_PRODUTO")
 @Indexed
+@Audited
 public class Produto extends BaseIndexedEntity {
 	
 	@Id
@@ -71,6 +74,7 @@ public class Produto extends BaseIndexedEntity {
 	@JsonIgnore
 	@IndexedEmbedded
 	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@NotAudited
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
 
 	public void copyForNew(Produto other) {

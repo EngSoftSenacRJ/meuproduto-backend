@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_MARCA_PRODUTO")
 @Indexed
+@Audited
 public class MarcaProduto extends BaseIndexedEntity {
 
 	@Id

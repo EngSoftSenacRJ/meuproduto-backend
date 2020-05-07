@@ -2,6 +2,7 @@ package senac.edu.engsoft.meuproduto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_CATEGORIA_PRODUTO")
 @Indexed
+@Audited
 public class CategoriaProduto extends BaseIndexedEntity {
 
 	@Id

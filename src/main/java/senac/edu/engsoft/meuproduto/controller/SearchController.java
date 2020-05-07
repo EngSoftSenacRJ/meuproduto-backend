@@ -13,8 +13,8 @@ import senac.edu.engsoft.meuproduto.model.resource.ProdutoSearchResponseResource
 import senac.edu.engsoft.meuproduto.model.resource.assembler.ProdutoSearchResponseResourceAssembler;
 import senac.edu.engsoft.meuproduto.service.SearchService;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -34,8 +34,25 @@ public class SearchController {
 
 	@GetMapping
 	@Operation(summary = "Search products", description = "Search products")
-	public ResponseEntity<CollectionModel<ProdutoSearchResponseResource>> search(@RequestBody @Valid SearchRequestDTO searchRequestDTO) {
-		List<LojaProduto> lojaProdutos = (List<LojaProduto>) searchService.search(searchRequestDTO);
+	public ResponseEntity<CollectionModel<ProdutoSearchResponseResource>> search(
+			@RequestParam("idCategoria") Optional<Long> idCategoria,
+			@RequestParam("idMarca") Optional<Long> idMarca,
+			@RequestParam("idLoja") Optional<Long> idLoja,
+			@RequestParam("nomeProduto") Optional<String> nomeProduto,
+			@RequestParam("latitude") Optional<Double> latitude,
+			@RequestParam("longitude") Optional<Double> longitude,
+			@RequestParam("distanceKM") Optional<Double> distanceKM) {
+		List<LojaProduto> lojaProdutos = (List<LojaProduto>) searchService.search(
+				new SearchRequestDTO(
+						idCategoria,
+						idMarca,
+						idLoja,
+						nomeProduto,
+						latitude,
+						longitude,
+						distanceKM
+				)
+		);
 		return new ResponseEntity<>(produtoSearchResponseResourceAssembler.toCollectionModel(lojaProdutos), HttpStatus.OK);
 	}
 

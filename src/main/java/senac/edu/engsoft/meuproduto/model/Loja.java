@@ -3,6 +3,8 @@ package senac.edu.engsoft.meuproduto.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ import java.util.Set;
 @Table(name = "TB_LOJA")
 @JsonInclude
 @Indexed
+@Audited
 public class Loja {
 
 	@Id
@@ -115,14 +118,17 @@ public class Loja {
 	 */
 	@OneToMany(mappedBy = "loja", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	@JsonIgnore
+	@NotAudited
 	private Set<HorarioFuncionamento> horarioFuncionamentoSet = new HashSet<>();
 	
 	@ManyToMany(mappedBy="lojas")
 	@JsonIgnore
+	@NotAudited
 	private Set<Usuario> usuarios = new HashSet<>();
 	
 	@OneToMany(mappedBy = "loja", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	@JsonIgnore
+	@NotAudited
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
 
 	@PostPersist

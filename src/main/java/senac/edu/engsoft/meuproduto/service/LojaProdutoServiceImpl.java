@@ -3,6 +3,7 @@ package senac.edu.engsoft.meuproduto.service;
 import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
+import senac.edu.engsoft.meuproduto.advice.exception.LojaProdutoAlreadyExistException;
 import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.LojaProduto;
 import senac.edu.engsoft.meuproduto.model.Produto;
@@ -46,6 +47,7 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 	@Override
 	public LojaProduto save(LojaProdutoDTO lojaProdutoDTO) {
 		Pair<Loja, Produto> lojaProdutoPair = validateLojaProduto(lojaProdutoDTO);
+		validateDuplicate(lojaProdutoPair);
 		return lojaProdutoRepository.save(new LojaProduto(lojaProdutoPair.getKey(), lojaProdutoPair.getValue(), lojaProdutoDTO.getPreco()));
 	}
 
@@ -67,6 +69,11 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 			throw new EntityModelNotFoundException(lojaProdutoDTO.getIdProduto());
 		}
 		return new Pair<Loja, Produto>(loja.get(), produto.get());
+	}
+
+	private void validateDuplicate(Pair<Loja, Produto> lojaProdutoPair){
+		if(lojaProdutoRepository.getByLojaIdAndProdutoId(lojaProdutoPair.getKey().getId(), lojaProdutoPair.getValue().getId()).isPresent())
+			throw new LojaProdutoAlreadyExistException();
 	}
 
 	@Override
