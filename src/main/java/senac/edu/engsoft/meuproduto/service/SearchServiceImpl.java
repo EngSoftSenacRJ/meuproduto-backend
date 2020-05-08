@@ -72,7 +72,7 @@ public class SearchServiceImpl implements SearchService {
 		/*
 		Filtro de aproximação
 		 */
-		if(searchRequestDTO.getLatitude() != null && searchRequestDTO.getLongitude() != null) {
+		if(lojaProdutos != null && searchRequestDTO.getLatitude() != null && searchRequestDTO.getLongitude() != null) {
 			lojaProdutos.stream().filter(lojaProduto ->
 					distance(lojaProduto.getLoja().getLatitude(), lojaProduto.getLoja().getLongitude(),
 							searchRequestDTO.getLatitude(), searchRequestDTO.getLongitude()) <= searchRequestDTO.getDistanceKM())
