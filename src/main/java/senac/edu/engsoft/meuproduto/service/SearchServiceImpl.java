@@ -5,6 +5,7 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import senac.edu.engsoft.meuproduto.advice.exception.LatitudeOrLongitudeNotInformedException;
 import senac.edu.engsoft.meuproduto.model.LojaProduto;
 import senac.edu.engsoft.meuproduto.model.Produto;
 import senac.edu.engsoft.meuproduto.model.dto.SearchRequestDTO;
@@ -43,6 +44,13 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public Iterable<LojaProduto> search(SearchRequestDTO searchRequestDTO) {
+		if((searchRequestDTO.getLatitude() == null &&
+				searchRequestDTO.getLongitude() != null) ||
+				(searchRequestDTO.getLatitude() != null &&
+						searchRequestDTO.getLongitude() == null)) {
+			throw new LatitudeOrLongitudeNotInformedException();
+		}
+
 		List<LojaProduto> lojaProdutos = new ArrayList<>();
 		if(searchRequestDTO.getIdMarca() != null ||
 				searchRequestDTO.getIdCategoria() != null ||
