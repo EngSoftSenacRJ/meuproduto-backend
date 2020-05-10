@@ -31,7 +31,7 @@ public class LojaProdutoAuditController {
 			@RequestParam("idLoja") Optional<Long> idLoja,
 			@RequestParam("idProduto") Optional<Long> idProduto
 	) {
-		return new ResponseEntity<>(lojaProdutoAuditService.getAudit(idLoja.get(), idProduto.get()), HttpStatus.OK);
+		return new ResponseEntity<>(lojaProdutoAuditService.getAudit(idLoja, idProduto), HttpStatus.OK);
 	}
 	
 }

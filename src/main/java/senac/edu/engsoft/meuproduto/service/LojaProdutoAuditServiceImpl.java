@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LojaProdutoAuditServiceImpl implements LojaProdutoAuditService {
@@ -22,21 +23,18 @@ public class LojaProdutoAuditServiceImpl implements LojaProdutoAuditService {
 	@PersistenceContext
 	private EntityManager em;
 
-//	private final LojaProdutoAuditRepository lojaProdutoAuditRepository;
-
-	public LojaProdutoAuditServiceImpl(
-//			LojaProdutoAuditRepository lojaProdutoAuditRepository
-	) {
+	public LojaProdutoAuditServiceImpl() {
 		super();
-//		this.lojaProdutoAuditRepository = lojaProdutoAuditRepository;
 	}
 
 	@Override
-	public List<LojaProdutoAuditDTO> getAudit(Long idLoja, Long idProduto) {
+	public List<LojaProdutoAuditDTO> getAudit(Optional<Long> idLoja, Optional<Long> idProduto) {
 		AuditReader reader = AuditReaderFactory.get(em);
 		AuditQuery query = reader.createQuery().forRevisionsOfEntity(LojaProduto.class, false, true);
-		query.add(AuditEntity.relatedId("loja").eq(idLoja));
-		query.add(AuditEntity.relatedId("produto").eq(idProduto));
+		if(idLoja.isPresent())
+			query.add(AuditEntity.relatedId("loja").eq(idLoja.get()));
+		if(idProduto.isPresent())
+			query.add(AuditEntity.relatedId("produto").eq(idProduto.get()));
 		List<Object[]> results = query.getResultList();
 		List<LojaProdutoAuditDTO> lojaProdutoAuditResourceList = new ArrayList<>();
 		for (Object row : results) {
