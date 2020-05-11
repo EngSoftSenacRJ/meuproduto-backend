@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +18,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "TB_MARCA_PRODUTO")
-@Indexed
 @Audited
 public class MarcaProduto extends BaseIndexedEntity {
 

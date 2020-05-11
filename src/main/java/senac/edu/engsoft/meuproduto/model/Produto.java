@@ -56,23 +56,19 @@ public class Produto extends BaseIndexedEntity {
 	private Integer mesesGarantia;
 
 	@NotNull(message = "Marca é obrigatório")
-//	@Field
-//	@IndexedEmbedded
 	@JsonBackReference
 	@JoinColumn(name = "ID_MARCA")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private MarcaProduto marca;
 
 	@NotNull(message = "Categoria é obrigatório")
-//	@Field
-//	@IndexedEmbedded
 	@JsonBackReference
 	@JoinColumn(name = "ID_CATEGORIA")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CategoriaProduto categoria;
 
 	@JsonIgnore
-	@IndexedEmbedded
+//	@IndexedEmbedded
 	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	@NotAudited
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();

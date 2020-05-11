@@ -18,11 +18,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
-//@Spatial
 @Entity
 @Table(name = "TB_LOJA")
 @JsonInclude
-@Indexed
 @Audited
 public class Loja {
 
@@ -49,7 +47,6 @@ public class Loja {
 	@NotEmpty(message = "Nome da loja é obrigatório")
 	@Pattern(regexp = "[a-zA-Z ]{3,50}", message = "Nome da loja deve ter no mínimo '3' e no máximo '50' caracteres")
 	@Column(name="nome")
-	@Field
 	@Analyzer(definition = "customanalyzer")
 	private String nome;
 

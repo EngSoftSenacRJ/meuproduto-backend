@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import senac.edu.engsoft.meuproduto.advice.exception.LatitudeOrLongitudeNotInformedException;
 import senac.edu.engsoft.meuproduto.model.LojaProduto;
-import senac.edu.engsoft.meuproduto.model.Produto;
 import senac.edu.engsoft.meuproduto.model.dto.SearchRequestDTO;
 import senac.edu.engsoft.meuproduto.service.repository.LojaProdutoRepository;
 
@@ -15,9 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,7 +57,7 @@ public class SearchServiceImpl implements SearchService {
 					searchRequestDTO.getIdLoja());
 
 
-			if (searchRequestDTO.getNomeProduto() != null) {
+			if (lojaProdutos != null && searchRequestDTO.getNomeProduto() != null) {
 				lojaProdutos.stream().filter(
 						lojaProduto -> lojaProduto.getProduto().getNome().concat(lojaProduto.getProduto().getDescricao()).toLowerCase()
 								.contains(searchRequestDTO.getNomeProduto())
@@ -69,12 +66,7 @@ public class SearchServiceImpl implements SearchService {
 
 		} else {
 			//TODO retornar lojaProduto de "produtos"
-			List<Produto> produtos = searchByNomeProduto(searchRequestDTO.getNomeProduto());
-			Set<LojaProduto> lojaProdutoSet = new HashSet<>();
-			for(Produto produto : produtos){
-				lojaProdutoSet.addAll(produto.getLojaProdutoSet());
-			}
-			lojaProdutos = new ArrayList<>(lojaProdutoSet);
+			return searchByNomeProduto(searchRequestDTO.getNomeProduto());
 		}
 
 		/*
@@ -82,7 +74,7 @@ public class SearchServiceImpl implements SearchService {
 		 */
 		if(lojaProdutos != null && searchRequestDTO.getLatitude() != null && searchRequestDTO.getLongitude() != null) {
 			lojaProdutos.stream().filter(lojaProduto ->
-					distance(lojaProduto.getLoja().getLatitude(), lojaProduto.getLoja().getLongitude(),
+					lojaProduto != null && distance(lojaProduto.getLoja().getLatitude(), lojaProduto.getLoja().getLongitude(),
 							searchRequestDTO.getLatitude(), searchRequestDTO.getLongitude()) <= searchRequestDTO.getDistanceKM())
 					.collect(Collectors.toList());
 		}
@@ -93,26 +85,29 @@ public class SearchServiceImpl implements SearchService {
 		return lojaProdutoRepository.searchByMarcaCategoriaAndLoja(idMarca, idCategoria, idLoja);
 	}
 
-	private List<Produto> searchByNomeProduto(String nomeProduto) {
+	private List<LojaProduto> searchByNomeProduto(String nomeProduto) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder()
-				.forEntity(Produto.class)
+				.forEntity(LojaProduto.class)
 				.get();
 
 		org.apache.lucene.search.Query luceneQuery = queryBuilder
 				.keyword()
-				.onFields("nome", "descricao")
+				.onField("produto.nome")
 				.boostedTo(3)
 				.matching(nomeProduto)
 				.createQuery();
 
-		Query fullTextQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Produto.class);
-		List<Produto> produtos = fullTextQuery.getResultList();
-		return produtos;
+		Query fullTextQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, LojaProduto.class);
+		List<LojaProduto> lojaProdutos = fullTextQuery.getResultList();
+		return lojaProdutos;
 	}
 
 	private double distance(double lat1, double lon1, double lat2, double lon2) {
+		if(lat1 == 0 || lon1 == 0){
+			return 0;
+		}
 		if ((lat1 == lat2) && (lon1 == lon2)) {
 			return 0;
 		}

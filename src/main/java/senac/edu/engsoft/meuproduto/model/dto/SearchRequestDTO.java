@@ -31,6 +31,11 @@ public class SearchRequestDTO {
 		this.distanceKM = distanceKM;
 	}
 
+	public Double getDistanceKM() {
+
+		return distanceKM != null ? distanceKM : Double.MAX_VALUE;
+	}
+
 	public SearchRequestDTO(Optional<Long> idCategoria, Optional<Long> idMarca, Optional<Long> idLoja, Optional<String> nomeProduto, Optional<Double> latitude, Optional<Double> longitude, Optional<Double> distanceKM) {
 		this.idCategoria = idCategoria.isPresent() ? idCategoria.get() : null;
 		this.idMarca = idMarca.isPresent() ? idMarca.get() : null;
