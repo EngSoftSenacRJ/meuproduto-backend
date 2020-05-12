@@ -6,6 +6,7 @@ import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
 import senac.edu.engsoft.meuproduto.service.repository.UsuarioFuncionarioRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService {
@@ -46,6 +47,8 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 	public UsuarioFuncionario save(UsuarioFuncionario usuarioFuncionario) {
 		String encodedPassword = bCryptPasswordEncoder.encode(usuarioFuncionario.getPassword());
 		usuarioFuncionario.setPassword(encodedPassword);
+		String token = UUID.randomUUID().toString();
+		usuarioFuncionario.setTokenValidacaoEmail(token);
 		return usuarioFuncionarioRepository.save(usuarioFuncionario); //save
 	}
 

@@ -8,11 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
+import senac.edu.engsoft.meuproduto.advice.exception.UsuarioFuncionarioFailedCreationException;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
 import senac.edu.engsoft.meuproduto.model.resource.UsuarioFuncionarioResource;
 import senac.edu.engsoft.meuproduto.model.resource.assembler.UsuarioFuncionarioResourceAssembler;
+import senac.edu.engsoft.meuproduto.service.EmailService;
 import senac.edu.engsoft.meuproduto.service.UsuarioFuncionarioService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -25,10 +28,15 @@ public class UsuarioFuncionarioController {
 
 	private final UsuarioFuncionarioResourceAssembler usuarioFuncionarioResourceAssembler;
 
+	private EmailService emailService;
+
 	@Autowired
-	public UsuarioFuncionarioController(UsuarioFuncionarioService usuarioFuncionarioService, UsuarioFuncionarioResourceAssembler usuarioFuncionarioResourceAssembler) {
+	public UsuarioFuncionarioController(UsuarioFuncionarioService usuarioFuncionarioService,
+										UsuarioFuncionarioResourceAssembler usuarioFuncionarioResourceAssembler,
+										EmailService emailService) {
 		this.usuarioFuncionarioService = usuarioFuncionarioService;
 		this.usuarioFuncionarioResourceAssembler = usuarioFuncionarioResourceAssembler;
+		this.emailService = emailService;
 	}
 	
 	@ResponseStatus(value=HttpStatus.OK)
@@ -79,9 +87,19 @@ public class UsuarioFuncionarioController {
 	@ResponseStatus(value=HttpStatus.CREATED)
 	@PostMapping
 	@Operation(summary = "Criar Funcionário", description = "Criar usuário do tipo 'Funcionario'")
-	public UsuarioFuncionarioResource create(@RequestBody @Valid UsuarioFuncionario _usuarioFuncionario) {
+	public UsuarioFuncionarioResource create(HttpServletRequest request,  @RequestBody @Valid UsuarioFuncionario _usuarioFuncionario) {
 		UsuarioFuncionario usuarioFuncionario = usuarioFuncionarioService.save(_usuarioFuncionario);
-		return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
+
+		try {
+			String baseUrl = "http://"+request.getServerName()+":"+request.getLocalPort();
+			emailService.sendEmailValidacaoNovoUsuario(usuarioFuncionario, baseUrl);
+			return usuarioFuncionarioResourceAssembler.toModel(usuarioFuncionario);
+		}catch (Exception e) {
+			if(usuarioFuncionario.getId() != null)
+				usuarioFuncionarioService.delete(usuarioFuncionario.getId());
+			throw new UsuarioFuncionarioFailedCreationException(e);
+		}
+
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)
