@@ -2,7 +2,10 @@ package senac.edu.engsoft.meuproduto.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import senac.edu.engsoft.meuproduto.advice.exception.LojaNotFoundException;
+import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.UsuarioFuncionario;
+import senac.edu.engsoft.meuproduto.service.repository.LojaRepository;
 import senac.edu.engsoft.meuproduto.service.repository.UsuarioFuncionarioRepository;
 
 import java.util.Optional;
@@ -12,12 +15,15 @@ import java.util.UUID;
 public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService {
 
 	private final UsuarioFuncionarioRepository usuarioFuncionarioRepository;
+	private final LojaRepository lojaRepository;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public UsuarioFuncionarioServiceImpl(UsuarioFuncionarioRepository usuarioFuncionarioRepository,
+										 LojaRepository lojaRepository,
 										 BCryptPasswordEncoder bCryptPasswordEncoder) {
 		super();
 		this.usuarioFuncionarioRepository = usuarioFuncionarioRepository;
+		this.lojaRepository = lojaRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
@@ -49,6 +55,14 @@ public class UsuarioFuncionarioServiceImpl implements UsuarioFuncionarioService 
 		usuarioFuncionario.setPassword(encodedPassword);
 		String token = UUID.randomUUID().toString();
 		usuarioFuncionario.setTokenValidacaoEmail(token);
+
+		if(usuarioFuncionario.getLojaId() != null) {
+			Optional<Loja> loja = lojaRepository.findById(usuarioFuncionario.getLojaId());
+			if(!loja.isPresent())
+				throw new LojaNotFoundException();
+			usuarioFuncionario.setLoja(loja.get());
+		}
+
 		return usuarioFuncionarioRepository.save(usuarioFuncionario); //save
 	}
 

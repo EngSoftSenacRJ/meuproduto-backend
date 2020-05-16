@@ -34,6 +34,8 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 	@JsonFormat(pattern="dd/MM/yyyy")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	private LocalDate dataAniversario;
+
+	private LojaResource lojaResource;
 	
 	public UsuarioFuncionarioResource() {
 		super();
@@ -55,6 +57,8 @@ public class UsuarioFuncionarioResource extends RepresentationModel<UsuarioFunci
 		this.dataAniversario = usuarioFuncionario.getDataAniversario();
 		this.enabled = usuarioFuncionario.isEnabled();
 		this.emailConfirmado = usuarioFuncionario.isEmailConfirmado();
+		if(usuarioFuncionario.getLoja() != null)
+			this.setLojaResource(new LojaResource(usuarioFuncionario.getLoja(), false));
 	}
 	
 }

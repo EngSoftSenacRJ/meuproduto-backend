@@ -1,11 +1,10 @@
 package senac.edu.engsoft.meuproduto.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
@@ -17,6 +16,14 @@ public class UsuarioFuncionario extends Usuario {
     @NotEmpty(message = "usernameAdministrador é obrigatório")
     @Column(name = "USERNAME_ADMINISTRADOR")
 	private String usernameAdministrador;
+
+    @Transient
+    private Long lojaId;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name="LOJA_ID")
+    @JsonIgnore
+    private Loja loja;
 
     public UsuarioFuncionario copyForNew(UsuarioFuncionario other){
         if(other.getNewPassword() != null && other.getNewPassword().length() > 1)
