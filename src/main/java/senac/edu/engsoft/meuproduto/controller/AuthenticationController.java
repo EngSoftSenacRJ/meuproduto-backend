@@ -7,12 +7,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import senac.edu.engsoft.meuproduto.model.dto.JwtRequest;
 import senac.edu.engsoft.meuproduto.model.dto.JwtResponse;
 import senac.edu.engsoft.meuproduto.security.JwtTokenUtil;
+import senac.edu.engsoft.meuproduto.security.UserDetailsCustom;
 import senac.edu.engsoft.meuproduto.service.JwtUserDetailsServiceImpl;
 
 import javax.validation.Valid;
@@ -42,9 +42,10 @@ public class AuthenticationController {
 	@Operation(summary = "Autenticar usuário", description = "Autenticar usuário 'Administrador' ou 'Funcionário'")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new JwtResponse(token));
+		final UserDetailsCustom userDetailsCustom = (UserDetailsCustom) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetailsCustom);
+
+		return ResponseEntity.ok(new JwtResponse(token, userDetailsCustom.getUsername(), userDetailsCustom.getNome(), userDetailsCustom.getUsuarioType()));
 	}
 
 	private void authenticate(String username, String password) throws Exception {

@@ -8,6 +8,7 @@ public interface UsuarioService {
 
 	Usuario save(Usuario usuario);
 	Optional<Usuario> getById(Long id);
+	Optional<Usuario> getByEmail(String username);
 	Usuario update(Usuario usuario);
 	
 }

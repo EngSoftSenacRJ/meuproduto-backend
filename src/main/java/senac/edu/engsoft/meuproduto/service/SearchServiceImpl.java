@@ -58,7 +58,14 @@ public class SearchServiceImpl implements SearchService {
 
 
 			if (lojaProdutos != null && searchRequestDTO.getNomeProduto() != null) {
-				lojaProdutos.stream().filter(
+
+				for(LojaProduto lp : lojaProdutos){
+					System.out.println(lp.getProduto().getNome());
+					System.out.println(lp.getProduto().getDescricao());
+					System.out.println(lp.getLoja().getNome());
+				}
+
+				lojaProdutos = lojaProdutos.stream().filter(
 						lojaProduto -> lojaProduto.getProduto().getNome().concat(lojaProduto.getProduto().getDescricao()).toLowerCase()
 								.contains(searchRequestDTO.getNomeProduto())
 				).collect(Collectors.toList());
@@ -72,7 +79,10 @@ public class SearchServiceImpl implements SearchService {
 		/*
 		Filtro de aproximação
 		 */
-		if(lojaProdutos != null && searchRequestDTO.getLatitude() != null && searchRequestDTO.getLongitude() != null) {
+		if(lojaProdutos != null &&
+				searchRequestDTO.getLatitude() != null &&
+				searchRequestDTO.getLongitude() != null &&
+				searchRequestDTO.getDistanceKM() != null) {
 			lojaProdutos = lojaProdutos.stream().filter(lojaProduto ->
 					lojaProduto != null && distance(lojaProduto.getLoja().getLatitude(), lojaProduto.getLoja().getLongitude(),
 							searchRequestDTO.getLatitude(), searchRequestDTO.getLongitude()) <= searchRequestDTO.getDistanceKM())

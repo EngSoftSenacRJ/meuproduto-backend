@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Data
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "TB_PRODUTO")
 @Indexed

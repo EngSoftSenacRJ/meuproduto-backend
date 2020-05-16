@@ -3,6 +3,7 @@ package senac.edu.engsoft.meuproduto.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
+@ToString
 @Entity
 @Table(name = "TB_LOJA")
 @JsonInclude
