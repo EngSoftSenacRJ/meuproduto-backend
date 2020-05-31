@@ -41,7 +41,13 @@ pipeline {
             }
         }
 
-        stage('Deploy stage') {
+        stage('Create docker-compose file to deploy') {
+            steps {
+                sh 'cp ./docker-compose.yml /home/ubuntu/meuproduto/backend/docker-compose.yml'
+            }
+        }
+
+        stage('Deploy Docker Image in Swarm Cluster stage') {
             steps {
                 sh 'docker stack deploy -c /home/ubuntu/meuproduto/docker-compose.yml senac_uat'
             }
