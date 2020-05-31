@@ -1,4 +1,9 @@
 pipeline {
+    environment {
+        registry = "rderoci/meuproduto"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
+    }
     agent any
 
     stages {
@@ -20,13 +25,25 @@ pipeline {
 
         stage('Build Docker Image stage') {
             steps {
-                sh 'docker build -t meuproduto:latest .'
+                script {
+                    dockerImage = docker.build registry + ":latest"
+                }
+            }
+        }
+
+        stage('Push Docker Image stage') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
 
         stage('Deploy stage') {
             steps {
-                sh 'docker stack deploy -c docker-compose.yml senac_uat'
+                sh 'docker stack deploy -c /home/ubuntu/meuproduto/docker-compose.yml senac_uat'
             }
         }
 
