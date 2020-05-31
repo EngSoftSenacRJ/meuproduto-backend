@@ -25,7 +25,9 @@ pipeline {
         }
 
         stage('Deploy stage') {
-            sh 'docker stack deploy -c docker-compose.yml senac_uat'
+            steps {
+                sh 'docker stack deploy -c docker-compose.yml senac_uat'
+            }
         }
 
     }
