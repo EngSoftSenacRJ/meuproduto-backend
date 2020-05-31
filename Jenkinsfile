@@ -1,7 +1,7 @@
 pipeline {
     environment {
         registry = "rderoci/meuproduto"
-        registryCredential = 'dockerhub'
+        registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
     agent any
@@ -18,7 +18,7 @@ pipeline {
         stage('Compile stage') {
             steps {
                 withMaven(maven: 'maven_3_6_3') {
-                    sh 'mvn -DskipTests clean install'
+                    sh 'mvn -DskipTests clean install -o'
                 }
             }
         }
