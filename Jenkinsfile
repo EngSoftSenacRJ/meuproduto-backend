@@ -49,7 +49,7 @@ pipeline {
 
         stage('Deploy Docker Image in Swarm Cluster stage') {
             steps {
-                sh 'docker stack deploy -c /home/ubuntu/meuproduto/docker-compose.yml senac_uat'
+                sh 'docker stack deploy -c /home/ubuntu/meuproduto/backend/docker-compose.yml senac_uat'
             }
         }
 
