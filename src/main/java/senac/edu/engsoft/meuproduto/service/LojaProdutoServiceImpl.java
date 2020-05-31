@@ -1,6 +1,6 @@
 package senac.edu.engsoft.meuproduto.service;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundException;
 import senac.edu.engsoft.meuproduto.advice.exception.LojaProdutoAlreadyExistException;
@@ -46,7 +46,7 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 
 	@Override
 	public LojaProduto save(LojaProdutoDTO lojaProdutoDTO) {
-		Pair<Loja, Produto> lojaProdutoPair = validateLojaProduto(lojaProdutoDTO);
+		ImmutablePair<Loja, Produto> lojaProdutoPair = validateLojaProduto(lojaProdutoDTO);
 		validateDuplicate(lojaProdutoPair);
 		return lojaProdutoRepository.save(new LojaProduto(lojaProdutoPair.getKey(), lojaProdutoPair.getValue(), lojaProdutoDTO.getPreco()));
 	}
@@ -59,7 +59,7 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 		return lojaProdutoRepository.save(_lojaProduto);
 	}
 
-	private Pair<Loja, Produto> validateLojaProduto(LojaProdutoDTO lojaProdutoDTO){
+	private ImmutablePair<Loja, Produto> validateLojaProduto(LojaProdutoDTO lojaProdutoDTO){
 		Optional<Loja> loja = lojaService.getById(lojaProdutoDTO.getIdLoja());
 		Optional<Produto> produto = produtoService.getById(lojaProdutoDTO.getIdProduto());
 		if(!loja.isPresent()){
@@ -68,10 +68,10 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 		if(!produto.isPresent()){
 			throw new EntityModelNotFoundException(lojaProdutoDTO.getIdProduto());
 		}
-		return new Pair<Loja, Produto>(loja.get(), produto.get());
+		return new ImmutablePair<>(loja.get(), produto.get());
 	}
 
-	private void validateDuplicate(Pair<Loja, Produto> lojaProdutoPair){
+	private void validateDuplicate(ImmutablePair<Loja, Produto> lojaProdutoPair){
 		if(lojaProdutoRepository.getByLojaIdAndProdutoId(lojaProdutoPair.getKey().getId(), lojaProdutoPair.getValue().getId()).isPresent())
 			throw new LojaProdutoAlreadyExistException();
 	}
