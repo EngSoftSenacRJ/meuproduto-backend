@@ -15,6 +15,17 @@ pipeline {
             }
         }
 
+        stage('Search API Stress Test stage') {
+            blazeMeterTest credentialsId:'blazemeter',
+            testId:'8202338',
+            notes:'',
+            sessionProperties:'',
+            jtlPath:'',
+            junitPath:'',
+            getJtl:false,
+            getJunit:false
+        }
+
         stage('Compile stage') {
             steps {
                 withMaven(maven: 'maven_3_6_3') {
