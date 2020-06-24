@@ -16,10 +16,12 @@ pipeline {
         }
 
         stage('Search API Stress Test stage') {
-            blazeMeterTest credentialsId: 'blazemeter',
-            getJtl: true,
-            testId: '8202338.taurus',
-            workspaceId: '564712'
+            steps {
+                blazeMeterTest credentialsId: 'blazemeter',
+                getJtl: true,
+                testId: '8202338.taurus',
+                workspaceId: '564712'
+            }
         }
 
         stage('Compile stage') {
