@@ -16,14 +16,10 @@ pipeline {
         }
 
         stage('Search API Stress Test stage') {
-            blazeMeterTest credentialsId:'blazemeter',
-            testId:'8202338',
-            notes:'',
-            sessionProperties:'',
-            jtlPath:'',
-            junitPath:'',
-            getJtl:false,
-            getJunit:false
+            blazeMeterTest credentialsId: 'blazemeter',
+            getJtl: true,
+            testId: '8202338.taurus',
+            workspaceId: '564712'
         }
 
         stage('Compile stage') {
