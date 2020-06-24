@@ -15,15 +15,6 @@ pipeline {
             }
         }
 
-        stage('Search API Stress Test stage') {
-            steps {
-                blazeMeterTest credentialsId: 'blazemeter',
-                getJtl: true,
-                testId: '8202338.taurus',
-                workspaceId: '564712'
-            }
-        }
-
         stage('Compile stage') {
             steps {
                 withMaven(maven: 'maven_3_6_3') {
@@ -62,5 +53,13 @@ pipeline {
             }
         }
 
+        stage('Search API Stress Test stage') {
+            steps {
+                blazeMeterTest credentialsId: 'blazemeter',
+                getJtl: true,
+                testId: '8202338.taurus',
+                workspaceId: '564712'
+            }
+        }
     }
 }
