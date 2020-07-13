@@ -6,9 +6,11 @@ import senac.edu.engsoft.meuproduto.advice.exception.EntityModelNotFoundExceptio
 import senac.edu.engsoft.meuproduto.advice.exception.LojaProdutoAlreadyExistException;
 import senac.edu.engsoft.meuproduto.model.Loja;
 import senac.edu.engsoft.meuproduto.model.LojaProduto;
+import senac.edu.engsoft.meuproduto.model.LojaProdutoSearch;
 import senac.edu.engsoft.meuproduto.model.Produto;
 import senac.edu.engsoft.meuproduto.model.dto.LojaProdutoDTO;
 import senac.edu.engsoft.meuproduto.service.repository.LojaProdutoRepository;
+import senac.edu.engsoft.meuproduto.service.repository.LojaProdutoSearchRepository;
 
 import java.util.Optional;
 
@@ -18,14 +20,17 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 	private final LojaProdutoRepository lojaProdutoRepository;
 	private final LojaService lojaService;
 	private final ProdutoService produtoService;
+	private final LojaProdutoSearchRepository lojaProdutoSearchRepository;
 
 	public LojaProdutoServiceImpl(LojaProdutoRepository lojaProdutoRepository,
 								  LojaService lojaService,
-								  ProdutoService produtoService) {
+								  ProdutoService produtoService,
+								  LojaProdutoSearchRepository lojaProdutoSearchRepository) {
 		super();
 		this.lojaProdutoRepository = lojaProdutoRepository;
 		this.lojaService = lojaService;
 		this.produtoService = produtoService;
+		this.lojaProdutoSearchRepository = lojaProdutoSearchRepository;
 	}
 
 //	@Override
@@ -48,7 +53,34 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 	public LojaProduto save(LojaProdutoDTO lojaProdutoDTO) {
 		ImmutablePair<Loja, Produto> lojaProdutoPair = validateLojaProduto(lojaProdutoDTO);
 		validateDuplicate(lojaProdutoPair);
-		return lojaProdutoRepository.save(new LojaProduto(lojaProdutoPair.getKey(), lojaProdutoPair.getValue(), lojaProdutoDTO.getPreco()));
+		LojaProduto lojaProduto = lojaProdutoRepository.save(new LojaProduto(lojaProdutoPair.getKey(), lojaProdutoPair.getValue(), lojaProdutoDTO.getPreco()));
+		lojaProdutoSearchRepository.save(new LojaProdutoSearch(
+				lojaProduto.getId(),
+				lojaProduto.getPreco(),
+				lojaProduto.getProduto().getId(),
+				lojaProduto.getProduto().getNome(),
+				lojaProduto.getProduto().getDescricao(),
+				lojaProduto.getProduto().getMesesGarantia(),
+				lojaProduto.getProduto().getMarca().getId(),
+				lojaProduto.getProduto().getMarca().getHabilitado(),
+				lojaProduto.getProduto().getMarca().getNome(),
+				lojaProduto.getProduto().getMarca().getDescricao(),
+				lojaProduto.getProduto().getCategoria().getId(),
+				lojaProduto.getProduto().getCategoria().getNome(),
+				lojaProduto.getProduto().getCategoria().getDescricao(),
+				lojaProduto.getLoja().getId(),
+				lojaProduto.getLoja().getNome(),
+				lojaProduto.getLoja().getRazaoSocial(),
+				lojaProduto.getLoja().getCnpj(),
+				lojaProduto.getLoja().getRuaEnderecoComercial(),
+				lojaProduto.getLoja().getNumeroEnderecoComercial(),
+				lojaProduto.getLoja().getBairroEnderecoComercial(),
+				lojaProduto.getLoja().getCidadeEnderecoComercial(),
+				lojaProduto.getLoja().getEstadoEnderecoComercial(),
+				lojaProduto.getLoja().getCepEnderecoComercial(),
+				lojaProduto.getLoja().getTelefoneContato()));
+
+		return lojaProduto;
 	}
 
 	@Override
@@ -56,7 +88,16 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 		validateLojaProduto(lojaProdutoDTO);
 		LojaProduto _lojaProduto = lojaProdutoRepository.getByLojaIdAndProdutoId(lojaProdutoDTO.getIdLoja(), lojaProdutoDTO.getIdProduto()).orElseThrow(() -> new EntityModelNotFoundException(LojaProduto.class, lojaProdutoDTO.getIdLoja(), lojaProdutoDTO.getIdProduto()));
 		_lojaProduto.setPreco(lojaProdutoDTO.getPreco());
-		return lojaProdutoRepository.save(_lojaProduto);
+		LojaProduto result = lojaProdutoRepository.save(_lojaProduto);
+
+		Optional<LojaProdutoSearch> lojaProdutoSearch = lojaProdutoSearchRepository.findById(result.getId());
+		if(lojaProdutoSearch.isPresent()) {
+			LojaProdutoSearch lojaProdutoSearchToUpdate = lojaProdutoSearch.get();
+			lojaProdutoSearchToUpdate.setLojaProdutoPreco(lojaProdutoDTO.getPreco());
+			lojaProdutoSearchRepository.save(lojaProdutoSearchToUpdate);
+		}
+
+		return result;
 	}
 
 	private ImmutablePair<Loja, Produto> validateLojaProduto(LojaProdutoDTO lojaProdutoDTO){
@@ -78,6 +119,7 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 
 	@Override
 	public void delete(Long id) {
+		lojaProdutoRepository.deleteById(id);
 		lojaProdutoRepository.deleteById(id);
 	}
 

@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_MARCA_PRODUTO")
 @Audited
-public class MarcaProduto extends BaseIndexedEntity {
+public class MarcaProduto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class MarcaProduto extends BaseIndexedEntity {
 
 	@NotEmpty(message = "descricao é obrigatória")
 	@NotNull
-	@Size(min = 5, max = 200)
+	@Size(min = 2, max = 200)
 	@Column(name="DESCRICAO")
 	private String descricao;
 

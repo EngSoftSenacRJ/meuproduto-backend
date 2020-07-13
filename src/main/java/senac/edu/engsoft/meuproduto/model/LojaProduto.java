@@ -2,17 +2,15 @@ package senac.edu.engsoft.meuproduto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
+
 
 import javax.persistence.*;
 
 
 @Entity
 @Table(name = "TB_LOJA_PRODUTO")
-@Indexed
 @Audited
-public class LojaProduto extends BaseIndexedEntity {
+public class LojaProduto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +23,6 @@ public class LojaProduto extends BaseIndexedEntity {
 	
 	@JoinColumn(name = "ID_PRODUTO")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@IndexedEmbedded
 	private Produto produto;
 
 	@Column(name = "PRECO")

@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "TB_CATEGORIA_PRODUTO")
 @Audited
-public class CategoriaProduto extends BaseIndexedEntity {
+public class CategoriaProduto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

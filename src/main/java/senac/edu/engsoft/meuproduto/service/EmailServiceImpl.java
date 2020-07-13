@@ -19,8 +19,10 @@ public class EmailServiceImpl implements EmailService {
 
     static final String FROM = "meuprodutosenac@gmail.com";
     static final String FROMNAME = "MeuProduto";
-    static final String SMTP_USERNAME = "AKIA5DE5DCNOEFAP4W6N";
-    static final String SMTP_PASSWORD = "BCLTS9PXdBnjUt8CuaB2qHjf5U+vfDqJ+vYqGJwsui6M";
+//    static final String SMTP_USERNAME = "AKIA5DE5DCNOEFAP4W6N";
+static final String SMTP_USERNAME = "AKIA5DE5DCNOF6DDGY5X";
+//    static final String SMTP_PASSWORD = "BCLTS9PXdBnjUt8CuaB2qHjf5U+vfDqJ+vYqGJwsui6M";
+static final String SMTP_PASSWORD = "BO+0U1M4JDj94I05PpN0gxe6aY9z1BXybJmuLVWvgjsn";
     static final String HOST = "email-smtp.us-east-1.amazonaws.com";
     static final int PORT = 587;
     static final String SUBJECT = "Bem Vindo ao MeuProduto - Valide seu E-Mail";
@@ -31,13 +33,13 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender = mailSender;
     }
 
-//    public static void main(String[] args) throws UnsupportedEncodingException, MessagingException {
-//        Usuario usuario = new Usuario();
-//        usuario.setUsername("rderociml@gmail.com");
-//        usuario.setId(1L);
-//        usuario.setTokenValidacaoEmail("abc");
-//        new EmailServiceImpl(null).sendEmailValidacaoNovoUsuario(usuario, "baseUrl");
-//    }
+    public static void main(String[] args) throws UnsupportedEncodingException, MessagingException {
+        Usuario usuario = new Usuario();
+        usuario.setUsername("rderociml@gmail.com");
+        usuario.setId(1L);
+        usuario.setTokenValidacaoEmail("abc");
+        new EmailServiceImpl(null).sendEmailValidacaoNovoUsuario(usuario, "baseUrl");
+    }
 
     @Async
     @Override
@@ -59,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
 //            throw e;
 //        }
 
-        String urlValidacaoEmail = baseUrl + "/register/confirmEmail?id=" +
+        String urlValidacaoEmail = baseUrl + "/api/register/confirmEmail?id=" +
                     usuario.getId() + "&token=" + usuario.getTokenValidacaoEmail();
         String body = "<h3>Bem vindo ao <span style=\"background-color: #02034f; color: #ffffff; padding: 0 3px;\">MeuProduto</span></h3>"+
                 "<p><strong>Você solicitou o cadastro no MeuProduto utilizando esta conta de e-mail, para ativá-la acesse o link abaixo:</strong></p>"+

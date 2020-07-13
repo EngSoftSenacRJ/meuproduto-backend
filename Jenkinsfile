@@ -14,7 +14,6 @@ pipeline {
                 }
             }
         }
-
         stage('Compile stage') {
             steps {
                 withMaven(maven: 'maven_3_6_3') {
@@ -43,23 +42,15 @@ pipeline {
 
         stage('Create docker-compose file to deploy') {
             steps {
-                sh 'cp ./docker-compose.yml /home/ubuntu/meuproduto/backend/docker-compose.yml'
+                sh 'cp ./docker-compose.yml /home/ubuntu/meuproduto/backend/docker-compose_meuproduto.yml'
             }
         }
 
         stage('Deploy Docker Image in Swarm Cluster stage') {
             steps {
-                sh 'docker stack deploy -c /home/ubuntu/meuproduto/backend/docker-compose.yml senac_uat'
+                sh 'docker stack deploy -c /home/ubuntu/meuproduto/backend/docker-compose_meuproduto.yml meuproduto'
             }
         }
 
-        stage('Search API Stress Test stage') {
-            steps {
-                blazeMeterTest credentialsId: 'blazemeter',
-                getJtl: true,
-                testId: '8202338.taurus',
-                workspaceId: '564712'
-            }
-        }
     }
 }

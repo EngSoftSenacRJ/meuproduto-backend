@@ -25,9 +25,8 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "TB_PRODUTO")
-@Indexed
 @Audited
-public class Produto extends BaseIndexedEntity {
+public class Produto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,7 +69,6 @@ public class Produto extends BaseIndexedEntity {
 	private CategoriaProduto categoria;
 
 	@JsonIgnore
-//	@IndexedEmbedded
 	@OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	@NotAudited
 	private Set<LojaProduto> lojaProdutoSet = new HashSet<>();
