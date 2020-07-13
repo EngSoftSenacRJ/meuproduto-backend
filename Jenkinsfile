@@ -42,7 +42,7 @@ pipeline {
 
         stage('Create docker-compose file to deploy') {
             steps {
-                sh 'cp ./docker-compose.yml /home/ubuntu/meuproduto/backend/docker-compose_meuproduto.yml'
+                sh 'cp ./docker-compose_meuproduto.yml /home/ubuntu/meuproduto/backend/docker-compose_meuproduto.yml'
             }
         }
 
