@@ -78,7 +78,9 @@ public class LojaProdutoServiceImpl implements LojaProdutoService {
 				lojaProduto.getLoja().getCidadeEnderecoComercial(),
 				lojaProduto.getLoja().getEstadoEnderecoComercial(),
 				lojaProduto.getLoja().getCepEnderecoComercial(),
-				lojaProduto.getLoja().getTelefoneContato()));
+				lojaProduto.getLoja().getTelefoneContato(),
+				lojaProduto.getLoja().getLatitude(),
+				lojaProduto.getLoja().getLongitude()));
 
 		return lojaProduto;
 	}
