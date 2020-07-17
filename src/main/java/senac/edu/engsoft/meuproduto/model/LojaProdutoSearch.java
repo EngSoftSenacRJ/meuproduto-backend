@@ -91,10 +91,16 @@ public class LojaProdutoSearch extends BaseIndexedEntity {
     @Column(name = "LOJA_TELEFONECONTATO")
     String lojaTelefoneContato;
 
+    @Column(name="LATITUDE")
+    private Double lojaLatitude;
+
+    @Column(name="LONGITUDE")
+    private Double lojaLongitude;
+
     public LojaProdutoSearch() {
     }
 
-    public LojaProdutoSearch(Long lojaProdutoId, Double lojaProdutoPreco, Long produtoId, String produtoNome, String produtoDesc, Integer produtoMesesGarantia, Long marcaId, Boolean marcaHabilitado, String marcaNome, String marcaDescricao, Long categoriaId, String categoriaNome, String categoriaDescricao, Long lojaId, String lojaNome, String lojaRazaoSocial, String lojaCnpj, String lojaRuaEnderecoComercial, String lojaNumeroEnderecoComercial, String lojaBairroEnderecoComercial, String lojaCidadeEnderecoComercial, String lojaEstadoEnderecoComercial, String lojaCepEnderecoComercial, String lojaTelefoneContato) {
+    public LojaProdutoSearch(Long lojaProdutoId, Double lojaProdutoPreco, Long produtoId, String produtoNome, String produtoDesc, Integer produtoMesesGarantia, Long marcaId, Boolean marcaHabilitado, String marcaNome, String marcaDescricao, Long categoriaId, String categoriaNome, String categoriaDescricao, Long lojaId, String lojaNome, String lojaRazaoSocial, String lojaCnpj, String lojaRuaEnderecoComercial, String lojaNumeroEnderecoComercial, String lojaBairroEnderecoComercial, String lojaCidadeEnderecoComercial, String lojaEstadoEnderecoComercial, String lojaCepEnderecoComercial, String lojaTelefoneContato, Double lojaLatitude, Double lojaLongitude) {
         this.lojaProdutoId = lojaProdutoId;
         this.lojaProdutoPreco = lojaProdutoPreco;
         this.produtoId = produtoId;
@@ -119,5 +125,7 @@ public class LojaProdutoSearch extends BaseIndexedEntity {
         this.lojaEstadoEnderecoComercial = lojaEstadoEnderecoComercial;
         this.lojaCepEnderecoComercial = lojaCepEnderecoComercial;
         this.lojaTelefoneContato = lojaTelefoneContato;
+        this.lojaLatitude = lojaLatitude;
+        this.lojaLongitude = lojaLongitude;
     }
 }
