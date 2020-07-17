@@ -7,10 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import senac.edu.engsoft.meuproduto.model.Usuario;
 import senac.edu.engsoft.meuproduto.model.dto.JwtRequest;
 import senac.edu.engsoft.meuproduto.model.dto.JwtResponse;
 import senac.edu.engsoft.meuproduto.security.JwtTokenUtil;
@@ -44,12 +42,11 @@ public class AuthenticationController {
 	@Operation(summary = "Autenticar usuário", description = "Autenticar usuário 'Administrador' ou 'Funcionário'")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		if(!userDetails.isEnabled() || !((Usuario)userDetails).isEmailConfirmado()){
+		final UserDetailsCustom userDetailsCustom = (UserDetailsCustom) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+		if(!userDetailsCustom.isHabilitado() || !userDetailsCustom.isEmailConfirmado()){
 			throw new Exception("USER_DISABLED");
 		}
-
-		final UserDetailsCustom userDetailsCustom = (UserDetailsCustom) userDetails;
 
 		final String token = jwtTokenUtil.generateToken(userDetailsCustom);
 

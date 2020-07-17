@@ -37,6 +37,8 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 					accountNonLocked, new ArrayList<GrantedAuthority>());
 			userDetailsCustom.setNome(usuarioFound.getNome());
 			userDetailsCustom.setUsuarioType(usuarioFound.getUsuarioType());
+			userDetailsCustom.setEmailConfirmado(usuarioFound.isEmailConfirmado());
+			userDetailsCustom.setHabilitado(usuarioFound.isEnabled());
 
 			return userDetailsCustom;
 //			if(usuario.isPresent() && usuario.get() instanceof UsuarioAdministrador)

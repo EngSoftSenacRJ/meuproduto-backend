@@ -50,7 +50,7 @@ public class RegisterController {
 		if(!usuario.isPresent() || token == null ||
 				(!usuario.get().isEmailConfirmado() && !usuario.get().getTokenValidacaoEmail().equals(token))
 		){
-			response.sendRedirect("http://localhost:4200/login?status=erro");
+			response.sendRedirect("http://18.222.83.180:80/login?status=erro");
 		}else{
 			Usuario usuarioEncontrado = usuario.get();
 			if(!usuarioEncontrado.isEmailConfirmado()) {
@@ -58,7 +58,7 @@ public class RegisterController {
 				usuarioEncontrado.setTokenValidacaoEmail(null);
 				usuarioService.update(usuarioEncontrado);
 			}
-			response.sendRedirect("http://localhost:4200/login?status=sucesso");
+			response.sendRedirect("http://18.222.83.180:80/login?status=sucesso");
 		}
 	}
 

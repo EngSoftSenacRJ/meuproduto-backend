@@ -14,6 +14,8 @@ public class UserDetailsCustom extends User {
 
     private String nome;
     private UsuarioType usuarioType;
+    private boolean emailConfirmado;
+    private boolean habilitado;
 
     public UserDetailsCustom(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
