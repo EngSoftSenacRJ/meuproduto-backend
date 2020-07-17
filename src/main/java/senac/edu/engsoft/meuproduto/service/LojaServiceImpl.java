@@ -60,6 +60,11 @@ public class LojaServiceImpl implements LojaService {
 		return lojaRepository.findAll();
 	}
 
+	@Override
+	public Iterable<Loja> getLojasByUsernameAdministrador(String usernameAdministrador) {
+		return null;
+	}
+
 	private void validateLoja(Loja loja){
 		String nomeLoja = loja.getNome();
 		Optional<Loja> lojaExistente = lojaRepository.getByNome(nomeLoja);

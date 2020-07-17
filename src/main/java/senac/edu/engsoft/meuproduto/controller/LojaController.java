@@ -34,8 +34,8 @@ public class LojaController {
 
 	@GetMapping
 	@Operation(summary = "Buscar Lojas", description = "Buscar lista de Lojas")
-	public ResponseEntity<CollectionModel<LojaResource>> getAll(@RequestParam("listarProdutos") Optional<Boolean> listarProdutos) {
-		return new ResponseEntity<>(lojaResourceAssembler.toCollectionModel(lojaService.getAll(), listarProdutos.isPresent() ? listarProdutos.get() : false), HttpStatus.OK);
+	public ResponseEntity<CollectionModel<LojaResource>> getAll(@RequestParam("listarProdutos") Optional<Boolean> listarProdutos, @RequestParam(value="usernameAdministrador", required=true) String usernameAdministrador) {
+		return new ResponseEntity<>(lojaResourceAssembler.toCollectionModel(lojaService.getLojasByUsernameAdministrador(usernameAdministrador), listarProdutos.isPresent() ? listarProdutos.get() : false), HttpStatus.OK);
 	}
 
 	@ResponseStatus(value=HttpStatus.OK)

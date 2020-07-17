@@ -14,5 +14,7 @@ public interface LojaRepository extends CrudRepository<Loja, Long>{
 	@Query(value="select l from Loja l where l.nome = :nome")
 	Optional<Loja> getByNome(@Param("nome") String nome);
 
+	@Query(value="select l from Loja l where l.emailUsuarioCriadorLoja = :emailUsuarioCriadorLoja")
+	Optional<Loja> getLojasByUsernameAdministrador(@Param("emailUsuarioCriadorLoja") String emailUsuarioCriadorLoja);
 	
 }

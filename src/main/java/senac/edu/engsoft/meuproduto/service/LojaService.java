@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface LojaService {
 
 	Iterable<Loja> getAll();
+	Iterable<Loja> getLojasByUsernameAdministrador(String usernameAdministrador);
 	Optional<Loja> getById(Long id);
 	Optional<Loja> getByNome(String nome);
 	Loja save(Loja loja);
