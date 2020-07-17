@@ -62,7 +62,7 @@ public class LojaServiceImpl implements LojaService {
 
 	@Override
 	public Iterable<Loja> getLojasByUsernameAdministrador(String usernameAdministrador) {
-		return null;
+		return lojaRepository.getLojasByUsernameAdministrador(usernameAdministrador);
 	}
 
 	private void validateLoja(Loja loja){

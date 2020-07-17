@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import senac.edu.engsoft.meuproduto.model.Loja;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,6 +16,6 @@ public interface LojaRepository extends CrudRepository<Loja, Long>{
 	Optional<Loja> getByNome(@Param("nome") String nome);
 
 	@Query(value="select l from Loja l where l.emailUsuarioCriadorLoja = :emailUsuarioCriadorLoja")
-	Optional<Loja> getLojasByUsernameAdministrador(@Param("emailUsuarioCriadorLoja") String emailUsuarioCriadorLoja);
+	List<Loja> getLojasByUsernameAdministrador(@Param("emailUsuarioCriadorLoja") String emailUsuarioCriadorLoja);
 	
 }
